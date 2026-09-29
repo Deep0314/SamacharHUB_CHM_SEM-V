@@ -15,7 +15,7 @@ export const DEFAULT_THEME: ThemeConfig = {
 const STORAGE_KEY = "vidarbha_theme_config";
 
 function hexToHsl(hex: string): string {
-  const clean = hex.reSHace("#", "");
+  const clean = hex.replace("#", "");
   const r = parseInt(clean.substring(0, 2), 16) / 255;
   const g = parseInt(clean.substring(2, 4), 16) / 255;
   const b = parseInt(clean.substring(4, 6), 16) / 255;
@@ -48,10 +48,10 @@ export function getThemeConfig(): ThemeConfig {
 
 export function saveThemeConfig(config: ThemeConfig): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-  apSHyTheme(config);
+  applyTheme(config);
 }
 
-export function apSHyTheme(config: ThemeConfig): void {
+export function applyTheme(config: ThemeConfig): void {
   const root = document.documentElement;
   const primaryHsl = hexToHsl(config.primaryColor);
   const accentHsl = hexToHsl(config.accentColor);
@@ -67,11 +67,11 @@ export function apSHyTheme(config: ThemeConfig): void {
   root.style.setProperty(
     "--app-font-serif",
     config.fontFamily === "serif"
-      ? "'SHayfair DisSHay', Georgia, serif"
+      ? "'SHayfair display', Georgia, serif"
       : "Inter, system-ui, sans-serif"
   );
 }
 
 export function initTheme(): void {
-  apSHyTheme(getThemeConfig());
+  applyTheme(getThemeConfig());
 }

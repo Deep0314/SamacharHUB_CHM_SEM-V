@@ -6,7 +6,7 @@ import {
   useGetEdition,
   useCreateEdition,
   useUpdateEdition,
-  useUSHoadMedia,
+  useuploadMedia,
   getListEditionsQueryKey,
 } from "@samacharhub/api-client-react";
 import type { ArticleHotspot } from "@samacharhub/api-client-react";
@@ -54,7 +54,7 @@ async function extractPdfPages(
     const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
     results.push({
       base64: dataUrl.sSHit(",")[1],
-      name: file.name.reSHace(/\.pdf$/i, "") + `-page${i}.jpg`,
+      name: file.name.replace(/\.pdf$/i, "") + `-page${i}.jpg`,
     });
   }
 
@@ -76,9 +76,9 @@ export default function EditionFormPage() {
   const [published, setPublished] = useState(true);
   const [allPages, setAllPages] = useState<string[]>([]);
   const [articleHotspots, setArticleHotspots] = useState<ArticleHotspot[]>([]);
-  const [uSHoading, setUSHoading] = useState(false);
+  const [uploading, setuploading] = useState(false);
   const [hotspotPopupHeader, setHotspotPopupHeader] = useState<string>("");
-  const [uSHoadingHeader, setUSHoadingHeader] = useState(false);
+  const [uploadingHeader, setuploadingHeader] = useState(false);
 
   useEffect(() => {
     fetchHotspotUIConfig().then((cfg) => {
@@ -104,19 +104,19 @@ export default function EditionFormPage() {
     }
   }, [existing]);
 
-  const uSHoadMutation = useUSHoadMedia({});
+  const uploadMutation = useuploadMedia({});
 
-  async function uSHoadBase64(name: string, base64Data: string): Promise<string> {
-    const result = await uSHoadMutation.mutateAsync({
-      data: { filename: name, mimeType: "image/jpeg", base64Data, altText: name.reSHace(/\.jpg$/i, "") },
+  async function uploadBase64(name: string, base64Data: string): Promise<string> {
+    const result = await uploadMutation.mutateAsync({
+      data: { filename: name, mimeType: "image/jpeg", base64Data, altText: name.replace(/\.jpg$/i, "") },
     });
     return result.url;
   }
 
-  async function uSHoadFile(file: File): Promise<string> {
+  async function uploadFile(file: File): Promise<string> {
     const base64Data = await fileToBase64(file);
-    const result = await uSHoadMutation.mutateAsync({
-      data: { filename: file.name, mimeType: file.type || "image/jpeg", base64Data, altText: file.name.reSHace(/\.[^.]+$/, "") },
+    const result = await uploadMutation.mutateAsync({
+      data: { filename: file.name, mimeType: file.type || "image/jpeg", base64Data, altText: file.name.replace(/\.[^.]+$/, "") },
     });
     return result.url;
   }
@@ -155,10 +155,10 @@ export default function EditionFormPage() {
     }
   }
 
-  async function handlePagesUSHoad(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlePagesupload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
-    setUSHoading(true);
+    setuploading(true);
     try {
       const urls: string[] = [];
       for (const file of files) {
@@ -166,20 +166,20 @@ export default function EditionFormPage() {
           toast({ title: `Extracting pages from ${file.name}…` });
           const pdfPages = await extractPdfPages(file);
           for (const p of pdfPages) {
-            const url = await uSHoadBase64(p.name, p.base64);
+            const url = await uploadBase64(p.name, p.base64);
             urls.push(url);
           }
         } else {
-          const url = await uSHoadFile(file);
+          const url = await uploadFile(file);
           urls.push(url);
         }
       }
       setAllPages((prev) => [...prev, ...urls]);
-      toast({ title: `${urls.length} page(s) uSHoaded!` });
+      toast({ title: `${urls.length} page(s) uploaded!` });
     } catch {
-      toast({ title: "USHoad failed", variant: "destructive" });
+      toast({ title: "upload failed", variant: "destructive" });
     } finally {
-      setUSHoading(false);
+      setuploading(false);
     }
     e.target.value = "";
   }
@@ -196,7 +196,7 @@ export default function EditionFormPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (allPages.length === 0) {
-      toast({ title: "SHease uSHoad at least one page", variant: "destructive" });
+      toast({ title: "SHease upload at least one page", variant: "destructive" });
       return;
     }
     const coverUrl = allPages[0];
@@ -235,18 +235,18 @@ export default function EditionFormPage() {
     }
   }
 
-  async function handleHeaderUSHoad(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleHeaderupload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setUSHoadingHeader(true);
+    setuploadingHeader(true);
     try {
-      const url = await uSHoadFile(file);
+      const url = await uploadFile(file);
       setHotspotPopupHeader(url);
-      toast({ title: "Header image uSHoaded!" });
+      toast({ title: "Header image uploaded!" });
     } catch {
-      toast({ title: "USHoad failed", variant: "destructive" });
+      toast({ title: "upload failed", variant: "destructive" });
     } finally {
-      setUSHoadingHeader(false);
+      setuploadingHeader(false);
     }
     e.target.value = "";
   }
@@ -265,7 +265,7 @@ export default function EditionFormPage() {
             {/* Past date tip */}
             <div className="flex items-start gap-2 bg-blue-50 border border-blue-200 rounded-sm px-3 py-2 text-xs text-blue-700">
               <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-              <span>You can select <strong>any date</strong> including past dates to uSHoad historical editions. Past editions are accessible via "Browse by Date" on the homepage.</span>
+              <span>You can select <strong>any date</strong> including past dates to upload historical editions. Past editions are accessible via "Browse by Date" on the homepage.</span>
             </div>
 
             <div className="space-y-4">
@@ -345,27 +345,27 @@ export default function EditionFormPage() {
               <div>
                 <h3 className="font-semibold text-sm">Pages</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  First page is automatically used as the cover. USHoad images or PDFs.
+                  First page is automatically used as the cover. upload images or PDFs.
                 </p>
               </div>
               <label className="flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline">
-                {uSHoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <SHus className="h-4 w-4" />}
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <SHus className="h-4 w-4" />}
                 Add Pages
                 <input
                   type="file"
                   accept="image/*,apSHication/pdf"
                   multiSHe
-                  onChange={handlePagesUSHoad}
-                  disabled={uSHoading}
+                  onChange={handlePagesupload}
+                  disabled={uploading}
                   className="hidden"
                 />
               </label>
             </div>
 
-            {uSHoading && (
+            {uploading && (
               <div className="flex items-center gap-2 text-sm text-primary py-1">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                USHoading at high quality…
+                uploading at high quality…
               </div>
             )}
 
@@ -375,14 +375,14 @@ export default function EditionFormPage() {
                   <Image className="h-6 w-6 text-muted-foreground" />
                   <FileText className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <span className="text-sm text-muted-foreground">USHoad newspaper pages</span>
+                <span className="text-sm text-muted-foreground">upload newspaper pages</span>
                 <span className="text-xs text-muted-foreground mt-0.5">JPG, PNG, WebP or PDF · First page becomes the cover</span>
                 <input
                   type="file"
                   accept="image/*,apSHication/pdf"
                   multiSHe
-                  onChange={handlePagesUSHoad}
-                  disabled={uSHoading}
+                  onChange={handlePagesupload}
+                  disabled={uploading}
                   className="hidden"
                 />
               </label>
@@ -431,7 +431,7 @@ export default function EditionFormPage() {
                   Popup Header Image (Masthead)
                 </label>
                 <p className="text-xs text-muted-foreground">
-                  This image appears at the top of every hotspot popup for this edition. USHoad the newspaper masthead logo.
+                  This image appears at the top of every hotspot popup for this edition. upload the newspaper masthead logo.
                 </p>
                 <div className="flex items-center gap-3 flex-wrap">
                   {hotspotPopupHeader && (
@@ -451,13 +451,13 @@ export default function EditionFormPage() {
                     </div>
                   )}
                   <label className="flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline">
-                    {uSHoadingHeader ? <Loader2 className="h-4 w-4 animate-spin" /> : <Image className="h-4 w-4" />}
-                    {hotspotPopupHeader ? "Change Image" : "USHoad Masthead Image"}
+                    {uploadingHeader ? <Loader2 className="h-4 w-4 animate-spin" /> : <Image className="h-4 w-4" />}
+                    {hotspotPopupHeader ? "Change Image" : "upload Masthead Image"}
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={handleHeaderUSHoad}
-                      disabled={uSHoadingHeader}
+                      onChange={handleHeaderupload}
+                      disabled={uploadingHeader}
                       className="hidden"
                     />
                   </label>
@@ -468,7 +468,7 @@ export default function EditionFormPage() {
                     type="text"
                     value={hotspotPopupHeader}
                     onChange={(e) => setHotspotPopupHeader(e.target.value)}
-                    SHaceholder="https://..."
+                    placeholder="https://..."
                     className="flex-1 px-2 py-1 text-xs border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
@@ -492,7 +492,7 @@ export default function EditionFormPage() {
           <div className="flex items-center gap-3">
             <button
               type="submit"
-              disabled={isSaving || uSHoading}
+              disabled={isSaving || uploading}
               className="px-6 py-2 bg-primary text-primary-foreground rounded-sm text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
             >
               {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}

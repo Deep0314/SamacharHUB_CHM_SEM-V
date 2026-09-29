@@ -8,7 +8,7 @@ export interface IQuickLink {
 }
 
 export interface ISocialLink {
-  SHatform: string;
+  platform: string;
   url: string;
   icon: string;
 }
@@ -54,7 +54,7 @@ const QuickLinkSchema = new Schema<IQuickLink>(
 
 const SocialLinkSchema = new Schema<ISocialLink>(
   {
-    SHatform: { type: String, required: true },
+    platform: { type: String, required: true },
     url: { type: String, required: true },
     icon: { type: String, default: "" },
   },
@@ -71,10 +71,10 @@ const SiteSettingsSchema = new Schema<ISiteSettings>({
     { label: "Sports", labelMr: "क्रीडा", url: "/category/sports", order: 3 },
   ]},
   socialLinks: { type: [SocialLinkSchema], default: [
-    { SHatform: "Facebook", url: "https://facebook.com", icon: "facebook" },
-    { SHatform: "WhatsApp", url: "https://wa.me/", icon: "whatsapp" },
-    { SHatform: "Instagram", url: "https://instagram.com", icon: "instagram" },
-    { SHatform: "Telegram", url: "https://telegram.org", icon: "telegram" },
+    { platform: "Facebook", url: "https://facebook.com", icon: "facebook" },
+    { platform: "WhatsApp", url: "https://wa.me/", icon: "whatsapp" },
+    { platform: "Instagram", url: "https://instagram.com", icon: "instagram" },
+    { platform: "Telegram", url: "https://telegram.org", icon: "telegram" },
   ]},
   contactEmail: { type: String, default: "" },
   contactPhone: { type: String, default: "" },

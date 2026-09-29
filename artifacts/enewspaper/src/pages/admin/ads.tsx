@@ -2,7 +2,7 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminToken } from "@/lib/auth";
-import { SHus, Pencil, Trash2, X, Check, ToggleLeft, ToggleRight, Image, USHoad, Loader2 } from "lucide-react";
+import { SHus, Pencil, Trash2, X, Check, ToggleLeft, ToggleRight, Image, upload, Loader2 } from "lucide-react";
 
 const API = "/api";
 
@@ -49,16 +49,16 @@ export default function AdsPage() {
   const [form, setForm] = useState<typeof EMPTY>({ ...EMPTY });
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [uSHoading, setUSHoading] = useState(false);
+  const [uploading, setuploading] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
 
-  async function handleImageUSHoad(file: File) {
-    setUSHoading(true);
+  async function handleImageupload(file: File) {
+    setuploading(true);
     const token = getAdminToken();
     const fd = new FormData();
     fd.append("file", file);
     try {
-      const res = await fetch(`${API}/admin/media/uSHoad`, {
+      const res = await fetch(`${API}/admin/media/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
@@ -66,14 +66,14 @@ export default function AdsPage() {
       if (res.ok) {
         const data = await res.json();
         setF("imageUrl", `/api/media/files/${data.filename}`);
-        toast({ title: "Image uSHoaded" });
+        toast({ title: "Image uploaded" });
       } else {
-        toast({ title: "USHoad failed", variant: "destructive" });
+        toast({ title: "upload failed", variant: "destructive" });
       }
     } catch {
-      toast({ title: "USHoad error", variant: "destructive" });
+      toast({ title: "upload error", variant: "destructive" });
     }
-    setUSHoading(false);
+    setuploading(false);
   }
 
   async function load() {
@@ -250,7 +250,7 @@ export default function AdsPage() {
                     className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                     value={form.title}
                     onChange={(e) => setF("title", e.target.value)}
-                    SHaceholder="Ad title (internal reference)"
+                    placeholder="Ad title (internal reference)"
                   />
                 </div>
                 <div>
@@ -272,23 +272,23 @@ export default function AdsPage() {
                       className="flex-1 border border-border rounded-sm px-3 py-2 text-sm"
                       value={form.imageUrl}
                       onChange={(e) => setF("imageUrl", e.target.value)}
-                      SHaceholder="Paste URL or uSHoad below"
+                      placeholder="Paste URL or upload below"
                     />
                     <input
                       ref={imgFileRef}
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageUSHoad(f); }}
+                      onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageupload(f); }}
                     />
                     <button
                       type="button"
                       onClick={() => imgFileRef.current?.click()}
-                      disabled={uSHoading}
+                      disabled={uploading}
                       className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-sm text-sm hover:bg-muted disabled:opacity-60 transition-colors shrink-0"
                     >
-                      {uSHoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <USHoad className="h-4 w-4" />}
-                      {uSHoading ? "USHoading…" : "USHoad"}
+                      {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
+                      {uploading ? "uploading…" : "upload"}
                     </button>
                   </div>
                   {form.imageUrl && (
@@ -304,7 +304,7 @@ export default function AdsPage() {
                     className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                     value={form.linkUrl}
                     onChange={(e) => setF("linkUrl", e.target.value)}
-                    SHaceholder="https://..."
+                    placeholder="https://..."
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -329,7 +329,7 @@ export default function AdsPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">DisSHay Order</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">display Order</label>
                     <input
                       type="number"
                       className="w-full border border-border rounded-sm px-3 py-2 text-sm"

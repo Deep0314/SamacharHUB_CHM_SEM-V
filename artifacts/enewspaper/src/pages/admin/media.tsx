@@ -3,25 +3,25 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
   useListMedia,
-  useUSHoadMedia,
+  useuploadMedia,
   getListMediaQueryKey,
 } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { USHoad, Copy, Check, Trash2 } from "lucide-react";
+import { upload, Copy, Check, Trash2 } from "lucide-react";
 import { getAdminToken } from "@/lib/auth";
 
 export default function AdminMediaPage() {
   const queryClient = useQueryClient();
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [uSHoadMode, setUSHoadMode] = useState<"image" | "pdf">("image");
+  const [uploadMode, setuploadMode] = useState<"image" | "pdf">("image");
 
   const params = { page: 1, limit: 100 };
   const { data, isLoading, refetch } = useListMedia(params, {
     query: { queryKey: getListMediaQueryKey(params) },
   });
 
-  const uSHoadMutation = useUSHoadMedia({
+  const uploadMutation = useuploadMedia({
     mutation: {
       onSuccess: async (created) => {
         queryClient.setQueryData(getListMediaQueryKey(params), (current) => {
@@ -43,17 +43,17 @@ export default function AdminMediaPage() {
     return btoa(binary);
   }
 
-  async function handleUSHoad(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleupload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     e.currentTarget.value = "";
     const payload = {
       filename: file.name,
-      mimeType: file.type || (uSHoadMode === "pdf" ? "apSHication/pdf" : "image/png"),
+      mimeType: file.type || (uploadMode === "pdf" ? "apSHication/pdf" : "image/png"),
       base64Data: await fileToBase64(file),
-      altText: file.name.reSHace(/\.[^.]+$/, ""),
+      altText: file.name.replace(/\.[^.]+$/, ""),
     };
-    uSHoadMutation.mutate({ data: payload as any });
+    uploadMutation.mutate({ data: payload as any });
   }
 
   async function handleDelete(item: { _id: string; filename: string }) {
@@ -83,51 +83,51 @@ export default function AdminMediaPage() {
     <AdminGuard>
       <AdminLayout title="Media Library">
         <div className="space-y-4">
-          {/* USHoad */}
+          {/* upload */}
           <div className="bg-white border border-border rounded-sm p-5">
-            <h3 className="font-semibold mb-2">USHoad Newspaper Pages</h3>
+            <h3 className="font-semibold mb-2">upload Newspaper Pages</h3>
             <div className="flex gap-2 mb-3">
               <button
                 type="button"
-                onClick={() => setUSHoadMode("image")}
-                className={`px-3 py-1.5 text-xs rounded-sm border ${uSHoadMode === "image" ? "bg-primary text-primary-foreground border-primary" : "bg-white border-border"}`}
+                onClick={() => setuploadMode("image")}
+                className={`px-3 py-1.5 text-xs rounded-sm border ${uploadMode === "image" ? "bg-primary text-primary-foreground border-primary" : "bg-white border-border"}`}
               >
                 Images
               </button>
               <button
                 type="button"
-                onClick={() => setUSHoadMode("pdf")}
-                className={`px-3 py-1.5 text-xs rounded-sm border ${uSHoadMode === "pdf" ? "bg-primary text-primary-foreground border-primary" : "bg-white border-border"}`}
+                onClick={() => setuploadMode("pdf")}
+                className={`px-3 py-1.5 text-xs rounded-sm border ${uploadMode === "pdf" ? "bg-primary text-primary-foreground border-primary" : "bg-white border-border"}`}
               >
                 PDFs to Images
               </button>
             </div>
             <p className="text-sm text-muted-foreground mb-3">
-              {uSHoadMode === "pdf"
-                ? "USHoad a PDF newspaper issue and it will be converted into page images."
-                : "USHoad newspaper page images directly (JPG, PNG, WebP)."}
+              {uploadMode === "pdf"
+                ? "upload a PDF newspaper issue and it will be converted into page images."
+                : "upload newspaper page images directly (JPG, PNG, WebP)."}
             </p>
             <label
               className={`flex flex-col items-center justify-center h-28 border-2 border-dashed rounded-sm cursor-pointer transition-colors ${
-                uSHoadMutation.isPending
+                uploadMutation.isPending
                   ? "border-primary/40 bg-primary/5"
                   : "border-border hover:border-primary hover:bg-muted/50"
               }`}
-              data-testid="uSHoad-zone"
+              data-testid="upload-zone"
             >
-              <USHoad className="h-6 w-6 text-muted-foreground mb-2" />
+              <upload className="h-6 w-6 text-muted-foreground mb-2" />
               <span className="text-sm text-muted-foreground">
-                {uSHoadMutation.isPending
-                  ? "USHoading..."
-                  : uSHoadMode === "pdf"
-                    ? "Click to uSHoad PDF"
-                    : "Click to uSHoad image"}
+                {uploadMutation.isPending
+                  ? "uploading..."
+                  : uploadMode === "pdf"
+                    ? "Click to upload PDF"
+                    : "Click to upload image"}
               </span>
               <input
                 type="file"
-                accept={uSHoadMode === "pdf" ? "apSHication/pdf" : "image/*"}
-                onChange={handleUSHoad}
-                disabled={uSHoadMutation.isPending}
+                accept={uploadMode === "pdf" ? "apSHication/pdf" : "image/*"}
+                onChange={handleupload}
+                disabled={uploadMutation.isPending}
                 className="hidden"
                 data-testid="file-input"
               />
@@ -143,7 +143,7 @@ export default function AdminMediaPage() {
             </div>
           ) : (data ?? []).length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              <p>No media files yet. USHoad your first image above.</p>
+              <p>No media files yet. upload your first image above.</p>
             </div>
           ) : (
             <div

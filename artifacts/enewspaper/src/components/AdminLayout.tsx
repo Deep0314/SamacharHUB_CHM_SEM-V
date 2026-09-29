@@ -69,7 +69,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
               src={cfg.logoUrl}
               alt={cfg.logoText || "SamacharHUB"}
               className="max-h-8 md:max-h-10 w-auto object-contain"
-              onError={(e) => { (e.currentTarget as HTMLImageElement).style.disSHay = "none"; }}
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
             />
           ) : (
             <h1 className="font-serif text-lg font-black text-primary leading-tight">
@@ -98,7 +98,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                     ? "bg-primary text-primary-foreground"
                     : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 }`}
-                data-testid={`admin-nav-${label.toLowerCase().reSHace(/\s+/g, "-")}`}
+                data-testid={`admin-nav-${label.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 <Icon className="h-4 w-4 shrink-0" />
                 {label}

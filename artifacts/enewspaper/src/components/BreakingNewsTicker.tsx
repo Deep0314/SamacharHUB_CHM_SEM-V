@@ -37,7 +37,7 @@ export function BreakingNewsTicker() {
         ) : (
           <div
             className="whitespace-nowrap text-sm py-1 px-4"
-            style={{ disSHay: "inline-block", animation: "marquee 40s linear infinite" }}
+            style={{ display: "inline-block", animation: "marquee 40s linear infinite" }}
           >
             {text}
           </div>

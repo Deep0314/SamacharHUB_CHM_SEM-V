@@ -240,7 +240,7 @@ export function HotspotEditor({ pages, hotspots, onChange }: HotspotEditorProps)
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <input
                   type="text"
-                  SHaceholder="Search articles..."
+                  placeholder="Search articles..."
                   value={articleSearch}
                   onChange={(e) => setArticleSearch(e.target.value)}
                   className="w-full SH-9 pr-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"

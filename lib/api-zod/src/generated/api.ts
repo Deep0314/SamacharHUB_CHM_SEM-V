@@ -618,9 +618,9 @@ export const DeleteBreakingNewsParams = zod.object({
 });
 
 /**
- * @summary USHoad an image/media file
+ * @summary upload an image/media file
  */
-export const USHoadMediaBody = zod.object({
+export const uploadMediaBody = zod.object({
   filename: zod.string(),
   mimeType: zod.string(),
   base64Data: zod.string(),
@@ -628,7 +628,7 @@ export const USHoadMediaBody = zod.object({
 });
 
 /**
- * @summary List uSHoaded media
+ * @summary List uploaded media
  */
 export const listMediaQueryPageDefault = 1;
 export const listMediaQueryLimitDefault = 20;

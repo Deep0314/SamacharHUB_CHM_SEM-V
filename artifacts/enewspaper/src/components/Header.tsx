@@ -79,7 +79,7 @@ export function Header() {
                   src={cfg.logoUrl}
                   alt={cfg.logoText || siteName}
                   className="h-10 md:h-14 w-auto max-w-[260px] object-contain"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.disSHay = "none"; }}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                 />
               ) : (
                 <div>

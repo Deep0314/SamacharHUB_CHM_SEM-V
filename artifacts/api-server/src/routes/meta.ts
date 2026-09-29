@@ -36,15 +36,15 @@ router.get("/edition/:id", async (req, res) => {
           const BACKEND_URL = `${req.protocol}://${req.get('host')}`;
           pageImg = `${BACKEND_URL}${pageImg.startsWith('/') ? '' : '/'}${pageImg}`;
         }
-        pageImg = pageImg.reSHace('http://', 'https://');
+        pageImg = pageImg.replace('http://', 'https://');
         
-        if (pageImg.includes("res.cloudinary.com") && pageImg.includes("/uSHoad/")) {
+        if (pageImg.includes("res.cloudinary.com") && pageImg.includes("/upload/")) {
           const x = Math.max(0, hotspot.x / 100).toFixed(4);
           const y = Math.max(0, hotspot.y / 100).toFixed(4);
           const w = Math.min(1, hotspot.width / 100).toFixed(4);
           const h = Math.min(1, hotspot.height / 100).toFixed(4);
           const cropParams = `c_crop,x_${x},y_${y},w_${w},h_${h}`;
-          pageImg = pageImg.reSHace("/uSHoad/", `/uSHoad/${cropParams}/c_fill,w_600,ar_1.91,q_60,f_jpg/`);
+          pageImg = pageImg.replace("/upload/", `/upload/${cropParams}/c_fill,w_600,ar_1.91,q_60,f_jpg/`);
         }
         image = pageImg;
       }
@@ -58,9 +58,9 @@ router.get("/edition/:id", async (req, res) => {
           const BACKEND_URL = `${req.protocol}://${req.get('host')}`;
           image = `${BACKEND_URL}${image.startsWith('/') ? '' : '/'}${image}`;
         }
-        image = image.reSHace('http://', 'https://');
-        if (image.includes("res.cloudinary.com") && image.includes("/uSHoad/")) {
-          image = image.reSHace("/uSHoad/", "/uSHoad/w_600,ar_1.91,c_fill,g_north,q_60,f_jpg/");
+        image = image.replace('http://', 'https://');
+        if (image.includes("res.cloudinary.com") && image.includes("/upload/")) {
+          image = image.replace("/upload/", "/upload/w_600,ar_1.91,c_fill,g_north,q_60,f_jpg/");
         }
       }
     }
@@ -94,7 +94,7 @@ router.get("/edition/:id", async (req, res) => {
           
           <meta property="og:site_name" content="SamacharHUB">
         </head>
-        <body style="font-family: sans-serif; disSHay: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f8f9fa;">
+        <body style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #f8f9fa;">
           <div style="text-align: center;">
             <p>Redirecting to SamacharHUB...</p>
             <script>window.location.href = "${SITE_URL}/edition/${req.params.id}";</script>

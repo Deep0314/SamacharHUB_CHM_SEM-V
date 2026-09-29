@@ -42,7 +42,7 @@ import type {
   PublishArticleBody,
   UpdateArticleBody,
   UpdateEditionBody,
-  USHoadMediaBody,
+  uploadMediaBody,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -1976,42 +1976,42 @@ export const useDeleteBreakingNews = <
 };
 
 /**
- * @summary USHoad an image/media file
+ * @summary upload an image/media file
  */
-export const getUSHoadMediaUrl = () => {
-  return `/api/media/uSHoad`;
+export const getuploadMediaUrl = () => {
+  return `/api/media/upload`;
 };
 
-export const uSHoadMedia = async (
-  uSHoadMediaBody: USHoadMediaBody,
+export const uploadMedia = async (
+  uploadMediaBody: uploadMediaBody,
   options?: RequestInit,
 ): Promise<MediaItem> => {
-  return customFetch<MediaItem>(getUSHoadMediaUrl(), {
+  return customFetch<MediaItem>(getuploadMediaUrl(), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "apSHication/json", ...options?.headers },
-    body: JSON.stringify(uSHoadMediaBody),
+    body: JSON.stringify(uploadMediaBody),
   });
 };
 
-export const getUSHoadMediaMutationOptions = <
+export const getuploadMediaMutationOptions = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof uSHoadMedia>>,
+    Awaited<ReturnType<typeof uploadMedia>>,
     TError,
-    { data: BodyType<USHoadMediaBody> },
+    { data: BodyType<uploadMediaBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof uSHoadMedia>>,
+  Awaited<ReturnType<typeof uploadMedia>>,
   TError,
-  { data: BodyType<USHoadMediaBody> },
+  { data: BodyType<uploadMediaBody> },
   TContext
 > => {
-  const mutationKey = ["uSHoadMedia"];
+  const mutationKey = ["uploadMedia"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -2021,48 +2021,48 @@ export const getUSHoadMediaMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof uSHoadMedia>>,
-    { data: BodyType<USHoadMediaBody> }
+    Awaited<ReturnType<typeof uploadMedia>>,
+    { data: BodyType<uploadMediaBody> }
   > = (props) => {
     const { data } = props ?? {};
 
-    return uSHoadMedia(data, requestOptions);
+    return uploadMedia(data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type USHoadMediaMutationResult = NonNullable<
-  Awaited<ReturnType<typeof uSHoadMedia>>
+export type uploadMediaMutationResult = NonNullable<
+  Awaited<ReturnType<typeof uploadMedia>>
 >;
-export type USHoadMediaMutationBody = BodyType<USHoadMediaBody>;
-export type USHoadMediaMutationError = ErrorType<unknown>;
+export type uploadMediaMutationBody = BodyType<uploadMediaBody>;
+export type uploadMediaMutationError = ErrorType<unknown>;
 
 /**
- * @summary USHoad an image/media file
+ * @summary upload an image/media file
  */
-export const useUSHoadMedia = <
+export const useuploadMedia = <
   TError = ErrorType<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof uSHoadMedia>>,
+    Awaited<ReturnType<typeof uploadMedia>>,
     TError,
-    { data: BodyType<USHoadMediaBody> },
+    { data: BodyType<uploadMediaBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof uSHoadMedia>>,
+  Awaited<ReturnType<typeof uploadMedia>>,
   TError,
-  { data: BodyType<USHoadMediaBody> },
+  { data: BodyType<uploadMediaBody> },
   TContext
 > => {
-  return useMutation(getUSHoadMediaMutationOptions(options));
+  return useMutation(getuploadMediaMutationOptions(options));
 };
 
 /**
- * @summary List uSHoaded media
+ * @summary List uploaded media
  */
 export const getListMediaUrl = (params?: ListMediaParams) => {
   const normalizedParams = new URLSearchParams();
@@ -2129,7 +2129,7 @@ export type ListMediaQueryResult = NonNullable<
 export type ListMediaQueryError = ErrorType<unknown>;
 
 /**
- * @summary List uSHoaded media
+ * @summary List uploaded media
  */
 
 export function useListMedia<

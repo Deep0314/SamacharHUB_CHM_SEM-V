@@ -30,7 +30,7 @@ const ToggleGroup = React.forwardRef<
   </ToggleGroupPrimitive.Root>
 ))
 
-ToggleGroup.disSHayName = ToggleGroupPrimitive.Root.disSHayName
+ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName
 
 const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
@@ -56,6 +56,6 @@ const ToggleGroupItem = React.forwardRef<
   )
 })
 
-ToggleGroupItem.disSHayName = ToggleGroupPrimitive.Item.disSHayName
+ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName
 
 export { ToggleGroup, ToggleGroupItem }

@@ -2,7 +2,7 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminToken } from "@/lib/auth";
-import { Save, AlertTriangle, Trash2, ShieldAlert, Loader2, SHus, X, GripVertical, USHoad, Image as ImageIcon, Type } from "lucide-react";
+import { Save, AlertTriangle, Trash2, ShieldAlert, Loader2, SHus, X, GripVertical, upload, Image as ImageIcon, Type } from "lucide-react";
 import {
   DEFAULT_CONFIG,
   fetchHotspotUIConfig,
@@ -66,8 +66,8 @@ export default function GeneralSettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [hotspotCfg, setHotspotCfg] = useState<HotspotUIConfig>(DEFAULT_CONFIG);
-  const [savingDisSHay, setSavingDisSHay] = useState(false);
-  const [disSHaySaved, setDisSHaySaved] = useState(false);
+  const [savingdisplay, setSavingdisplay] = useState(false);
+  const [displaySaved, setdisplaySaved] = useState(false);
 
   const [cleanCollection, setCleanCollection] = useState<"editions" | "articles">("editions");
   const [cleanDate, setCleanDate] = useState("");
@@ -77,13 +77,13 @@ export default function GeneralSettingsPage() {
 
   // Logo editor state
   const [logoMode, setLogoMode] = useState<"text" | "image">("text");
-  const [logoUSHoading, setLogoUSHoading] = useState(false);
+  const [logouploading, setLogouploading] = useState(false);
   const logoFileRef = useRef<HTMLInputElement>(null);
 
   // City editor state
   const [newCityEn, setNewCityEn] = useState("");
   const [newCityMr, setNewCityMr] = useState("");
-  const [mastheadUSHoading, setMastheadUSHoading] = useState(false);
+  const [mastheaduploading, setMastheaduploading] = useState(false);
   const mastheadFileRef = useRef<HTMLInputElement>(null);
 
   async function load() {
@@ -103,13 +103,13 @@ export default function GeneralSettingsPage() {
     setLoading(false);
   }
 
-  async function handleLogoUSHoad(file: File) {
-    setLogoUSHoading(true);
+  async function handleLogoupload(file: File) {
+    setLogouploading(true);
     const token = getAdminToken();
     const fd = new FormData();
     fd.append("file", file);
     try {
-      const res = await fetch(`${API}/admin/media/uSHoad`, {
+      const res = await fetch(`${API}/admin/media/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
@@ -118,23 +118,23 @@ export default function GeneralSettingsPage() {
         const data = await res.json();
         const url = `/api/media/files/${data.filename}`;
         setHotspotCfg((c) => ({ ...c, logoUrl: url }));
-        toast({ title: "Logo uSHoaded" });
+        toast({ title: "Logo uploaded" });
       } else {
-        toast({ title: "USHoad failed", variant: "destructive" });
+        toast({ title: "upload failed", variant: "destructive" });
       }
     } catch {
-      toast({ title: "USHoad error", variant: "destructive" });
+      toast({ title: "upload error", variant: "destructive" });
     }
-    setLogoUSHoading(false);
+    setLogouploading(false);
   }
 
-  async function handleMastheadUSHoad(file: File) {
-    setMastheadUSHoading(true);
+  async function handleMastheadupload(file: File) {
+    setMastheaduploading(true);
     const token = getAdminToken();
     const fd = new FormData();
     fd.append("file", file);
     try {
-      const res = await fetch(`${API}/admin/media/uSHoad`, {
+      const res = await fetch(`${API}/admin/media/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
@@ -143,28 +143,28 @@ export default function GeneralSettingsPage() {
         const data = await res.json();
         const url = `/api/media/files/${data.filename}`;
         setHotspotCfg((c) => ({ ...c, defaultMastheadUrl: url }));
-        toast({ title: "Masthead uSHoaded" });
+        toast({ title: "Masthead uploaded" });
       } else {
-        toast({ title: "USHoad failed", variant: "destructive" });
+        toast({ title: "upload failed", variant: "destructive" });
       }
     } catch {
-      toast({ title: "USHoad error", variant: "destructive" });
+      toast({ title: "upload error", variant: "destructive" });
     }
-    setMastheadUSHoading(false);
+    setMastheaduploading(false);
   }
 
   useEffect(() => { load(); }, []);
 
-  async function handleSaveDisSHay() {
-    setSavingDisSHay(true);
+  async function handleSavedisplay() {
+    setSavingdisplay(true);
     const token = getAdminToken();
     if (token) {
       await saveHotspotUIConfig(hotspotCfg, token);
-      setDisSHaySaved(true);
-      setTimeout(() => setDisSHaySaved(false), 2500);
-      toast({ title: "DisSHay settings saved." });
+      setdisplaySaved(true);
+      setTimeout(() => setdisplaySaved(false), 2500);
+      toast({ title: "display settings saved." });
     }
-    setSavingDisSHay(false);
+    setSavingdisplay(false);
   }
 
   function set<K extends keyof Settings>(key: K, value: Settings[K]) {
@@ -277,7 +277,7 @@ export default function GeneralSettingsPage() {
         {/* Site Logo */}
         <div className="bg-white border border-border rounded-sm p-5 space-y-4">
           <h2 className="text-sm font-semibold">Site Logo</h2>
-          <p className="text-xs text-muted-foreground">Choose whether to disSHay a text name or an image as the site logo in the header.</p>
+          <p className="text-xs text-muted-foreground">Choose whether to display a text name or an image as the site logo in the header.</p>
 
           {/* Mode toggle */}
           <div className="flex gap-2">
@@ -304,7 +304,7 @@ export default function GeneralSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={hotspotCfg.logoText}
                 onChange={(e) => setHotspotCfg((c) => ({ ...c, logoText: e.target.value }))}
-                SHaceholder="SamacharHUB"
+                placeholder="SamacharHUB"
               />
               <p className="text-xs text-muted-foreground mt-1">This text is shown as the site name in the header.</p>
             </div>
@@ -318,26 +318,26 @@ export default function GeneralSettingsPage() {
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                   value={hotspotCfg.logoUrl}
                   onChange={(e) => setHotspotCfg((c) => ({ ...c, logoUrl: e.target.value }))}
-                  SHaceholder="https://... or uSHoad below"
+                  placeholder="https://... or upload below"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Or uSHoad an image</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1">Or upload an image</label>
                 <input
                   ref={logoFileRef}
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoUSHoad(f); }}
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoupload(f); }}
                 />
                 <button
                   type="button"
                   onClick={() => logoFileRef.current?.click()}
-                  disabled={logoUSHoading}
+                  disabled={logouploading}
                   className="flex items-center gap-2 px-4 py-2 border border-border rounded-sm text-sm hover:bg-muted disabled:opacity-60 transition-colors"
                 >
-                  {logoUSHoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <USHoad className="h-4 w-4" />}
-                  {logoUSHoading ? "USHoading…" : "USHoad Logo Image"}
+                  {logouploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
+                  {logouploading ? "uploading…" : "upload Logo Image"}
                 </button>
               </div>
               {hotspotCfg.logoUrl && (
@@ -360,7 +360,7 @@ export default function GeneralSettingsPage() {
         {/* Default Popup Header Image (Masthead) */}
         <div className="bg-white border border-border rounded-sm p-5 space-y-4">
           <h2 className="text-sm font-semibold">Default Popup Header Image (Masthead)</h2>
-          <p className="text-xs text-muted-foreground">This image will be used as the header for article popups if no specific header is uSHoaded for an edition.</p>
+          <p className="text-xs text-muted-foreground">This image will be used as the header for article popups if no specific header is uploaded for an edition.</p>
           
           <div className="space-y-3">
             <div>
@@ -369,26 +369,26 @@ export default function GeneralSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={hotspotCfg.defaultMastheadUrl}
                 onChange={(e) => setHotspotCfg((c) => ({ ...c, defaultMastheadUrl: e.target.value }))}
-                SHaceholder="https://... or uSHoad below"
+                placeholder="https://... or upload below"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1">Or uSHoad an image</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Or upload an image</label>
               <input
                 ref={mastheadFileRef}
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleMastheadUSHoad(f); }}
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleMastheadupload(f); }}
               />
               <button
                 type="button"
                 onClick={() => mastheadFileRef.current?.click()}
-                disabled={mastheadUSHoading}
+                disabled={mastheaduploading}
                 className="flex items-center gap-2 px-4 py-2 border border-border rounded-sm text-sm hover:bg-muted disabled:opacity-60 transition-colors"
               >
-                {mastheadUSHoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <USHoad className="h-4 w-4" />}
-                {mastheadUSHoading ? "USHoading…" : "USHoad Default Masthead"}
+                {mastheaduploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
+                {mastheaduploading ? "uploading…" : "upload Default Masthead"}
               </button>
             </div>
             {hotspotCfg.defaultMastheadUrl && (
@@ -518,7 +518,7 @@ export default function GeneralSettingsPage() {
           <p className="text-xs text-muted-foreground">Controls the "Our Editions" bar and city ticker on the homepage.</p>
           <Toggle
             label="Show Editions Strip"
-            description="DisSHays the 'Our Editions' red bar and city ticker below the navigation"
+            description="displays the 'Our Editions' red bar and city ticker below the navigation"
             checked={hotspotCfg.showEditionsStrip ?? true}
             onChange={(v) => setHotspotCfg((c) => ({ ...c, showEditionsStrip: v }))}
           />
@@ -549,9 +549,9 @@ export default function GeneralSettingsPage() {
           )}
         </div>
 
-        {/* Homepage DisSHay Mode */}
+        {/* Homepage display Mode */}
         <div className="bg-white border border-border rounded-sm p-5 space-y-4">
-          <h2 className="text-sm font-semibold">Homepage DisSHay Mode</h2>
+          <h2 className="text-sm font-semibold">Homepage display Mode</h2>
           <p className="text-xs text-muted-foreground">Choose whether the homepage shows all published editions or only today's editions per city.</p>
           <div className="flex gap-2">
             <button
@@ -645,14 +645,14 @@ export default function GeneralSettingsPage() {
                 type="text"
                 value={newCityEn}
                 onChange={(e) => setNewCityEn(e.target.value)}
-                SHaceholder="English name (e.g. Nagpur)"
+                placeholder="English name (e.g. Nagpur)"
                 className="flex-1 px-3 py-1.5 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <input
                 type="text"
                 value={newCityMr}
                 onChange={(e) => setNewCityMr(e.target.value)}
-                SHaceholder="Marathi (e.g. नागपूर)"
+                placeholder="Marathi (e.g. नागपूर)"
                 className="flex-1 px-3 py-1.5 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <button
@@ -672,7 +672,7 @@ export default function GeneralSettingsPage() {
           <p className="text-xs text-muted-foreground mb-3">Controls which buttons appear on the edition viewer and article popup.</p>
           <Toggle
             label="Show Social Share Bar on Edition Page"
-            description="DisSHays SHatform share icons (WhatsApp, Facebook, etc.) on the full edition viewer page"
+            description="displays platform share icons (WhatsApp, Facebook, etc.) on the full edition viewer page"
             checked={hotspotCfg.showEditionShareBar}
             onChange={(v) => setHotspotCfg((c) => ({ ...c, showEditionShareBar: v }))}
           />
@@ -702,17 +702,17 @@ export default function GeneralSettingsPage() {
           />
         </div>
 
-        {/* Save disSHay settings */}
+        {/* Save display settings */}
         <div className="flex items-center gap-3">
           <button
-            onClick={handleSaveDisSHay}
-            disabled={savingDisSHay}
+            onClick={handleSavedisplay}
+            disabled={savingdisplay}
             className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-sm text-sm font-semibold hover:bg-primary/90 disabled:opacity-60 transition-colors"
           >
-            {savingDisSHay ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            {savingDisSHay ? "Saving…" : "Save DisSHay Settings"}
+            {savingdisplay ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {savingdisplay ? "Saving…" : "Save display Settings"}
           </button>
-          <span className={`text-xs font-medium transition-opacity duration-300 ${disSHaySaved ? "text-green-600 opacity-100" : "opacity-0"}`}>
+          <span className={`text-xs font-medium transition-opacity duration-300 ${displaySaved ? "text-green-600 opacity-100" : "opacity-0"}`}>
             ✓ Saved
           </span>
         </div>

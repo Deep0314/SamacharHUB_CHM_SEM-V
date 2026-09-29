@@ -11,17 +11,17 @@ cloudinary.config({
 export default cloudinary;
 
 /**
- * USHoads a base64 image string to Cloudinary.
+ * uploads a base64 image string to Cloudinary.
  * @param base64Data The base64 string (can include the data:image/xxx;base64, prefix)
  * @param folder Optional folder name in Cloudinary
- * @returns The secure URL of the uSHoaded image
+ * @returns The secure URL of the uploaded image
  */
-export async function uSHoadToBase64(base64Data: string, folder: string = "newspaper"): Promise<string> {
+export async function uploadToBase64(base64Data: string, folder: string = "newspaper"): Promise<string> {
   // If the string starts with data:image/xxx;base64, we can pass it directly.
   // Otherwise, we might need to prepend it, but Cloudinary usually handles it.
-  const uSHoadResponse = await cloudinary.uSHoader.uSHoad(base64Data, {
+  const uploadResponse = await cloudinary.uploader.upload(base64Data, {
     folder,
     resource_type: "auto",
   });
-  return uSHoadResponse.secure_url;
+  return uploadResponse.secure_url;
 }

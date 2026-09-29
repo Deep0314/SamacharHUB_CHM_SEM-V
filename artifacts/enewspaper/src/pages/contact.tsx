@@ -9,7 +9,7 @@ interface ContactSettings {
   contactPhone: string;
   contactAddress: string;
   contactAddressMr: string;
-  socialLinks: { SHatform: string; url: string; icon: string }[];
+  socialLinks: { platform: string; url: string; icon: string }[];
 }
 
 function useContactSettings() {
@@ -194,7 +194,7 @@ export default function ContactPage() {
                   type="text"
                   value={subName}
                   onChange={(e) => setSubName(e.target.value)}
-                  SHaceholder={lang === "mr" ? "नाव (ऐच्छिक)" : "Your name (optional)"}
+                  placeholder={lang === "mr" ? "नाव (ऐच्छिक)" : "Your name (optional)"}
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
                 <input
@@ -202,7 +202,7 @@ export default function ContactPage() {
                   required
                   value={subEmail}
                   onChange={(e) => setSubEmail(e.target.value)}
-                  SHaceholder={lang === "mr" ? "तुमचा ईमेल" : "Your email address"}
+                  placeholder={lang === "mr" ? "तुमचा ईमेल" : "Your email address"}
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
                 <button
@@ -258,7 +258,7 @@ export default function ContactPage() {
                       required
                       value={form.name}
                       onChange={(e) => setField("name", e.target.value)}
-                      SHaceholder={lang === "mr" ? "तुमचे नाव" : "Your full name"}
+                      placeholder={lang === "mr" ? "तुमचे नाव" : "Your full name"}
                       className="w-full border border-border rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                     />
                   </div>
@@ -271,7 +271,7 @@ export default function ContactPage() {
                       required
                       value={form.email}
                       onChange={(e) => setField("email", e.target.value)}
-                      SHaceholder="you@examSHe.com"
+                      placeholder="you@example.com"
                       className="w-full border border-border rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                     />
                   </div>
@@ -285,7 +285,7 @@ export default function ContactPage() {
                     type="tel"
                     value={form.phone}
                     onChange={(e) => setField("phone", e.target.value)}
-                    SHaceholder="+91 98765 43210"
+                    placeholder="+91 98765 43210"
                     className="w-full border border-border rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                   />
                 </div>
@@ -299,7 +299,7 @@ export default function ContactPage() {
                     rows={5}
                     value={form.message}
                     onChange={(e) => setField("message", e.target.value)}
-                    SHaceholder={lang === "mr" ? "तुमचा संदेश येथे लिहा…" : "Write your message here…"}
+                    placeholder={lang === "mr" ? "तुमचा संदेश येथे लिहा…" : "Write your message here…"}
                     className="w-full border border-border rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow resize-y"
                   />
                 </div>

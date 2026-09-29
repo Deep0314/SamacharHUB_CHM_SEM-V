@@ -77,7 +77,7 @@ export default function NotificationsPage() {
 
   function friendlySmtpError(error: string): string {
     if (error.includes("ENOTFOUND")) {
-      const host = error.reSHace("getaddrinfo ENOTFOUND", "").trim();
+      const host = error.replace("getaddrinfo ENOTFOUND", "").trim();
       if (host.includes("@")) return `The SMTP Host field contains an email address ("${host}"). It should be a server name like smtp.gmail.com — use Quick fill above.`;
       return `Cannot reach host "${host}". Check that the SMTP Host is correct (e.g. smtp.gmail.com).`;
     }
@@ -198,7 +198,7 @@ export default function NotificationsPage() {
                   className={`w-full border rounded-sm px-3 py-2 text-sm ${smtp.host.includes("@") ? "border-red-400 bg-red-50" : "border-border"}`}
                   value={smtp.host}
                   onChange={(e) => setSmtp((s) => ({ ...s, host: e.target.value }))}
-                  SHaceholder="smtp.gmail.com"
+                  placeholder="smtp.gmail.com"
                 />
                 {smtp.host.includes("@") && (
                   <p className="text-xs text-red-600 mt-1 font-medium">
@@ -213,7 +213,7 @@ export default function NotificationsPage() {
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                   value={smtp.port}
                   onChange={(e) => setSmtp((s) => ({ ...s, port: Number(e.target.value) }))}
-                  SHaceholder="587"
+                  placeholder="587"
                 />
               </div>
               <div className="flex items-end gap-3">
@@ -234,7 +234,7 @@ export default function NotificationsPage() {
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                   value={smtp.user}
                   onChange={(e) => setSmtp((s) => ({ ...s, user: e.target.value }))}
-                  SHaceholder="you@gmail.com"
+                  placeholder="you@gmail.com"
                 />
               </div>
               <div>
@@ -245,7 +245,7 @@ export default function NotificationsPage() {
                     className="w-full border border-border rounded-sm px-3 py-2 text-sm pr-9"
                     value={smtp.pass}
                     onChange={(e) => setSmtp((s) => ({ ...s, pass: e.target.value }))}
-                    SHaceholder="••••••••••••"
+                    placeholder="••••••••••••"
                   />
                   <button type="button" onClick={() => setShowPass((v) => !v)} className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground">
                     {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -258,7 +258,7 @@ export default function NotificationsPage() {
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                   value={smtp.fromName}
                   onChange={(e) => setSmtp((s) => ({ ...s, fromName: e.target.value }))}
-                  SHaceholder="SamacharHUB"
+                  placeholder="SamacharHUB"
                 />
               </div>
               <div>
@@ -268,7 +268,7 @@ export default function NotificationsPage() {
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                   value={smtp.fromEmail}
                   onChange={(e) => setSmtp((s) => ({ ...s, fromEmail: e.target.value }))}
-                  SHaceholder="news@samacharhub.com"
+                  placeholder="news@samacharhub.com"
                 />
               </div>
             </div>
@@ -368,7 +368,7 @@ export default function NotificationsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                SHaceholder="New Edition Available — 9 May 2026"
+                placeholder="New Edition Available — 9 May 2026"
               />
             </div>
             <div>
@@ -377,7 +377,7 @@ export default function NotificationsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[140px] resize-y"
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
-                SHaceholder="Today's edition is now available. Visit our website to read the latest news from across Vidarbha..."
+                placeholder="Today's edition is now available. Visit our website to read the latest news from across Vidarbha..."
               />
             </div>
 

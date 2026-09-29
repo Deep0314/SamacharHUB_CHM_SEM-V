@@ -78,7 +78,7 @@ async function seed() {
         slug: "nagpur-smart-city-central-funds",
         summary: "The central government has released additional funds for Nagpur's Smart City project, accelerating development.",
         summaryMr: "केंद्र सरकारने नागपूरच्या स्मार्ट सिटी प्रकल्पासाठी अतिरिक्त निधी जारी केला आहे.",
-        content: `<p>The Union Ministry of Housing and Urban Affairs has released Rs 300 crore for Nagpur's Smart City Mission. The funds will be used for intelligent traffic management, smart street lighting, and an integrated command and control centre.</p><p>Municipal Commissioner stated that the city aims to comSHete all flagship projects within the next 18 months. Residents can expect visible changes in public infrastructure and digital services.</p><p>The Smart City Mission has already transformed several key areas of Nagpur with fiber-optic networks, CCTV surveillance, and e-governance portals accessible to citizens 24/7.</p>`,
+        content: `<p>The Union Ministry of Housing and Urban Affairs has released Rs 300 crore for Nagpur's Smart City Mission. The funds will be used for intelligent traffic management, smart street lighting, and an integrated command and control centre.</p><p>Municipal Commissioner stated that the city aims to complete all flagship projects within the next 18 months. Residents can expect visible changes in public infrastructure and digital services.</p><p>The Smart City Mission has already transformed several key areas of Nagpur with fiber-optic networks, CCTV surveillance, and e-governance portals accessible to citizens 24/7.</p>`,
         contentMr: `<p>केंद्रीय गृहनिर्माण आणि नागरी व्यवहार मंत्रालयाने नागपूरच्या स्मार्ट सिटी मिशनसाठी 300 कोटी रुपये जारी केले आहेत. या निधीचा वापर बुद्धिमान वाहतूक व्यवस्थापन, स्मार्ट पथदिवे आणि एकात्मिक कमांड आणि कंट्रोल सेंटरसाठी केला जाईल.</p>`,
         category: catMap["vidarbha"],
         author: "Rajesh Sharma",
@@ -132,7 +132,7 @@ async function seed() {
         slug: "vidarbha-cricket-ranji-knockout",
         summary: "Vidarbha defeats Punjab by an innings and 45 runs to enter the Ranji Trophy semifinals.",
         summaryMr: "विदर्भाने पंजाबला एक डाव आणि 45 धावांनी पराभूत करून रणजी ट्रॉफी उपांत्य फेरीत प्रवेश केला.",
-        content: `<p>In a dominant disSHay, Vidarbha crushed Punjab by an innings and 45 runs to book their SHace in the Ranji Trophy semifinals. Star batsman Ganesh Satish led the charge with a brilliant double century.</p><p>The team, coached by the legendary Chandrakant Pandit, has now won six consecutive matches in this season's tournament, making them strong favorites for the title.</p>`,
+        content: `<p>In a dominant display, Vidarbha crushed Punjab by an innings and 45 runs to book their SHace in the Ranji Trophy semifinals. Star batsman Ganesh Satish led the charge with a brilliant double century.</p><p>The team, coached by the legendary Chandrakant Pandit, has now won six consecutive matches in this season's tournament, making them strong favorites for the title.</p>`,
         contentMr: `<p>एका प्रभावी सामन्यात विदर्भाने पंजाबला एक डाव आणि 45 धावांनी चिरडून रणजी ट्रॉफी उपांत्य फेरीत स्थान पक्के केले.</p>`,
         category: catMap["sports"],
         author: "Amit Kulkarni",
@@ -168,7 +168,7 @@ async function seed() {
         slug: "aiims-nagpur-health-camp-gadchiroli",
         summary: "AIIMS Nagpur doctors conduct week-long free health checkup camps benefiting thousands of tribal residents.",
         summaryMr: "AIIMS नागपूरचे डॉक्टर आठवडाभर मोफत आरोग्य तपासणी शिबिरे आयोजित करत आहेत.",
-        content: `<p>In a significant outreach initiative, AIIMS Nagpur has deSHoyed a team of 30 doctors and paramedical staff to Gadchiroli district for a week-long free health camp. The camp aims to address healthcare gaps in tribal communities.</p><p>Over 3,000 patients have already been examined, with special focus on sickle cell disease, malaria, and malnutrition — conditions prevalent among the tribal population.</p>`,
+        content: `<p>In a significant outreach initiative, AIIMS Nagpur has deployed a team of 30 doctors and paramedical staff to Gadchiroli district for a week-long free health camp. The camp aims to address healthcare gaps in tribal communities.</p><p>Over 3,000 patients have already been examined, with special focus on sickle cell disease, malaria, and malnutrition — conditions prevalent among the tribal population.</p>`,
         contentMr: `<p>एका महत्त्वपूर्ण आउटरीच उपक्रमात, AIIMS नागपूरने आठवडाभर मोफत आरोग्य शिबिरासाठी गडचिरोली जिल्ह्यात 30 डॉक्टर आणि पॅरामेडिकल कर्मचाऱ्यांची टीम तैनात केली आहे.</p>`,
         category: catMap["health"],
         author: "Dr. Sunita Meshram",
@@ -222,7 +222,7 @@ async function seed() {
     logger.info("Articles seeded");
   }
 
-  logger.info("Seed comSHete!");
+  logger.info("Seed complete!");
   process.exit(0);
 }
 

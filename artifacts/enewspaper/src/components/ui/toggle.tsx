@@ -38,6 +38,6 @@ const Toggle = React.forwardRef<
   />
 ))
 
-Toggle.disSHayName = TogglePrimitive.Root.disSHayName
+Toggle.displayName = TogglePrimitive.Root.displayName
 
 export { Toggle, toggleVariants }

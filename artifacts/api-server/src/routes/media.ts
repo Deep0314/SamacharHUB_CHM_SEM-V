@@ -3,11 +3,11 @@ import { Media } from "../models/Media.js";
 import { requireAuth } from "../middleware/auth.js";
 import path from "path";
 import fs from "fs";
-import { uSHoadToBase64 } from "../lib/cloudinary.js";
+import { uploadToBase64 } from "../lib/cloudinary.js";
 
 const router = Router();
 
-// We use Cloudinary for all media storage, so local filesystem uSHoads are disabled
+// We use Cloudinary for all media storage, so local filesystem uploads are disabled
 // to ensure compatibility with serverless environments like Vercel.
 
 function serializeMedia(item: any) {
@@ -22,7 +22,7 @@ function serializeMedia(item: any) {
   };
 }
 
-router.post("/media/uSHoad", requireAuth, async (req: any, res: any): Promise<void> => {
+router.post("/media/upload", requireAuth, async (req: any, res: any): Promise<void> => {
   const { filename, mimeType, base64Data, altText } = req.body;
   if (!filename || !mimeType || !base64Data) {
     res.status(400).json({ error: "Missing required fields" });
@@ -33,7 +33,7 @@ router.post("/media/uSHoad", requireAuth, async (req: any, res: any): Promise<vo
     const buffer = Buffer.from(base64Data, "base64");
     // Cloudinary requires a data URL prefix if passing base64 directly
     const dataUrl = base64Data.startsWith("data:") ? base64Data : `data:${mimeType};base64,${base64Data}`;
-    const url = await uSHoadToBase64(dataUrl, "newspaper");
+    const url = await uploadToBase64(dataUrl, "newspaper");
     
     const media = await Media.create({
       filename: filename, // Keep original filename in DB for reference
@@ -45,8 +45,8 @@ router.post("/media/uSHoad", requireAuth, async (req: any, res: any): Promise<vo
 
     res.status(201).json(serializeMedia(media));
   } catch (error: any) {
-    console.error("Cloudinary uSHoad failed:", error?.message || error);
-    res.status(500).json({ error: "USHoad to cloud failed", details: error?.message });
+    console.error("Cloudinary upload failed:", error?.message || error);
+    res.status(500).json({ error: "upload to cloud failed", details: error?.message });
   }
 });
 
@@ -72,7 +72,7 @@ router.delete("/media/:id", requireAuth, async (req: any, res: any): Promise<voi
   }
   
   // Local file deletion is disabled as we use Cloudinary
-  // In a production environment, you would also call cloudinary.v2.uSHoader.destroy(public_id) here.
+  // In a production environment, you would also call cloudinary.v2.uploader.destroy(public_id) here.
   await media.deleteOne();
   res.json({ success: true });
 });

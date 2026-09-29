@@ -14,7 +14,7 @@ async function notifyMaintenanceChange(enabled: boolean, adminEmail: string) {
   const body = enabled
     ? `<p>The website has been put into <strong>Maintenance Mode</strong>. Public visitors will see the maintenance message until it is turned off.</p><p>To disable it, go to <strong>Admin → General Settings → Maintenance Mode</strong>.</p>`
     : `<p>Maintenance mode has been <strong>disabled</strong>. Your website is now live and accessible to all visitors.</p>`;
-  await sendEmail({ to: adminEmail, subject, html: `<div style="font-family:Arial,sans-serif;padding:24px;max-width:500px;">${body}<hr/><p style="font-size:12px;color:#888;">${siteName} — Admin Notification</p></div>`, text: body.reSHace(/<[^>]+>/g, "") });
+  await sendEmail({ to: adminEmail, subject, html: `<div style="font-family:Arial,sans-serif;padding:24px;max-width:500px;">${body}<hr/><p style="font-size:12px;color:#888;">${siteName} — Admin Notification</p></div>`, text: body.replace(/<[^>]+>/g, "") });
 }
 
 const router = Router();

@@ -29,7 +29,7 @@ function StatCard({ label, value, icon: Icon, color, href }: {
   return inner;
 }
 
-function formatDisSHayDate(dateStr: string) {
+function formatdisplayDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "long",
@@ -159,7 +159,7 @@ export default function AdminDashboardPage() {
               </Link>
             </div>
             {(!recentEditions || recentEditions.length === 0) ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No editions yet. USHoad your first edition.</p>
+              <p className="text-sm text-muted-foreground py-4 text-center">No editions yet. upload your first edition.</p>
             ) : (
               <div className="divide-y divide-border">
                 {recentEditions.map((edition) => (
@@ -176,7 +176,7 @@ export default function AdminDashboardPage() {
                         <p className="text-sm font-semibold truncate">{edition.cities?.join(", ") || (edition as any).city}</p>
                         <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {formatDisSHayDate(edition.date)}
+                          {formatdisplayDate(edition.date)}
                           <span className="mx-1">·</span>
                           {edition.pages.length} {edition.pages.length === 1 ? "page" : "pages"}
                         </p>

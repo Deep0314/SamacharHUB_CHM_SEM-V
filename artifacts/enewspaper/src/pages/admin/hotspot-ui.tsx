@@ -9,8 +9,8 @@ import {
   type HotspotUIConfig,
 } from "@/lib/hotspot-ui-config";
 import { getAdminToken } from "@/lib/auth";
-import { useUSHoadMedia } from "@samacharhub/api-client-react";
-import { Save, RotateCcw, USHoad, Loader2 } from "lucide-react";
+import { useuploadMedia } from "@samacharhub/api-client-react";
+import { Save, RotateCcw, upload, Loader2 } from "lucide-react";
 
 function Toggle({
   label,
@@ -50,13 +50,13 @@ function Field({
   label,
   value,
   onChange,
-  SHaceholder,
+  placeholder,
   type = "text",
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
-  SHaceholder?: string;
+  placeholder?: string;
   type?: string;
 }) {
   return (
@@ -68,7 +68,7 @@ function Field({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        SHaceholder={SHaceholder}
+        placeholder={placeholder}
         className="w-full px-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
       />
     </div>
@@ -88,7 +88,7 @@ const SHARE_LABELS: Record<keyof HotspotUIConfig["shareButtons"], string> = {
 export default function HotspotUIPage() {
   const { toast } = useToast();
   const [config, setConfig] = useState<HotspotUIConfig>(DEFAULT_CONFIG);
-  const [uSHoadingLogo, setUSHoadingLogo] = useState(false);
+  const [uploadingLogo, setuploadingLogo] = useState(false);
   const [saving, setSaving] = useState(false);
   const [savedIndicator, setSavedIndicator] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -96,7 +96,7 @@ export default function HotspotUIPage() {
   const configRef = useRef(config);
   configRef.current = config;
 
-  const uSHoadMedia = useUSHoadMedia({
+  const uploadMedia = useuploadMedia({
     mutation: {
       onSuccess: (created) => {
         const url = (created as any).url ?? "";
@@ -106,13 +106,13 @@ export default function HotspotUIPage() {
           if (token) saveHotspotUIConfig(next, token);
           return next;
         });
-        setUSHoadingLogo(false);
+        setuploadingLogo(false);
         showSaved();
-        toast({ title: "Logo uSHoaded and saved!" });
+        toast({ title: "Logo uploaded and saved!" });
       },
       onError: () => {
-        setUSHoadingLogo(false);
-        toast({ title: "USHoad failed", variant: "destructive" });
+        setuploadingLogo(false);
+        toast({ title: "upload failed", variant: "destructive" });
       },
     },
   });
@@ -121,13 +121,13 @@ export default function HotspotUIPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     e.currentTarget.value = "";
-    setUSHoadingLogo(true);
+    setuploadingLogo(true);
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
     let binary = "";
     for (const byte of bytes) binary += String.fromCharCode(byte);
     const base64Data = btoa(binary);
-    uSHoadMedia.mutate({
+    uploadMedia.mutate({
       data: { filename: file.name, mimeType: file.type || "image/png", base64Data, altText: "Logo" } as any,
     });
   }
@@ -197,7 +197,7 @@ export default function HotspotUIPage() {
             <h3 className="font-semibold text-sm">Logo / Masthead</h3>
             <Toggle
               label="Show logo at top"
-              description="DisSHays the newspaper name or logo image at the top of the popup"
+              description="displays the newspaper name or logo image at the top of the popup"
               checked={config.showLogo}
               onChange={(v) => set("showLogo", v)}
             />
@@ -218,11 +218,11 @@ export default function HotspotUIPage() {
                         <button
                           type="button"
                           onClick={() => logoFileRef.current?.click()}
-                          disabled={uSHoadingLogo}
+                          disabled={uploadingLogo}
                           className="flex items-center gap-1.5 px-3 py-1.5 border border-dashed border-border rounded-sm text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
                         >
-                          {uSHoadingLogo ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <USHoad className="h-3.5 w-3.5" />}
-                          {uSHoadingLogo ? "USHoading…" : "ReSHace image"}
+                          {uploadingLogo ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <upload className="h-3.5 w-3.5" />}
+                          {uploadingLogo ? "uploading…" : "replace image"}
                         </button>
                         <button
                           type="button"
@@ -238,18 +238,18 @@ export default function HotspotUIPage() {
                     <button
                       type="button"
                       onClick={() => logoFileRef.current?.click()}
-                      disabled={uSHoadingLogo}
+                      disabled={uploadingLogo}
                       className="flex items-center gap-2 px-4 py-2 border border-dashed border-border rounded-sm text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
                     >
-                      {uSHoadingLogo ? <Loader2 className="h-4 w-4 animate-spin" /> : <USHoad className="h-4 w-4" />}
-                      {uSHoadingLogo ? "USHoading…" : "USHoad logo image"}
+                      {uploadingLogo ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
+                      {uploadingLogo ? "uploading…" : "upload logo image"}
                     </button>
                   )}
                   <Field
                     label="Or paste image URL"
                     value={config.logoUrl}
                     onChange={(v) => set("logoUrl", v)}
-                    SHaceholder="https://examSHe.com/logo.png"
+                    placeholder="https://example.com/logo.png"
                   />
                 </div>
                 {!config.logoUrl && (
@@ -257,7 +257,7 @@ export default function HotspotUIPage() {
                     label="Logo Text (used when no image is set)"
                     value={config.logoText}
                     onChange={(v) => set("logoText", v)}
-                    SHaceholder="SamacharHUB"
+                    placeholder="SamacharHUB"
                   />
                 )}
               </div>
@@ -272,13 +272,13 @@ export default function HotspotUIPage() {
                 label="English"
                 value={config.popupHeaderText}
                 onChange={(v) => set("popupHeaderText", v)}
-                SHaceholder="Newspaper Clip"
+                placeholder="Newspaper Clip"
               />
               <Field
                 label="मराठी"
                 value={config.popupHeaderTextMr}
                 onChange={(v) => set("popupHeaderTextMr", v)}
-                SHaceholder="वर्तमानपत्र क्लिप"
+                placeholder="वर्तमानपत्र क्लिप"
               />
             </div>
           </div>
@@ -301,13 +301,13 @@ export default function HotspotUIPage() {
               label="Website URL"
               value={config.footerSiteUrl}
               onChange={(v) => set("footerSiteUrl", v)}
-              SHaceholder="www.samacharhub.com"
+              placeholder="www.samacharhub.com"
             />
             <Field
               label="Powered by / Credit line"
               value={config.footerPoweredBy}
               onChange={(v) => set("footerPoweredBy", v)}
-              SHaceholder="Powered by | Deep Kamble"
+              placeholder="Powered by | Deep Kamble"
             />
           </div>
 
@@ -316,7 +316,7 @@ export default function HotspotUIPage() {
             <h3 className="font-semibold text-sm mb-1">Content Sections</h3>
             <Toggle
               label="Show article title & summary"
-              description="DisSHays the linked article's headline and teaser below the clip"
+              description="displays the linked article's headline and teaser below the clip"
               checked={config.showArticleDetails}
               onChange={(v) => set("showArticleDetails", v)}
             />
@@ -332,7 +332,7 @@ export default function HotspotUIPage() {
           <div className="bg-white border border-border rounded-sm p-5">
             <h3 className="font-semibold text-sm mb-1">Share Buttons</h3>
             <p className="text-xs text-muted-foreground mb-2">
-              Toggle which social/share SHatforms appear in the popup
+              Toggle which social/share platforms appear in the popup
             </p>
             {(Object.keys(config.shareButtons) as Array<keyof HotspotUIConfig["shareButtons"]>).map(
               (key) => (

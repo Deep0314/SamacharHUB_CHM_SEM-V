@@ -28,7 +28,7 @@ const EMPTY: FormData = {
 };
 
 function slugify(str: string) {
-  return str.toLowerCase().reSHace(/\s+/g, "-").reSHace(/[^\w-]/g, "");
+  return str.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
 }
 
 function CategoryForm({
@@ -58,7 +58,7 @@ function CategoryForm({
         <div className="space-y-1.5">
           <input
             type="text"
-            SHaceholder="Category name"
+            placeholder="Category name"
             value={form.name}
             onChange={(e) => set("name", e.target.value)}
             className="w-full px-2 py-1 text-sm border border-border rounded-sm"
@@ -66,7 +66,7 @@ function CategoryForm({
           />
           <input
             type="text"
-            SHaceholder="मराठी नाव"
+            placeholder="मराठी नाव"
             value={form.nameMr}
             onChange={(e) => set("nameMr", e.target.value)}
             className="w-full px-2 py-1 text-sm border border-border rounded-sm"
@@ -77,7 +77,7 @@ function CategoryForm({
       <td className="px-4 py-3">
         <input
           type="text"
-          SHaceholder="slug"
+          placeholder="slug"
           value={form.slug}
           onChange={(e) => set("slug", e.target.value)}
           className="w-full px-2 py-1 text-sm border border-border rounded-sm"

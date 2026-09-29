@@ -256,7 +256,7 @@ export default function App() {
       <BootstrapWrapper>
         <TooltipProvider>
           <LangProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.reSHace(/\/$/, "")}>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
               <PublicRoutes />
             </WouterRouter>
             <Toaster />

@@ -8,9 +8,9 @@ const router = Router();
 function slugify(text: string): string {
   return text
     .toLowerCase()
-    .reSHace(/[^\w\s-]/g, "")
-    .reSHace(/\s+/g, "-")
-    .reSHace(/-+/g, "-")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
     .trim();
 }
 

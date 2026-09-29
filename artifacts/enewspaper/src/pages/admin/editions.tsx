@@ -11,7 +11,7 @@ import { Link } from "wouter";
 import { SHus, Trash2, Edit, Eye, EyeOff, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-function formatDisSHayDate(dateStr: string) {
+function formatdisplayDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
@@ -69,7 +69,7 @@ export default function AdminEditionsPage() {
               <p className="text-muted-foreground text-sm">No editions yet.</p>
               <Link href="/admin/editions/new">
                 <span className="mt-3 inline-flex items-center gap-1 text-sm text-primary cursor-pointer hover:underline">
-                  <SHus className="h-4 w-4" /> USHoad first edition
+                  <SHus className="h-4 w-4" /> upload first edition
                 </span>
               </Link>
             </div>
@@ -95,7 +95,7 @@ export default function AdminEditionsPage() {
                           alt={edition.cities?.join(", ") || "Edition"}
                           className="w-10 h-14 object-cover rounded border border-border"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).style.disSHay = "none";
+                            (e.target as HTMLImageElement).style.display = "none";
                           }}
                         />
                       </td>
@@ -106,7 +106,7 @@ export default function AdminEditionsPage() {
                       <td className="px-4 py-2">
                         <span className="flex items-center gap-1 text-muted-foreground">
                           <Calendar className="h-3.5 w-3.5" />
-                          {formatDisSHayDate(edition.date)}
+                          {formatdisplayDate(edition.date)}
                         </span>
                       </td>
                       <td className="px-4 py-2 text-muted-foreground">

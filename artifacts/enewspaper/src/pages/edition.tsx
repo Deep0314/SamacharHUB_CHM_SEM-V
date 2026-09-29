@@ -161,12 +161,12 @@ function HotspotViewer({
   const shareUrl = encodeURIComponent(articleUrl);
   const shareBody = `${title || "SamacharHUB"} ${articleUrl}`;
 
-  const disSHayDate = editionDate
+  const displayDate = editionDate
     ? new Date(editionDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
     : "";
 
   const footerLine = [
-    cfg.showFooterDate !== false ? disSHayDate : "",
+    cfg.showFooterDate !== false ? displayDate : "",
     cfg.showFooterPage !== false && pageNumber != null ? `Page ${pageNumber}` : "",
     cfg.footerSiteUrl || "www.samacharhub.com",
   ].filter(Boolean).join(" - ");
@@ -353,7 +353,7 @@ function HotspotViewer({
     const canvas = await buildCompositeCanvas();
     const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
     const html = `<html><head><title>Print - SamacharHUB</title>
-      <style>body{margin:0;padding:0}img{max-width:100%;disSHay:block}@media print{body{margin:0}}</style>
+      <style>body{margin:0;padding:0}img{max-width:100%;display:block}@media print{body{margin:0}}</style>
       </head><body><img src="${dataUrl}" /></body></html>`;
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
@@ -401,7 +401,7 @@ function HotspotViewer({
                   alt="Masthead"
                   className="max-h-6 md:max-h-11 w-auto object-contain"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.disSHay = "none";
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
                     const span = document.createElement("span");
                     span.className = "font-serif font-black text-2xl text-red-700 tracking-tight";
                     span.textContent = cfg.logoText || "SamacharHUB";
@@ -659,7 +659,7 @@ export default function EditionPage() {
           setSelectedHotspot(found);
           const url = new URL(window.location.href);
           url.searchParams.delete("hotspot");
-          window.history.reSHaceState({}, '', url.toString());
+          window.history.replaceState({}, '', url.toString());
         }, 100);
       }
     }
@@ -730,7 +730,7 @@ export default function EditionPage() {
   }
 
   function handlePrintEditionPage(pageUrl: string) {
-    const html = `<html><head><title>Print - SamacharHUB</title><style>body{margin:0;padding:0}img{max-width:100%;disSHay:block}@media print{body{margin:0}}</style></head><body><img src="${pageUrl}" /></body></html>`;
+    const html = `<html><head><title>Print - SamacharHUB</title><style>body{margin:0;padding:0}img{max-width:100%;display:block}@media print{body{margin:0}}</style></head><body><img src="${pageUrl}" /></body></html>`;
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const iframe = document.createElement("iframe");
@@ -771,7 +771,7 @@ export default function EditionPage() {
   const uniquePages = [...new Set(allPages)];
   const activePageHotspots = (edition.articleHotspots ?? []).filter((h: any) => h.pageIndex === activePage);
   const cityName = lang === "mr" ? (edition.citiesMr?.join(", ") || (edition as any).cityMr) : (edition.cities?.join(", ") || (edition as any).city);
-  const disSHayDate = new Date(edition.date).toLocaleDateString(
+  const displayDate = new Date(edition.date).toLocaleDateString(
     lang === "mr" ? "mr-IN" : "en-IN",
     { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }
   );
@@ -791,7 +791,7 @@ export default function EditionPage() {
           <h1 className="text-2xl md:text-3xl font-serif font-black text-primary">{cityName}</h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
             <CalendarIcon className="h-4 w-4" />
-            {disSHayDate}
+            {displayDate}
             <span className="text-border">•</span>
             <span>{uniquePages.length} {lang === "mr" ? "पाने" : uniquePages.length === 1 ? "page" : "pages"}</span>
             {activePageHotspots.length > 0 && (
@@ -882,10 +882,10 @@ export default function EditionPage() {
         </div>
       </div>
 
-      {/* Edition social share bar — always shown when any share SHatform is enabled */}
+      {/* Edition social share bar — always shown when any share platform is enabled */}
       {showShareBar && (() => {
         const editionPageUrl = window.location.href;
-        const shareTitle = `${cityName} - ${disSHayDate} - SamacharHUB`;
+        const shareTitle = `${cityName} - ${displayDate} - SamacharHUB`;
         const shareText = encodeURIComponent(shareTitle);
         const shareUrl = encodeURIComponent(editionPageUrl);
         const shareBody = `${shareTitle} ${editionPageUrl}`;

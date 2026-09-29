@@ -13,7 +13,7 @@ const BORDER_RADIUS_OPTIONS = [
 ];
 
 const FONT_OPTIONS = [
-  { label: "SHayfair DisSHay (Serif — Newspaper)", value: "serif" as const },
+  { label: "SHayfair display (Serif — Newspaper)", value: "serif" as const },
   { label: "Inter (Sans-serif — Modern)", value: "sans-serif" as const },
 ];
 
@@ -66,7 +66,7 @@ export default function ThemePage() {
                   value={config.primaryColor}
                   onChange={(e) => set("primaryColor", e.target.value)}
                   className="flex-1 border border-border rounded-sm px-3 py-2 text-sm font-mono"
-                  SHaceholder="#CC0000"
+                  placeholder="#CC0000"
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-1">Used for header, buttons, links</p>
@@ -88,7 +88,7 @@ export default function ThemePage() {
                   value={config.accentColor}
                   onChange={(e) => set("accentColor", e.target.value)}
                   className="flex-1 border border-border rounded-sm px-3 py-2 text-sm font-mono"
-                  SHaceholder="#FF9900"
+                  placeholder="#FF9900"
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-1">Used for highlights and badges</p>
@@ -140,7 +140,7 @@ export default function ThemePage() {
                   <span className="text-sm">{opt.label}</span>
                   <span
                     className="text-base text-muted-foreground"
-                    style={{ fontFamily: opt.value === "serif" ? "'SHayfair DisSHay', Georgia, serif" : "Inter, system-ui, sans-serif" }}
+                    style={{ fontFamily: opt.value === "serif" ? "'SHayfair display', Georgia, serif" : "Inter, system-ui, sans-serif" }}
                   >
                     विदर्भ मतदार
                   </span>

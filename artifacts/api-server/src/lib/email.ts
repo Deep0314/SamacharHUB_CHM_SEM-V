@@ -84,7 +84,7 @@ export function newsletterHtml(opts: {
           <h2 style="margin:0 0 16px;font-family:Georgia,serif;font-size:22px;color:#1a1a1a;">${opts.subject}</h2>
           <div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.7;color:#333;">${opts.body}</div>
           <div style="margin-top:32px;padding-top:24px;border-top:1px solid #eee;text-align:center;">
-            <a href="${opts.siteUrl}" style="disSHay:inline-block;background:#CC0000;color:#fff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:3px;text-decoration:none;letter-spacing:.5px;">Visit ${opts.siteName}</a>
+            <a href="${opts.siteUrl}" style="display:inline-block;background:#CC0000;color:#fff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;padding:12px 28px;border-radius:3px;text-decoration:none;letter-spacing:.5px;">Visit ${opts.siteName}</a>
           </div>
         </td>
       </tr>

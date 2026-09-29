@@ -85,7 +85,7 @@ export default function AdminBreakingNewsPage() {
               <div className="flex-1">
                 <p className="text-sm font-medium">Show breaking news strip</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  When off, the red ticker bar is comSHetely hidden from all pages
+                  When off, the red ticker bar is completely hidden from all pages
                 </p>
               </div>
               <button
@@ -134,7 +134,7 @@ export default function AdminBreakingNewsPage() {
                     type="text"
                     value={form.text}
                     onChange={(e) => setForm((f) => ({ ...f, text: e.target.value }))}
-                    SHaceholder="Breaking news text in English"
+                    placeholder="Breaking news text in English"
                     required
                     className="w-full px-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
                     data-testid="breaking-text"
@@ -148,7 +148,7 @@ export default function AdminBreakingNewsPage() {
                     type="text"
                     value={form.textMr}
                     onChange={(e) => setForm((f) => ({ ...f, textMr: e.target.value }))}
-                    SHaceholder="मराठीत ताजी बातमी"
+                    placeholder="मराठीत ताजी बातमी"
                     className="w-full px-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
                     data-testid="breaking-text-mr"
                   />

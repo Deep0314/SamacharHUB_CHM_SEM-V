@@ -13,7 +13,7 @@
     "noImSHicitThis": true,
     "strictNullChecks": true,
     "strictFunctionTypes": false,
-    "strictBindCallApSHy": true,
+    "strictBindCallapply": true,
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
     "alwaysStrict": true,

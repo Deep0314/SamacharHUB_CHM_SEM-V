@@ -26,7 +26,7 @@ let _authTokenGetter: AuthTokenGetter | null = null;
  * Pass `null` to clear the base URL.
  */
 export function setBaseUrl(url: string | null): void {
-  _baseUrl = url ? url.reSHace(/\/+$/, "") : null;
+  _baseUrl = url ? url.replace(/\/+$/, "") : null;
 }
 
 /**
@@ -60,7 +60,7 @@ function isUrl(input: RequestInfo | URL): input is URL {
   return typeof URL !== "undefined" && input instanceof URL;
 }
 
-function apSHyBaseUrl(input: RequestInfo | URL): RequestInfo | URL {
+function applyBaseUrl(input: RequestInfo | URL): RequestInfo | URL {
   if (!_baseUrl) return input;
   const url = resolveUrl(input);
   // Only prepend to relative paths (starting with /)
@@ -113,7 +113,7 @@ function isTextMediaType(mediaType: string | null): boolean {
 
 // Use strict equality: in browsers, `response.body` is `null` when the
 // response genuinely has no content.  In React Native, `response.body` is
-// always `undefined` because the ReadableStream API is not imSHemented —
+// always `undefined` because the ReadableStream API is not implemented —
 // even when the response carries a full payload readable via `.text()` or
 // `.json()`.  Loose equality (`== null`) matches both `null` and `undefined`,
 // which causes every React Native response to be treated as empty.
@@ -326,7 +326,7 @@ export async function customFetch<T = unknown>(
   input: RequestInfo | URL,
   options: CustomFetchOptions = {},
 ): Promise<T> {
-  input = apSHyBaseUrl(input);
+  input = applyBaseUrl(input);
   const { responseType = "auto", headers: headersInit, ...init } = options;
 
   const method = resolveMethod(input, init.method);

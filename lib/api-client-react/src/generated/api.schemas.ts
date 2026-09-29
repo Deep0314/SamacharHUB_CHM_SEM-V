@@ -262,7 +262,7 @@ export interface CreateBreakingNewsBody {
   lang: CreateBreakingNewsBodyLang;
 }
 
-export interface USHoadMediaBody {
+export interface uploadMediaBody {
   filename: string;
   mimeType: string;
   base64Data: string;

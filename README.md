@@ -1,7 +1,7 @@
-﻿# SamacharHUB — E-Newspaper SHatform
+﻿# SamacharHUB — E-Newspaper platform
 
-**SamacharHUB** is a full-stack regional e-newspaper SHatform built as a college project (TY Computer Science).  
-It supports bilingual content (English + Marathi), PDF edition uSHoads, interactive article hotspots, breaking news, ads, and an admin dashboard.
+**SamacharHUB** is a full-stack regional e-newspaper platform built as a college project (TY Computer Science).  
+It supports bilingual content (English + Marathi), PDF edition uploads, interactive article hotspots, breaking news, ads, and an admin dashboard.
 
 ---
 
@@ -9,7 +9,7 @@ It supports bilingual content (English + Marathi), PDF edition uSHoads, interact
 
 | Name | Role | GitHub |
 |---|---|---|
-| Member 1 | Frontend + Project Setup | [@member1](https://github.com/) |
+| Member 1 | Frontend + Project Setup | [@Deep0314](https://github.com/Deep0314) |
 | Member 2 | Backend + Database | [@member2](https://github.com/) |
 
 ---
@@ -26,7 +26,7 @@ It supports bilingual content (English + Marathi), PDF edition uSHoads, interact
 | Authentication | JWT (jsonwebtoken) + bcryptjs |
 | Email | Nodemailer (SMTP) |
 | Package Manager | pnpm (monorepo) |
-| DeSHoyment | Vercel |
+| deployment | Vercel |
 
 ---
 
@@ -50,7 +50,7 @@ SamacharHUB/
 
 ## ✨ Features
 
-- 📰 **Digital Editions** — USHoad and view PDF newspaper pages with interactive hotspots
+- 📰 **Digital Editions** — upload and view PDF newspaper pages with interactive hotspots
 - 📝 **Articles** — Full article management with bilingual support (English + Marathi)
 - 🔴 **Breaking News Ticker** — Real-time scrolling breaking news
 - 🗂️ **Categories** — Organize articles by topic with color coding
@@ -81,8 +81,8 @@ cd SamacharHUB
 pnpm install
 
 # Set up environment variables
-cp artifacts/api-server/.env.examSHe artifacts/api-server/.env
-cp artifacts/enewspaper/.env.local.examSHe artifacts/enewspaper/.env.local
+cp artifacts/api-server/.env.example artifacts/api-server/.env
+cp artifacts/enewspaper/.env.local.example artifacts/enewspaper/.env.local
 
 # Start the backend
 cd artifacts/api-server
@@ -123,7 +123,7 @@ VITE_API_URL=http://localhost:8081
 | `feat/frontend-base` | Member 2 | Vite config, global CSS, Header, Footer |
 | `feat/frontend-pages` | Member 1 | Home, Article, Category, Edition, About pages |
 | `feat/admin-panel` | Member 2 | Admin dashboard and management pages |
-| `feat/polish-deSHoyment` | Member 1 | SEO, final fixes, Vercel config |
+| `feat/polish-deployment` | Member 1 | SEO, final fixes, Vercel config |
 
 ---
 

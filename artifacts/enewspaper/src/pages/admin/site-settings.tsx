@@ -9,7 +9,7 @@ const API = "/api";
 const SOCIAL_ICONS = ["facebook", "whatsapp", "instagram", "telegram", "twitter", "youtube", "linkedin", "website"];
 
 interface QuickLink { label: string; labelMr: string; url: string; order: number; }
-interface SocialLink { SHatform: string; url: string; icon: string; }
+interface SocialLink { platform: string; url: string; icon: string; }
 interface Settings {
   siteDescription: string;
   siteDescriptionMr: string;
@@ -82,7 +82,7 @@ export default function SiteSettingsPage() {
   }
 
   function addSocialLink() {
-    set("socialLinks", [...settings.socialLinks, { SHatform: "", url: "", icon: "website" }]);
+    set("socialLinks", [...settings.socialLinks, { platform: "", url: "", icon: "website" }]);
   }
 
   function removeSocialLink(idx: number) {
@@ -145,14 +145,14 @@ export default function SiteSettingsPage() {
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <FileText className="h-4 w-4 text-primary" /> About Us Content
           </h2>
-          <p className="text-xs text-muted-foreground">This content will be disSHayed on your "About Us" page. You can use multiSHe paragraphs.</p>
+          <p className="text-xs text-muted-foreground">This content will be displayed on your "About Us" page. You can use multiSHe paragraphs.</p>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">About Us (English)</label>
             <textarea
               className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[150px] resize-y"
               value={settings.aboutContent}
               onChange={(e) => set("aboutContent", e.target.value)}
-              SHaceholder="Tell your story..."
+              placeholder="Tell your story..."
             />
           </div>
           <div>
@@ -161,7 +161,7 @@ export default function SiteSettingsPage() {
               className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[150px] resize-y"
               value={settings.aboutContentMr}
               onChange={(e) => set("aboutContentMr", e.target.value)}
-              SHaceholder="तुमची कथा लिहा..."
+              placeholder="तुमची कथा लिहा..."
             />
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function SiteSettingsPage() {
                   className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
                   value={link.label}
                   onChange={(e) => updateQuickLink(idx, "label", e.target.value)}
-                  SHaceholder="About Us"
+                  placeholder="About Us"
                 />
               </div>
               <div>
@@ -198,7 +198,7 @@ export default function SiteSettingsPage() {
                   className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
                   value={link.labelMr}
                   onChange={(e) => updateQuickLink(idx, "labelMr", e.target.value)}
-                  SHaceholder="आमच्या विषयी"
+                  placeholder="आमच्या विषयी"
                 />
               </div>
               <div>
@@ -207,7 +207,7 @@ export default function SiteSettingsPage() {
                   className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
                   value={link.url}
                   onChange={(e) => updateQuickLink(idx, "url", e.target.value)}
-                  SHaceholder="/about"
+                  placeholder="/about"
                 />
               </div>
               <button onClick={() => removeQuickLink(idx)} className="pb-0.5 p-1.5 hover:bg-red-50 rounded text-muted-foreground hover:text-red-600 transition-colors">
@@ -235,12 +235,12 @@ export default function SiteSettingsPage() {
           {settings.socialLinks.map((link, idx) => (
             <div key={idx} className="grid grid-cols-[1fr_1fr_1.5fr_auto] gap-2 items-end">
               <div>
-                <label className="block text-[10px] text-muted-foreground mb-1">SHatform</label>
+                <label className="block text-[10px] text-muted-foreground mb-1">platform</label>
                 <input
                   className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
-                  value={link.SHatform}
-                  onChange={(e) => updateSocialLink(idx, "SHatform", e.target.value)}
-                  SHaceholder="Facebook"
+                  value={link.platform}
+                  onChange={(e) => updateSocialLink(idx, "platform", e.target.value)}
+                  placeholder="Facebook"
                 />
               </div>
               <div>
@@ -259,7 +259,7 @@ export default function SiteSettingsPage() {
                   className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
                   value={link.url}
                   onChange={(e) => updateSocialLink(idx, "url", e.target.value)}
-                  SHaceholder="https://..."
+                  placeholder="https://..."
                 />
               </div>
               <button onClick={() => removeSocialLink(idx)} className="pb-0.5 p-1.5 hover:bg-red-50 rounded text-muted-foreground hover:text-red-600 transition-colors">
@@ -280,7 +280,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.contactEmail}
                 onChange={(e) => set("contactEmail", e.target.value)}
-                SHaceholder="your@email.com"
+                placeholder="your@email.com"
               />
             </div>
             <div>
@@ -289,7 +289,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.contactPhone}
                 onChange={(e) => set("contactPhone", e.target.value)}
-                SHaceholder="+91 ..."
+                placeholder="+91 ..."
               />
             </div>
           </div>
@@ -300,7 +300,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.contactAddress}
                 onChange={(e) => set("contactAddress", e.target.value)}
-                SHaceholder="Nagpur, Maharashtra"
+                placeholder="Nagpur, Maharashtra"
               />
             </div>
             <div>
@@ -309,7 +309,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.contactAddressMr}
                 onChange={(e) => set("contactAddressMr", e.target.value)}
-                SHaceholder="नागपूर, महाराष्ट्र"
+                placeholder="नागपूर, महाराष्ट्र"
               />
             </div>
           </div>
@@ -324,7 +324,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.poweredByText}
                 onChange={(e) => set("poweredByText", e.target.value)}
-                SHaceholder="Deep Kamble"
+                placeholder="Deep Kamble"
               />
             </div>
             <div>
@@ -333,7 +333,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.poweredByUrl}
                 onChange={(e) => set("poweredByUrl", e.target.value)}
-                SHaceholder="https://deepkamble.online"
+                placeholder="https://deepkamble.online"
               />
             </div>
           </div>

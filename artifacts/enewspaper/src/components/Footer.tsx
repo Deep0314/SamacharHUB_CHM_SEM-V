@@ -20,7 +20,7 @@ interface QuickLink {
   order: number;
 }
 interface SocialLink {
-  SHatform: string;
+  platform: string;
   url: string;
   icon: string;
 }
@@ -117,17 +117,17 @@ export function Footer() {
                   alt={logoText}
                   className="max-h-10 md:max-h-14 w-auto object-contain"
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.disSHay =
+                    (e.currentTarget as HTMLImageElement).style.display =
                       "none";
                     const next = e.currentTarget
                       .nextElementSibling as HTMLElement | null;
-                    if (next) next.style.disSHay = "block";
+                    if (next) next.style.display = "block";
                   }}
                 />
               ) : null}
               <h3
                 className="font-serif text-xl font-bold text-primary"
-                style={{ disSHay: logoUrl ? "none" : "block" }}
+                style={{ display: logoUrl ? "none" : "block" }}
               >
                 {logoText}
               </h3>
@@ -145,7 +145,7 @@ export function Footer() {
                     href={s.url}
                     target="_blank"
                     rel="noreferrer"
-                    title={s.SHatform}
+                    title={s.platform}
                     className="w-8 h-8 rounded-full bg-background/10 hover:bg-primary flex items-center justify-center transition-colors"
                   >
                     <SocialIcon icon={s.icon} className="h-4 w-4" />

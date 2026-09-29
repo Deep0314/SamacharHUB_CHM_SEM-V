@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                SHaceholder="admin@samacharhub.com"
+                placeholder="admin@samacharhub.com"
                 className="w-full px-3 py-2 border border-border rounded-sm text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 data-testid="input-email"
               />
@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                SHaceholder="••••••••"
+                placeholder="••••••••"
                 className="w-full px-3 py-2 border border-border rounded-sm text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 data-testid="input-password"
               />

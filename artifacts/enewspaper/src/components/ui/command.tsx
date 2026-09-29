@@ -21,7 +21,7 @@ const Command = React.forwardRef<
     {...props}
   />
 ))
-Command.disSHayName = CommandPrimitive.disSHayName
+Command.displayName = CommandPrimitive.displayName
 
 const CommandDialog = ({ children, ...props }: DialogProps) => {
   return (
@@ -44,7 +44,7 @@ const CommandInput = React.forwardRef<
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none SHaceholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -52,7 +52,7 @@ const CommandInput = React.forwardRef<
   </div>
 ))
 
-CommandInput.disSHayName = CommandPrimitive.Input.disSHayName
+CommandInput.displayName = CommandPrimitive.Input.displayName
 
 const CommandList = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.List>,
@@ -65,7 +65,7 @@ const CommandList = React.forwardRef<
   />
 ))
 
-CommandList.disSHayName = CommandPrimitive.List.disSHayName
+CommandList.displayName = CommandPrimitive.List.displayName
 
 const CommandEmpty = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Empty>,
@@ -78,7 +78,7 @@ const CommandEmpty = React.forwardRef<
   />
 ))
 
-CommandEmpty.disSHayName = CommandPrimitive.Empty.disSHayName
+CommandEmpty.displayName = CommandPrimitive.Empty.displayName
 
 const CommandGroup = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Group>,
@@ -94,7 +94,7 @@ const CommandGroup = React.forwardRef<
   />
 ))
 
-CommandGroup.disSHayName = CommandPrimitive.Group.disSHayName
+CommandGroup.displayName = CommandPrimitive.Group.displayName
 
 const CommandSeparator = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Separator>,
@@ -106,7 +106,7 @@ const CommandSeparator = React.forwardRef<
     {...props}
   />
 ))
-CommandSeparator.disSHayName = CommandPrimitive.Separator.disSHayName
+CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
@@ -122,7 +122,7 @@ const CommandItem = React.forwardRef<
   />
 ))
 
-CommandItem.disSHayName = CommandPrimitive.Item.disSHayName
+CommandItem.displayName = CommandPrimitive.Item.displayName
 
 const CommandShortcut = ({
   className,
@@ -138,7 +138,7 @@ const CommandShortcut = ({
     />
   )
 }
-CommandShortcut.disSHayName = "CommandShortcut"
+CommandShortcut.displayName = "CommandShortcut"
 
 export {
   Command,

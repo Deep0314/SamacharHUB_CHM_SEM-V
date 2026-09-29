@@ -47,9 +47,9 @@ const EMPTY: FormData = {
 function slugify(str: string) {
   return str
     .toLowerCase()
-    .reSHace(/[^\w\s-]/g, "")
-    .reSHace(/\s+/g, "-")
-    .reSHace(/-+/g, "-")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
     .slice(0, 100);
 }
 
@@ -150,17 +150,17 @@ export default function ArticleFormPage() {
   const Input = ({
     field,
     type = "text",
-    SHaceholder = "",
+    placeholder = "",
   }: {
     field: keyof FormData;
     type?: string;
-    SHaceholder?: string;
+    placeholder?: string;
   }) => (
     <input
       type={type}
       value={form[field] as string}
       onChange={(e) => set(field, e.target.value)}
-      SHaceholder={SHaceholder}
+      placeholder={placeholder}
       className="w-full px-3 py-2 text-sm border border-border rounded-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary"
     />
   );
@@ -168,17 +168,17 @@ export default function ArticleFormPage() {
   const Textarea = ({
     field,
     rows = 4,
-    SHaceholder = "",
+    placeholder = "",
   }: {
     field: keyof FormData;
     rows?: number;
-    SHaceholder?: string;
+    placeholder?: string;
   }) => (
     <textarea
       value={form[field] as string}
       onChange={(e) => set(field, e.target.value)}
       rows={rows}
-      SHaceholder={SHaceholder}
+      placeholder={placeholder}
       className="w-full px-3 py-2 text-sm border border-border rounded-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary resize-y"
     />
   );
@@ -211,19 +211,19 @@ export default function ArticleFormPage() {
             </h3>
             <div>
               <Label>Title *</Label>
-              <Input field="title" SHaceholder="Article title in English" />
+              <Input field="title" placeholder="Article title in English" />
             </div>
             <div>
               <Label>Slug *</Label>
-              <Input field="slug" SHaceholder="article-url-slug" />
+              <Input field="slug" placeholder="article-url-slug" />
             </div>
             <div>
               <Label>Summary</Label>
-              <Textarea field="summary" rows={2} SHaceholder="Short summary (shown in cards)" />
+              <Textarea field="summary" rows={2} placeholder="Short summary (shown in cards)" />
             </div>
             <div>
               <Label>Content *</Label>
-              <Textarea field="content" rows={12} SHaceholder="Full article content (HTML supported)" />
+              <Textarea field="content" rows={12} placeholder="Full article content (HTML supported)" />
             </div>
           </div>
 
@@ -234,15 +234,15 @@ export default function ArticleFormPage() {
             </h3>
             <div>
               <Label>Title (मराठी)</Label>
-              <Input field="titleMr" SHaceholder="लेखाचे शीर्षक मराठीत" />
+              <Input field="titleMr" placeholder="लेखाचे शीर्षक मराठीत" />
             </div>
             <div>
               <Label>Summary (मराठी)</Label>
-              <Textarea field="summaryMr" rows={2} SHaceholder="संक्षिप्त माहिती मराठीत" />
+              <Textarea field="summaryMr" rows={2} placeholder="संक्षिप्त माहिती मराठीत" />
             </div>
             <div>
               <Label>Content (मराठी)</Label>
-              <Textarea field="contentMr" rows={12} SHaceholder="पूर्ण लेख मराठीत" />
+              <Textarea field="contentMr" rows={12} placeholder="पूर्ण लेख मराठीत" />
             </div>
           </div>
 
@@ -254,7 +254,7 @@ export default function ArticleFormPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label>Author *</Label>
-                <Input field="author" SHaceholder="Reporter name" />
+                <Input field="author" placeholder="Reporter name" />
               </div>
               <div>
                 <Label>Category</Label>
@@ -274,11 +274,11 @@ export default function ArticleFormPage() {
               </div>
               <div>
                 <Label>Image URL</Label>
-                <Input field="imageUrl" SHaceholder="https://..." />
+                <Input field="imageUrl" placeholder="https://..." />
               </div>
               <div>
                 <Label>Tags (comma separated)</Label>
-                <Input field="tags" SHaceholder="politics, nagpur, maharashtra" />
+                <Input field="tags" placeholder="politics, nagpur, maharashtra" />
               </div>
               <div>
                 <Label>Status</Label>

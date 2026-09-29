@@ -47,12 +47,12 @@ router.post("/subscribe", async (req: any, res: any): Promise<void> => {
     SiteSettings.findOne().then((settings) => {
       const adminEmail = settings?.contactEmail || (settings as any)?.smtpConfig?.user;
       if (!adminEmail) return;
-      const disSHayName = name ? ` (${name})` : "";
+      const displayName = name ? ` (${name})` : "";
       sendEmail({
         to: adminEmail,
         subject: `New Subscriber: ${email}`,
-        html: `<div style="font-family:Arial,sans-serif;padding:24px;max-width:500px;"><h2 style="color:#CC0000;">New Newsletter Subscriber</h2><p><strong>${email}</strong>${disSHayName} has subscribed to email notifications.</p><p style="font-size:12px;color:#888;">SamacharHUB — Admin Notification</p></div>`,
-        text: `New subscriber: ${email}${disSHayName}`,
+        html: `<div style="font-family:Arial,sans-serif;padding:24px;max-width:500px;"><h2 style="color:#CC0000;">New Newsletter Subscriber</h2><p><strong>${email}</strong>${displayName} has subscribed to email notifications.</p><p style="font-size:12px;color:#888;">SamacharHUB — Admin Notification</p></div>`,
+        text: `New subscriber: ${email}${displayName}`,
       });
     }).catch(() => {});
 

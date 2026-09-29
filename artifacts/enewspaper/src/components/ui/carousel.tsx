@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button"
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]
-type CarouselSHugin = UseCarouselParameters[1]
+type Carouselplugin = UseCarouselParameters[1]
 
 type CarouselProps = {
   opts?: CarouselOptions
-  SHugins?: CarouselSHugin
+  plugins?: Carouselplugin
   orientation?: "horizontal" | "vertical"
   setApi?: (api: CarouselApi) => void
 }
@@ -49,7 +49,7 @@ const Carousel = React.forwardRef<
       orientation = "horizontal",
       opts,
       setApi,
-      SHugins,
+      plugins,
       className,
       children,
       ...props
@@ -61,7 +61,7 @@ const Carousel = React.forwardRef<
         ...opts,
         axis: orientation === "horizontal" ? "x" : "y",
       },
-      SHugins
+      plugins
     )
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
@@ -146,7 +146,7 @@ const Carousel = React.forwardRef<
     )
   }
 )
-Carousel.disSHayName = "Carousel"
+Carousel.displayName = "Carousel"
 
 const CarouselContent = React.forwardRef<
   HTMLDivElement,
@@ -168,7 +168,7 @@ const CarouselContent = React.forwardRef<
     </div>
   )
 })
-CarouselContent.disSHayName = "CarouselContent"
+CarouselContent.displayName = "CarouselContent"
 
 const CarouselItem = React.forwardRef<
   HTMLDivElement,
@@ -190,7 +190,7 @@ const CarouselItem = React.forwardRef<
     />
   )
 })
-CarouselItem.disSHayName = "CarouselItem"
+CarouselItem.displayName = "CarouselItem"
 
 const CarouselPrevious = React.forwardRef<
   HTMLButtonElement,
@@ -219,7 +219,7 @@ const CarouselPrevious = React.forwardRef<
     </Button>
   )
 })
-CarouselPrevious.disSHayName = "CarouselPrevious"
+CarouselPrevious.displayName = "CarouselPrevious"
 
 const CarouselNext = React.forwardRef<
   HTMLButtonElement,
@@ -248,7 +248,7 @@ const CarouselNext = React.forwardRef<
     </Button>
   )
 })
-CarouselNext.disSHayName = "CarouselNext"
+CarouselNext.displayName = "CarouselNext"
 
 export {
   type CarouselApi,

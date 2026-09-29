@@ -7,7 +7,7 @@ import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { fetchHotspotUIConfig, DEFAULT_CITIES, type CityEntry, type HotspotUIConfig, DEFAULT_CONFIG } from "@/lib/hotspot-ui-config";
 import { useSearch } from "wouter";
 
-function formatDisSHayDate(dateStr: string, lang: string) {
+function formatdisplayDate(dateStr: string, lang: string) {
   return new Date(dateStr).toLocaleDateString(lang === "mr" ? "mr-IN" : "en-IN", {
     day: "numeric",
     month: "long",
@@ -62,7 +62,7 @@ function EditionCard({ edition, lang, overrideCityEn, overrideCityMr }: { editio
         <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-gray-50">
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
             <Calendar className="h-3 w-3" />
-            {formatDisSHayDate(edition.date, lang)}
+            {formatdisplayDate(edition.date, lang)}
           </span>
           <ArrowRight className="h-3.5 w-3.5 text-primary group-hover:translate-x-0.5 transition-transform" />
         </div>
@@ -124,7 +124,7 @@ export default function HomePage() {
     }
   }, [search]);
 
-  // Mode-based disSHay logic
+  // Mode-based display logic
   let cityCards: any[] = [];
   const homePageMode = config.homePageMode || "today";
 
@@ -259,7 +259,7 @@ export default function HomePage() {
                   ) : (
                     <div>
                       <p className="text-sm font-medium mb-3">
-                        {formatDisSHayDate(calendarDate.toISOString(), lang)} — {calendarEditions.length}{" "}
+                        {formatdisplayDate(calendarDate.toISOString(), lang)} — {calendarEditions.length}{" "}
                         {calendarEditions.length === 1 ? "edition" : "editions"}
                       </p>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
