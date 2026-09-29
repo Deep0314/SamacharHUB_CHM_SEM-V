@@ -1,0 +1,26 @@
+﻿{
+  "version": 2,
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist/public",
+  "rewrites": [
+    {
+      "source": "/edition/:id",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*([bB]ot|facebookexternalhit|[wW]hats[aA]pp|[tT]elegram|[sS]lack|twitterbot|linkpreview|og-image|metadata).*"
+        }
+      ],
+      "destination": "https://apisamacharhubserver.vercel.app/api/meta/edition/:id"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://apisamacharhubserver.vercel.app/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
