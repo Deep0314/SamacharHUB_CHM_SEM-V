@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@samacharhub/api-server",
   "version": "0.0.0",
   "private": true,
@@ -8,6 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --env-file=.env --enable-source-maps ./dist/index.mjs",
     "seed": "tsx src/seed.ts",
+    "reset-admin": "tsx src/scripts/reset-admin.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

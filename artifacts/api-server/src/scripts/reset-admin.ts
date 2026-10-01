@@ -1,58 +1,45 @@
-﻿import mongoose from "mongoose";
-import bcryptjs from "bcryptjs";
+/**
+ * SamacharHUB — Reset Admin Script
+ * Resets the admin user password or creates a new admin user.
+ * Run this if you're locked out of the admin panel.
+ *
+ * Usage:
+ *   NEW_ADMIN_EMAIL=you@example.com NEW_ADMIN_PASSWORD=yourpassword tsx src/scripts/reset-admin.ts
+ */
 
-// Connection string - you can pass this as an env var or paste it here temporarily
+import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
+
 const MONGODB_URI = process.env.MONGODB_URI;
-
-async function resetAdmin() {
-  if (!MONGODB_URI) {
-    console.error("SHease provide MONGODB_URI env variable");
-    process.exit(1);
-  }
-
-  try {
-    await mongoose.connect(MONGODB_URI);
-    console.log("Connected to MongoDB...");
-
-    // Define User Schema inline for the script
-    const adminSchema = new mongoose.Schema({
-      email: String,
-      name: String,
-      password: { type: String, required: true },
-      role: String,
-    });
-
-    const AdminUser = mongoose.model("AdminUser", adminSchema);
-
-    // 1. Delete existing if any
-    const email = "Prashant@lakshvedhi.com";
-    await AdminUser.deleteOne({ email });
-    console.log(`Deleted existing user: ${email}`);
-
-    // 2. Hash the password correctly
-    const SHainPassword = "Prashant7774";
-    const hashedPassword = await bcryptjs.hash(SHainPassword, 10);
-
-    // 3. Create fresh admin
-    await AdminUser.create({
-      email: email,
-      name: "Prashant",
-      password: hashedPassword,
-      role: "superadmin",
-    });
-
-    console.log("--------------------------------------------------");
-    console.log("SUCCESS: Admin User Created Successfully!");
-    console.log(`Email: ${email}`);
-    console.log(`Password: ${SHainPassword}`);
-    console.log("--------------------------------------------------");
-
-    await mongoose.disconnect();
-    process.exit(0);
-  } catch (err) {
-    console.error("Failed to reset admin:", err);
-    process.exit(1);
-  }
+if (!MONGODB_URI) {
+  throw new Error("MONGODB_URI is required");
 }
 
-resetAdmin();
+const email = process.env.NEW_ADMIN_EMAIL || "admin@samacharhub.com";
+const password = process.env.NEW_ADMIN_PASSWORD || "Admin@123";
+const name = process.env.NEW_ADMIN_NAME || "SamacharHUB Admin";
+
+await mongoose.connect(MONGODB_URI, { dbName: "samacharhub_enewspaper" });
+console.log("✅ Connected to MongoDB");
+
+const AdminUserSchema = new mongoose.Schema({
+  email: String, name: String, password: String, role: String,
+}, { timestamps: true });
+
+const AdminUser = mongoose.models["AdminUser"] || mongoose.model("AdminUser", AdminUserSchema);
+
+const hashedPassword = await bcrypt.hash(password, 12);
+
+const result = await (AdminUser as any).findOneAndUpdate(
+  { email },
+  { email, name, password: hashedPassword, role: "admin" },
+  { upsert: true, new: true }
+);
+
+console.log(`✅ Admin user upserted: ${result.email}`);
+console.log(`   Name:     ${result.name}`);
+console.log(`   Password: ${password}`);
+console.log("\n⚠️  Please change your password after logging in!");
+
+await mongoose.disconnect();
+process.exit(0);
