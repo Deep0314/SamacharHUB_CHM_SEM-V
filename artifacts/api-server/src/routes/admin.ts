@@ -3,12 +3,15 @@ import { Article } from "../models/Article.js";
 import { Category } from "../models/Category.js";
 import { Edition } from "../models/Edition.js";
 import { AdminUser } from "../models/AdminUser.js";
-import { requireAuth, signToken } from "../middleware/auth.js";
+import { requireAuth, signToken, signRefreshToken, verifyRefreshToken } from "../middleware/auth.js";
+import { validate, LoginSchema } from "../middleware/validate.js";
+import { authLimiter } from "../middleware/rate-limit.js";
 import bcryptjs from "bcryptjs";
+
 
 const router = Router();
 
-router.post("/admin/login", async (req: any, res: any): Promise<void> => {
+router.post("/admin/login", authLimiter, validate(LoginSchema), async (req: any, res: any): Promise<void> => {
   const { email, password } = req.body;
 
   try {
@@ -24,11 +27,15 @@ router.post("/admin/login", async (req: any, res: any): Promise<void> => {
       return;
     }
 
-    const token = signToken(admin._id.toString());
+    const adminId = admin._id.toString();
+    const token = signToken(adminId);
+    const refreshToken = signRefreshToken(adminId);
+
     res.json({
       token,
+      refreshToken,
       admin: {
-        id: admin._id.toString(),
+        id: adminId,
         email: admin.email,
         name: admin.name,
         role: admin.role,
@@ -38,6 +45,32 @@ router.post("/admin/login", async (req: any, res: any): Promise<void> => {
     res.status(500).json({ error: "Server error during login" });
   }
 });
+
+/** Refresh an expired access token using a valid refresh token */
+router.post("/admin/refresh-token", async (req: any, res: any): Promise<void> => {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    res.status(400).json({ error: "refreshToken is required" });
+    return;
+  }
+
+  const adminId = verifyRefreshToken(refreshToken);
+  if (!adminId) {
+    res.status(401).json({ error: "Invalid or expired refresh token" });
+    return;
+  }
+
+  const admin = await AdminUser.findById(adminId);
+  if (!admin) {
+    res.status(401).json({ error: "Admin account not found" });
+    return;
+  }
+
+  const newToken = signToken(adminId);
+  const newRefreshToken = signRefreshToken(adminId);
+  res.json({ token: newToken, refreshToken: newRefreshToken });
+});
+
 
 router.get("/admin/me", requireAuth, async (req: any, res: any): Promise<void> => {
   try {
