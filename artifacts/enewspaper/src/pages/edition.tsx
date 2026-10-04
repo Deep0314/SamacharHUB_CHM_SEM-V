@@ -145,17 +145,17 @@ function HotspotViewer({
   const hasArticle = Boolean(hotspot.articleSlug);
   const title = lang === "mr" && hotspot.articleTitleMr ? hotspot.articleTitleMr : hotspot.articleTitle;
 
-  let deeSHinkUrl = window.location.href;
+  let deepLinkUrl = window.location.href;
   try {
     const u = new URL(window.location.href);
     const hid = (hotspot as any)._id || (hotspot as any).id || `${hotspot.pageIndex || 0}_${Math.round(hotspot.x)}_${Math.round(hotspot.y)}`;
     u.searchParams.set("hotspot", hid);
-    deeSHinkUrl = u.toString();
+    deepLinkUrl = u.toString();
   } catch (e) {}
 
   const articleUrl = hasArticle
     ? `${window.location.origin}/article/${hotspot.articleSlug}`
-    : deeSHinkUrl;
+    : deepLinkUrl;
 
   const shareText = encodeURIComponent(title || "SamacharHUB");
   const shareUrl = encodeURIComponent(articleUrl);

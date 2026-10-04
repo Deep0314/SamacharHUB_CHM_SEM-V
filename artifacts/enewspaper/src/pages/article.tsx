@@ -80,7 +80,7 @@ export default function ArticlePage() {
             {title}
           </h1>
 
-          <p className="text-lg text-muted-foreground mb-4 border-l-4 border-primary SH-4">
+          <p className="text-lg text-muted-foreground mb-4 border-l-4 border-primary pl-4">
             {summary}
           </p>
 

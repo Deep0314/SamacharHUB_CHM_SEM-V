@@ -1,4 +1,4 @@
-﻿export interface ThemeConfig {
+export interface ThemeConfig {
   primaryColor: string;
   accentColor: string;
   fontFamily: "serif" | "sans-serif";
@@ -67,7 +67,7 @@ export function applyTheme(config: ThemeConfig): void {
   root.style.setProperty(
     "--app-font-serif",
     config.fontFamily === "serif"
-      ? "'SHayfair display', Georgia, serif"
+      ? "'Playfair Display', Georgia, serif"
       : "Inter, system-ui, sans-serif"
   );
 }

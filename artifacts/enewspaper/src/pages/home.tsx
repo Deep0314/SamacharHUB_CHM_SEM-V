@@ -7,7 +7,7 @@ import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { fetchHotspotUIConfig, DEFAULT_CITIES, type CityEntry, type HotspotUIConfig, DEFAULT_CONFIG } from "@/lib/hotspot-ui-config";
 import { useSearch } from "wouter";
 
-function formatdisplayDate(dateStr: string, lang: string) {
+function formatDisplayDate(dateStr: string, lang: string) {
   return new Date(dateStr).toLocaleDateString(lang === "mr" ? "mr-IN" : "en-IN", {
     day: "numeric",
     month: "long",
@@ -62,7 +62,7 @@ function EditionCard({ edition, lang, overrideCityEn, overrideCityMr }: { editio
         <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-gray-50">
           <span className="flex items-center gap-1 text-xs text-muted-foreground">
             <Calendar className="h-3 w-3" />
-            {formatdisplayDate(edition.date, lang)}
+            {formatDisplayDate(edition.date, lang)}
           </span>
           <ArrowRight className="h-3.5 w-3.5 text-primary group-hover:translate-x-0.5 transition-transform" />
         </div>
@@ -136,7 +136,7 @@ export default function HomePage() {
       const eCitiesMr = e.citiesMr?.length ? e.citiesMr : ((e as any).cityMr ? [(e as any).cityMr] : []);
       
       // For "all" mode, we'll just show the edition once (first city as primary label)
-      // or we can exSHode them. Let's just show them once to avoid clutter.
+      // or we can explode them. Let's just show them once to avoid clutter.
       allCards.push({
         edition: e,
         cityEn: eCities[0] || "",
@@ -259,7 +259,7 @@ export default function HomePage() {
                   ) : (
                     <div>
                       <p className="text-sm font-medium mb-3">
-                        {formatdisplayDate(calendarDate.toISOString(), lang)} — {calendarEditions.length}{" "}
+                        {formatDisplayDate(calendarDate.toISOString(), lang)} — {calendarEditions.length}{" "}
                         {calendarEditions.length === 1 ? "edition" : "editions"}
                       </p>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -328,7 +328,7 @@ export default function HomePage() {
             <p className="text-xs text-muted-foreground mt-2 max-w-xs mx-auto">
               {lang === "mr"
                 ? "मागील आवृत्त्या पाहण्यासाठी वर दिलेल्या 'दिनदर्शिका' बटणाचा वापर करा."
-                : "SHease use the 'Browse by Date' button above to view our archived editions."}
+                : "Please use the 'Browse by Date' button above to view our archived editions."}
             </p>
           </div>
         ) : null}

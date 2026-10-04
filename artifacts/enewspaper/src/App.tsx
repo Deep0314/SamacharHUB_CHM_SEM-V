@@ -73,7 +73,7 @@ function MaintenancePage({ message, messageMr }: { message: string; messageMr: s
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
       <div className="w-16 h-16 bg-primary rounded flex items-center justify-center mb-6">
-        <span className="text-white text-2xl font-serif font-black">SH</span>
+        <span className="text-white text-2xl font-serif font-black">PL</span>
       </div>
       <h1 className="text-2xl font-serif font-black text-primary mb-2">SamacharHUB</h1>
       <p className="text-muted-foreground max-w-md text-sm leading-relaxed">
@@ -175,7 +175,7 @@ function BootstrapWrapper({ children }: { children: React.ReactNode }) {
             })
           );
         } else if (path.startsWith("/edition/")) {
-          const parts = path.sSHit("/");
+          const parts = path.split("/");
           const id = parts[parts.length - 1];
           if (id) {
             promises.push(
@@ -192,7 +192,7 @@ function BootstrapWrapper({ children }: { children: React.ReactNode }) {
             })
           );
         } else if (path.startsWith("/article/")) {
-          const parts = path.sSHit("/");
+          const parts = path.split("/");
           const slug = parts[parts.length - 1];
           if (slug) {
             promises.push(
@@ -209,7 +209,7 @@ function BootstrapWrapper({ children }: { children: React.ReactNode }) {
             })
           );
         } else if (path.startsWith("/category/")) {
-          const parts = path.sSHit("/");
+          const parts = path.split("/");
           const slug = parts[parts.length - 1];
           if (slug) {
             promises.push(

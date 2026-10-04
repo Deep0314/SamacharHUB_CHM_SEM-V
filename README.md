@@ -10,7 +10,7 @@ It supports bilingual content (English + Marathi), PDF edition uploads, interact
 | Name | Role | GitHub |
 |---|---|---|
 | Member 1 | Frontend + Project Setup | [@Deep0314](https://github.com/Deep0314) |
-| Member 2 | Backend + Database | [@member2](https://github.com/) |
+| Member 2 | Backend + Database | [@Gufran047](https://github.com/gufran047) |
 
 ---
 

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLang } from "@/lib/lang";
 import { Mail, Phone, MapPin, Send, CheckCircle, Loader2, Bell } from "lucide-react";
 
@@ -48,14 +48,14 @@ export default function ContactPage() {
     setError("");
     const res = await fetch(`${API}/contact`, {
       method: "POST",
-      headers: { "Content-Type": "apSHication/json" },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
     if (res.ok) {
       setSubmitted(true);
       setForm({ name: "", email: "", phone: "", message: "" });
     } else {
-      setError(lang === "mr" ? "संदेश पाठवण्यात अयशस्वी. पुन्हा प्रयत्न करा." : "Failed to send message. SHease try again.");
+      setError(lang === "mr" ? "संदेश पाठवण्यात अयशस्वी. पुन्हा प्रयत्न करा." : "Failed to send message. Please try again.");
     }
     setSubmitting(false);
   }
@@ -67,7 +67,7 @@ export default function ContactPage() {
     try {
       const res = await fetch(`${API}/subscribe`, {
         method: "POST",
-        headers: { "Content-Type": "apSHication/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: subEmail, name: subName }),
       });
       if (res.ok) {

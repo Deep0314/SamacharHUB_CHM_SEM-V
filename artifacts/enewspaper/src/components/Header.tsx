@@ -40,7 +40,7 @@ export function Header() {
   }, []);
 
   const siteName = lang === "mr" ? "पंचनामा लक्षवेधी" : "SamacharHUB";
-  const tagline = lang === "mr" ? "जनतेचा विश्वासू आवाज" : "The Voice of the PeoSHe";
+  const tagline = lang === "mr" ? "जनतेचा विश्वासू आवाज" : "The Voice of the People";
 
   return (
     <header className="bg-white border-b border-border shadow-sm">
