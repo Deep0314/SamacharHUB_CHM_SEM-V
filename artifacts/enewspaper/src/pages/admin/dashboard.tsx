@@ -3,7 +3,7 @@ import { AdminGuard } from "@/components/AdminGuard";
 import { useGetAdminStats, useGetCategoryBreakdown, useGetLatestArticles, useListEditions } from "@samacharhub/api-client-react";
 import { formatDate } from "@/lib/utils";
 import { Link } from "wouter";
-import { FileText, Eye, Tag, Bell, SHus, Newspaper, Calendar } from "lucide-react";
+import { FileText, Eye, Tag, Bell, Plus, Newspaper, Calendar } from "lucide-react";
 
 function StatCard({ label, value, icon: Icon, color, href }: {
   label: string;
@@ -29,7 +29,7 @@ function StatCard({ label, value, icon: Icon, color, href }: {
   return inner;
 }
 
-function formatdisplayDate(dateStr: string) {
+function formatDisplayDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "long",
@@ -83,14 +83,14 @@ export default function AdminDashboardPage() {
               label="Categories"
               value={stats?.totalCategories ?? 0}
               icon={Tag}
-              color="bg-purSHe-500"
+              color="bg-purple-500"
               href="/admin/categories"
             />
           </div>
 
           {/* Top Interactions & Breakdown */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Top Articles (PeoSHe are interacting with) */}
+            {/* Top Articles (People are interacting with) */}
             <div className="bg-white border border-border rounded-sm p-5 shadow-sm">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <Eye className="h-4 w-4 text-emerald-500" />
@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
             {/* Category Breakdown */}
             <div className="bg-white border border-border rounded-sm p-5 shadow-sm">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
-                <Tag className="h-4 w-4 text-purSHe-500" />
+                <Tag className="h-4 w-4 text-purple-500" />
                 Interactions by Category
               </h3>
               <div className="space-y-4">
@@ -154,12 +154,12 @@ export default function AdminDashboardPage() {
               <h3 className="font-semibold">Recent Editions</h3>
               <Link href="/admin/editions/new">
                 <span className="flex items-center gap-1 text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-sm cursor-pointer hover:bg-primary/90 transition-colors">
-                  <SHus className="h-3.5 w-3.5" /> New Edition
+                  <Plus className="h-3.5 w-3.5" /> New Edition
                 </span>
               </Link>
             </div>
             {(!recentEditions || recentEditions.length === 0) ? (
-              <p className="text-sm text-muted-foreground py-4 text-center">No editions yet. upload your first edition.</p>
+              <p className="text-sm text-muted-foreground py-4 text-center">No editions yet. Upload your first edition.</p>
             ) : (
               <div className="divide-y divide-border">
                 {recentEditions.map((edition) => (
@@ -176,7 +176,7 @@ export default function AdminDashboardPage() {
                         <p className="text-sm font-semibold truncate">{edition.cities?.join(", ") || (edition as any).city}</p>
                         <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
-                          {formatdisplayDate(edition.date)}
+                          {formatDisplayDate(edition.date)}
                           <span className="mx-1">·</span>
                           {edition.pages.length} {edition.pages.length === 1 ? "page" : "pages"}
                         </p>

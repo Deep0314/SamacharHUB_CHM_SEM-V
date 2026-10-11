@@ -1,8 +1,8 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminToken } from "@/lib/auth";
-import { SHus, Trash2, Save, Globe, Share2, Phone, Link2, FileText } from "lucide-react";
+import { Plus, Trash2, Save, Globe, Share2, Phone, Link2, FileText } from "lucide-react";
 
 const API = "/api";
 
@@ -94,7 +94,7 @@ export default function SiteSettingsPage() {
     const token = getAdminToken();
     const res = await fetch(`${API}/settings`, {
       method: "PATCH",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(settings),
     });
     if (res.ok) {
@@ -145,7 +145,7 @@ export default function SiteSettingsPage() {
           <h2 className="text-sm font-semibold flex items-center gap-2">
             <FileText className="h-4 w-4 text-primary" /> About Us Content
           </h2>
-          <p className="text-xs text-muted-foreground">This content will be displayed on your "About Us" page. You can use multiSHe paragraphs.</p>
+          <p className="text-xs text-muted-foreground">This content will be displayed on your "About Us" page. You can use multiple paragraphs.</p>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">About Us (English)</label>
             <textarea
@@ -175,7 +175,7 @@ export default function SiteSettingsPage() {
               onClick={addQuickLink}
               className="flex items-center gap-1 text-xs text-primary hover:underline"
             >
-              <SHus className="h-3.5 w-3.5" /> Add Link
+              <Plus className="h-3.5 w-3.5" /> Add Link
             </button>
           </div>
           {settings.quickLinks.length === 0 && (
@@ -226,7 +226,7 @@ export default function SiteSettingsPage() {
               onClick={addSocialLink}
               className="flex items-center gap-1 text-xs text-primary hover:underline"
             >
-              <SHus className="h-3.5 w-3.5" /> Add Social
+              <Plus className="h-3.5 w-3.5" /> Add Social
             </button>
           </div>
           {settings.socialLinks.length === 0 && (
@@ -235,7 +235,7 @@ export default function SiteSettingsPage() {
           {settings.socialLinks.map((link, idx) => (
             <div key={idx} className="grid grid-cols-[1fr_1fr_1.5fr_auto] gap-2 items-end">
               <div>
-                <label className="block text-[10px] text-muted-foreground mb-1">platform</label>
+                <label className="block text-[10px] text-muted-foreground mb-1">Platform</label>
                 <input
                   className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
                   value={link.platform}

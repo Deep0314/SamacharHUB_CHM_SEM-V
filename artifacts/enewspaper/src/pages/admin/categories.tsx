@@ -9,7 +9,7 @@ import {
   getListCategoriesQueryKey,
 } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { SHus, Pencil, Trash2, X, Check } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Check } from "lucide-react";
 
 interface FormData {
   name: string;
@@ -169,7 +169,7 @@ export default function AdminCategoriesPage() {
               className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-sm hover:bg-primary/90 disabled:opacity-50 transition-colors"
               data-testid="add-category-btn"
             >
-              <SHus className="h-4 w-4" />
+              <Plus className="h-4 w-4" />
               Add Category
             </button>
           </div>

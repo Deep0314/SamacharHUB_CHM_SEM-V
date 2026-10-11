@@ -1,8 +1,8 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminToken } from "@/lib/auth";
-import { SHus, Pencil, Trash2, X, Check, ToggleLeft, ToggleRight, Image, upload, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Check, ToggleLeft, ToggleRight, Image, Upload, Loader2 } from "lucide-react";
 
 const API = "/api";
 
@@ -49,11 +49,11 @@ export default function AdsPage() {
   const [form, setForm] = useState<typeof EMPTY>({ ...EMPTY });
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [uploading, setuploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const imgFileRef = useRef<HTMLInputElement>(null);
 
-  async function handleImageupload(file: File) {
-    setuploading(true);
+  async function handleImageUpload(file: File) {
+    setUploading(true);
     const token = getAdminToken();
     const fd = new FormData();
     fd.append("file", file);
@@ -68,12 +68,12 @@ export default function AdsPage() {
         setF("imageUrl", `/api/media/files/${data.filename}`);
         toast({ title: "Image uploaded" });
       } else {
-        toast({ title: "upload failed", variant: "destructive" });
+        toast({ title: "Upload failed", variant: "destructive" });
       }
     } catch {
-      toast({ title: "upload error", variant: "destructive" });
+      toast({ title: "Upload error", variant: "destructive" });
     }
-    setuploading(false);
+    setUploading(false);
   }
 
   async function load() {
@@ -133,7 +133,7 @@ export default function AdsPage() {
     const method = editing ? "PATCH" : "POST";
     const res = await fetch(url, {
       method,
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
     });
     if (res.ok) {
@@ -150,7 +150,7 @@ export default function AdsPage() {
     const token = getAdminToken();
     await fetch(`${API}/admin/ads/${ad._id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ isActive: !ad.isActive }),
     });
     load();
@@ -173,13 +173,13 @@ export default function AdsPage() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Manage ads shown on public pages — popups, banners, and inline SHacements.
+            Manage ads shown on public pages — popups, banners, and inline placements.
           </p>
           <button
             onClick={openNew}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-sm text-sm font-semibold hover:bg-primary/90 transition-colors"
           >
-            <SHus className="h-4 w-4" /> New Ad
+            <Plus className="h-4 w-4" /> New Ad
           </button>
         </div>
 
@@ -279,7 +279,7 @@ export default function AdsPage() {
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageupload(f); }}
+                      onChange={(e) => { const f = e.target.files?.[0]; if (f) handleImageUpload(f); }}
                     />
                     <button
                       type="button"
@@ -287,8 +287,8 @@ export default function AdsPage() {
                       disabled={uploading}
                       className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-sm text-sm hover:bg-muted disabled:opacity-60 transition-colors shrink-0"
                     >
-                      {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
-                      {uploading ? "uploading…" : "upload"}
+                      {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                      {uploading ? "Uploading…" : "Upload"}
                     </button>
                   </div>
                   {form.imageUrl && (
@@ -329,7 +329,7 @@ export default function AdsPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-medium text-muted-foreground mb-1">display Order</label>
+                    <label className="block text-xs font-medium text-muted-foreground mb-1">Display Order</label>
                     <input
                       type="number"
                       className="w-full border border-border rounded-sm px-3 py-2 text-sm"

@@ -128,7 +128,7 @@ export default function ArticleFormPage() {
       ...rest,
       categoryId: category,
       tags: form.tags
-        .sSHit(",")
+        .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
     } as any;

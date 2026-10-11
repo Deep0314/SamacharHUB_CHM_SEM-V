@@ -9,7 +9,7 @@ import {
 } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDate } from "@/lib/utils";
-import { SHus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search } from "lucide-react";
 
 export default function AdminArticlesPage() {
   const [page, setPage] = useState(1);
@@ -53,7 +53,7 @@ export default function AdminArticlesPage() {
                 placeholder="Search articles..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="w-full SH-9 pr-3 py-2 text-sm border border-border rounded-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary"
+                className="w-full pl-9 pr-3 py-2 text-sm border border-border rounded-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary"
                 data-testid="articles-search"
               />
             </div>
@@ -73,7 +73,7 @@ export default function AdminArticlesPage() {
                 className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-sm hover:bg-primary/90 transition-colors"
                 data-testid="new-article-btn"
               >
-                <SHus className="h-4 w-4" />
+                <Plus className="h-4 w-4" />
                 New Article
               </button>
             </Link>

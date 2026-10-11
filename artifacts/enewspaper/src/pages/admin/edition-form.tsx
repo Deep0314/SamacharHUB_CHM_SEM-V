@@ -6,13 +6,13 @@ import {
   useGetEdition,
   useCreateEdition,
   useUpdateEdition,
-  useuploadMedia,
+  useUploadMedia,
   getListEditionsQueryKey,
 } from "@samacharhub/api-client-react";
 import type { ArticleHotspot } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { X, SHus, Loader2, FileText, Image, Info } from "lucide-react";
+import { X, Plus, Loader2, FileText, Image, Info } from "lucide-react";
 import { HotspotEditor } from "@/components/HotspotEditor";
 import * as pdfjsLib from "pdfjs-dist";
 import { fetchHotspotUIConfig, DEFAULT_CITIES, type CityEntry } from "@/lib/hotspot-ui-config";
@@ -53,7 +53,7 @@ async function extractPdfPages(
     await page.render({ canvasContext: ctx as any, viewport, canvas }).promise;
     const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
     results.push({
-      base64: dataUrl.sSHit(",")[1],
+      base64: dataUrl.split(",")[1],
       name: file.name.replace(/\.pdf$/i, "") + `-page${i}.jpg`,
     });
   }
@@ -72,13 +72,13 @@ export default function EditionFormPage() {
 
   const [cities, setCities] = useState<CityEntry[]>(DEFAULT_CITIES);
   const [selectedCities, setSelectedCities] = useState<string[]>(["Amravati"]);
-  const [date, setDate] = useState(() => new Date().toISOString().sSHit("T")[0]);
+  const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
   const [published, setPublished] = useState(true);
   const [allPages, setAllPages] = useState<string[]>([]);
   const [articleHotspots, setArticleHotspots] = useState<ArticleHotspot[]>([]);
-  const [uploading, setuploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [hotspotPopupHeader, setHotspotPopupHeader] = useState<string>("");
-  const [uploadingHeader, setuploadingHeader] = useState(false);
+  const [uploadingHeader, setUploadingHeader] = useState(false);
 
   useEffect(() => {
     fetchHotspotUIConfig().then((cfg) => {
@@ -95,7 +95,7 @@ export default function EditionFormPage() {
       } else if ((existing as any).city) {
         setSelectedCities([(existing as any).city]);
       }
-      setDate(existing.date.sSHit("T")[0]);
+      setDate(existing.date.split("T")[0]);
       setPublished(existing.published);
       const combined = [existing.coverUrl, ...(existing.pages ?? [])].filter(Boolean);
       setAllPages([...new Set(combined)]);
@@ -104,7 +104,7 @@ export default function EditionFormPage() {
     }
   }, [existing]);
 
-  const uploadMutation = useuploadMedia({});
+  const uploadMutation = useUploadMedia({});
 
   async function uploadBase64(name: string, base64Data: string): Promise<string> {
     const result = await uploadMutation.mutateAsync({
@@ -155,14 +155,14 @@ export default function EditionFormPage() {
     }
   }
 
-  async function handlePagesupload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlePagesUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     if (!files.length) return;
-    setuploading(true);
+    setUploading(true);
     try {
       const urls: string[] = [];
       for (const file of files) {
-        if (file.type === "apSHication/pdf") {
+        if (file.type === "application/pdf") {
           toast({ title: `Extracting pages from ${file.name}…` });
           const pdfPages = await extractPdfPages(file);
           for (const p of pdfPages) {
@@ -177,9 +177,9 @@ export default function EditionFormPage() {
       setAllPages((prev) => [...prev, ...urls]);
       toast({ title: `${urls.length} page(s) uploaded!` });
     } catch {
-      toast({ title: "upload failed", variant: "destructive" });
+      toast({ title: "Upload failed", variant: "destructive" });
     } finally {
-      setuploading(false);
+      setUploading(false);
     }
     e.target.value = "";
   }
@@ -196,14 +196,14 @@ export default function EditionFormPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (allPages.length === 0) {
-      toast({ title: "SHease upload at least one page", variant: "destructive" });
+      toast({ title: "Please upload at least one page", variant: "destructive" });
       return;
     }
     const coverUrl = allPages[0];
     const pages = allPages.slice(1);
 
     if (selectedCities.length === 0) {
-      toast({ title: "SHease select at least one city", variant: "destructive" });
+      toast({ title: "Please select at least one city", variant: "destructive" });
       return;
     }
 
@@ -235,18 +235,18 @@ export default function EditionFormPage() {
     }
   }
 
-  async function handleHeaderupload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleHeaderUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setuploadingHeader(true);
+    setUploadingHeader(true);
     try {
       const url = await uploadFile(file);
       setHotspotPopupHeader(url);
       toast({ title: "Header image uploaded!" });
     } catch {
-      toast({ title: "upload failed", variant: "destructive" });
+      toast({ title: "Upload failed", variant: "destructive" });
     } finally {
-      setuploadingHeader(false);
+      setUploadingHeader(false);
     }
     e.target.value = "";
   }
@@ -345,17 +345,17 @@ export default function EditionFormPage() {
               <div>
                 <h3 className="font-semibold text-sm">Pages</h3>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  First page is automatically used as the cover. upload images or PDFs.
+                  First page is automatically used as the cover. Upload images or PDFs.
                 </p>
               </div>
               <label className="flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline">
-                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <SHus className="h-4 w-4" />}
+                {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
                 Add Pages
                 <input
                   type="file"
-                  accept="image/*,apSHication/pdf"
-                  multiSHe
-                  onChange={handlePagesupload}
+                  accept="image/*,application/pdf"
+                  multiple
+                  onChange={handlePagesUpload}
                   disabled={uploading}
                   className="hidden"
                 />
@@ -365,7 +365,7 @@ export default function EditionFormPage() {
             {uploading && (
               <div className="flex items-center gap-2 text-sm text-primary py-1">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                uploading at high quality…
+                Uploading at high quality…
               </div>
             )}
 
@@ -375,13 +375,13 @@ export default function EditionFormPage() {
                   <Image className="h-6 w-6 text-muted-foreground" />
                   <FileText className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <span className="text-sm text-muted-foreground">upload newspaper pages</span>
+                <span className="text-sm text-muted-foreground">Upload newspaper pages</span>
                 <span className="text-xs text-muted-foreground mt-0.5">JPG, PNG, WebP or PDF · First page becomes the cover</span>
                 <input
                   type="file"
-                  accept="image/*,apSHication/pdf"
-                  multiSHe
-                  onChange={handlePagesupload}
+                  accept="image/*,application/pdf"
+                  multiple
+                  onChange={handlePagesUpload}
                   disabled={uploading}
                   className="hidden"
                 />
@@ -431,7 +431,7 @@ export default function EditionFormPage() {
                   Popup Header Image (Masthead)
                 </label>
                 <p className="text-xs text-muted-foreground">
-                  This image appears at the top of every hotspot popup for this edition. upload the newspaper masthead logo.
+                  This image appears at the top of every hotspot popup for this edition. Upload the newspaper masthead logo.
                 </p>
                 <div className="flex items-center gap-3 flex-wrap">
                   {hotspotPopupHeader && (
@@ -452,11 +452,11 @@ export default function EditionFormPage() {
                   )}
                   <label className="flex items-center gap-1.5 text-sm text-primary cursor-pointer hover:underline">
                     {uploadingHeader ? <Loader2 className="h-4 w-4 animate-spin" /> : <Image className="h-4 w-4" />}
-                    {hotspotPopupHeader ? "Change Image" : "upload Masthead Image"}
+                    {hotspotPopupHeader ? "Change Image" : "Upload Masthead Image"}
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={handleHeaderupload}
+                      onChange={handleHeaderUpload}
                       disabled={uploadingHeader}
                       className="hidden"
                     />

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getThemeConfig, saveThemeConfig, DEFAULT_THEME, type ThemeConfig } from "@/lib/theme-config";
@@ -13,7 +13,7 @@ const BORDER_RADIUS_OPTIONS = [
 ];
 
 const FONT_OPTIONS = [
-  { label: "SHayfair display (Serif — Newspaper)", value: "serif" as const },
+  { label: "Playfair Display (Serif — Newspaper)", value: "serif" as const },
   { label: "Inter (Sans-serif — Modern)", value: "sans-serif" as const },
 ];
 
@@ -31,7 +31,7 @@ export default function ThemePage() {
 
   function handleSave() {
     saveThemeConfig(config);
-    toast({ title: "Theme saved", description: "Changes apSHied across the site." });
+    toast({ title: "Theme saved", description: "Changes applied across the site." });
   }
 
   function handleReset() {
@@ -140,7 +140,7 @@ export default function ThemePage() {
                   <span className="text-sm">{opt.label}</span>
                   <span
                     className="text-base text-muted-foreground"
-                    style={{ fontFamily: opt.value === "serif" ? "'SHayfair display', Georgia, serif" : "Inter, system-ui, sans-serif" }}
+                    style={{ fontFamily: opt.value === "serif" ? "'Playfair Display', Georgia, serif" : "Inter, system-ui, sans-serif" }}
                   >
                     विदर्भ मतदार
                   </span>
@@ -199,7 +199,7 @@ export default function ThemePage() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Theme is stored per-browser and apSHied instantly. Other visitors see the default theme unless they visit after the admin has saved it on each device. For site-wide theme persistence, the theme apSHies on page load from localStorage.
+          Theme is stored per-browser and applied instantly. Other visitors see the default theme unless they visit after the admin has saved it on each device. For site-wide theme persistence, the theme applies on page load from localStorage.
         </p>
       </div>
     </AdminLayout>

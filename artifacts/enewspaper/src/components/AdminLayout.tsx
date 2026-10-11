@@ -13,7 +13,7 @@ import {
   Image,
   LogOut,
   ChevronRight,
-  LayoutTemSHate,
+  LayoutTemplate,
   Menu,
   X,
   Palette,
@@ -26,7 +26,7 @@ import {
 const NAV = [
   { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/editions", icon: Newspaper, label: "Editions" },
-  { href: "/admin/hotspot-ui", icon: LayoutTemSHate, label: "Hotspot UI" },
+  { href: "/admin/hotspot-ui", icon: LayoutTemplate, label: "Hotspot UI" },
   { href: "/admin/media", icon: Image, label: "Media" },
   { href: "/admin/breaking-news", icon: Bell, label: "Breaking News" },
   { href: "/admin/articles", icon: FileText, label: "Articles" },

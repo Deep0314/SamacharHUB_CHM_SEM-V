@@ -8,7 +8,7 @@ import {
   getListBreakingNewsQueryKey,
 } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { SHus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { fetchHotspotUIConfig, saveHotspotUIConfig } from "@/lib/hotspot-ui-config";
 import { getAdminToken } from "@/lib/auth";
 import { useToast } from "@/hooks/use-toast";
@@ -116,7 +116,7 @@ export default function AdminBreakingNewsPage() {
                 className="flex items-center gap-2 px-3 py-1.5 bg-primary text-primary-foreground text-xs font-medium rounded-sm hover:bg-primary/90 transition-colors"
                 data-testid="add-breaking-btn"
               >
-                <SHus className="h-3.5 w-3.5" />
+                <Plus className="h-3.5 w-3.5" />
                 Add Item
               </button>
             </div>

@@ -67,7 +67,7 @@ export default function NotificationsPage() {
     const token = getAdminToken();
     const res = await fetch(`${API}/settings`, {
       method: "PATCH",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ smtpConfig: smtp }),
     });
     if (res.ok) toast({ title: "SMTP settings saved" });
@@ -98,7 +98,7 @@ export default function NotificationsPage() {
     const token = getAdminToken();
     const res = await fetch(`${API}/admin/notifications/test`, {
       method: "POST",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(smtp),
     });
     const data = await res.json();
@@ -124,7 +124,7 @@ export default function NotificationsPage() {
     const token = getAdminToken();
     const res = await fetch(`${API}/admin/notifications/send`, {
       method: "POST",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ subject, body }),
     });
     const data = await res.json();
@@ -312,7 +312,7 @@ export default function NotificationsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold">Email Subscribers</h2>
-                <p className="text-xs text-muted-foreground mt-0.5">PeoSHe who signed up for email notifications from the website.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">People who signed up for email notifications from the website.</p>
               </div>
               <span className="bg-primary/10 text-primary text-xs font-semibold px-2.5 py-1 rounded-full">{subscribers.length} total</span>
             </div>
@@ -323,7 +323,7 @@ export default function NotificationsPage() {
               <div className="text-center py-12 text-muted-foreground">
                 <Users className="h-10 w-10 mx-auto mb-3 opacity-30" />
                 <p className="text-sm">No subscribers yet.</p>
-                <p className="text-xs mt-1">PeoSHe can subscribe via the Contact Us page on your website.</p>
+                <p className="text-xs mt-1">People can subscribe via the Contact Us page on your website.</p>
               </div>
             ) : (
               <div className="divide-y divide-border">
@@ -358,7 +358,7 @@ export default function NotificationsPage() {
 
             {subscribers.length === 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-sm p-3 text-xs text-amber-700">
-                No subscribers yet. Notifications will be sent once peoSHe subscribe.
+                No subscribers yet. Notifications will be sent once people subscribe.
               </div>
             )}
 
@@ -410,7 +410,7 @@ export default function NotificationsPage() {
             {[
               { event: "New Edition Published", to: "→ All Subscribers", desc: "Sent to all subscribers whenever a new edition is published.", color: "text-blue-500" },
               { event: "Breaking News Added", to: "→ All Subscribers", desc: "Sent to all subscribers when a new breaking news item is created.", color: "text-red-500" },
-              { event: "Contact Form Submitted", to: "→ Admin Email", desc: "Forwarded to your contact email address (set in Footer & Site Settings).", color: "text-purSHe-500" },
+              { event: "Contact Form Submitted", to: "→ Admin Email", desc: "Forwarded to your contact email address (set in Footer & Site Settings).", color: "text-purple-500" },
               { event: "New Subscriber Joined", to: "→ Admin Email", desc: "You get an email when someone subscribes to your newsletter.", color: "text-green-500" },
               { event: "Maintenance Mode ON", to: "→ Admin Email", desc: "You get an alert when the site enters maintenance mode.", color: "text-amber-500" },
               { event: "Maintenance Mode OFF", to: "→ Admin Email", desc: "You get a confirmation when the site is back online.", color: "text-green-500" },

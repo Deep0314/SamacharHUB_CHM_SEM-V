@@ -8,10 +8,10 @@ import {
 } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { SHus, Trash2, Edit, Eye, EyeOff, Calendar } from "lucide-react";
+import { Plus, Trash2, Edit, Eye, EyeOff, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-function formatdisplayDate(dateStr: string) {
+function formatDisplayDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",
@@ -51,7 +51,7 @@ export default function AdminEditionsPage() {
             </div>
             <Link href="/admin/editions/new">
               <span className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-sm cursor-pointer hover:bg-primary/90 transition-colors">
-                <SHus className="h-4 w-4" />
+                <Plus className="h-4 w-4" />
                 New Edition
               </span>
             </Link>
@@ -69,7 +69,7 @@ export default function AdminEditionsPage() {
               <p className="text-muted-foreground text-sm">No editions yet.</p>
               <Link href="/admin/editions/new">
                 <span className="mt-3 inline-flex items-center gap-1 text-sm text-primary cursor-pointer hover:underline">
-                  <SHus className="h-4 w-4" /> upload first edition
+                  <Plus className="h-4 w-4" /> Upload first edition
                 </span>
               </Link>
             </div>
@@ -106,7 +106,7 @@ export default function AdminEditionsPage() {
                       <td className="px-4 py-2">
                         <span className="flex items-center gap-1 text-muted-foreground">
                           <Calendar className="h-3.5 w-3.5" />
-                          {formatdisplayDate(edition.date)}
+                          {formatDisplayDate(edition.date)}
                         </span>
                       </td>
                       <td className="px-4 py-2 text-muted-foreground">

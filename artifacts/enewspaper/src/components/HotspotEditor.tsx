@@ -243,7 +243,7 @@ export function HotspotEditor({ pages, hotspots, onChange }: HotspotEditorProps)
                   placeholder="Search articles..."
                   value={articleSearch}
                   onChange={(e) => setArticleSearch(e.target.value)}
-                  className="w-full SH-9 pr-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   autoFocus
                 />
               </div>

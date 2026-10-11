@@ -2,7 +2,7 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminToken } from "@/lib/auth";
-import { Save, AlertTriangle, Trash2, ShieldAlert, Loader2, SHus, X, GripVertical, upload, Image as ImageIcon, Type } from "lucide-react";
+import { Save, AlertTriangle, Trash2, ShieldAlert, Loader2, Plus, X, GripVertical, Upload, Image as ImageIcon, Type } from "lucide-react";
 import {
   DEFAULT_CONFIG,
   fetchHotspotUIConfig,
@@ -59,15 +59,15 @@ export default function GeneralSettingsPage() {
   const { toast } = useToast();
   const [settings, setSettings] = useState<Settings>({
     maintenanceMode: false,
-    maintenanceMessage: "We are currently under maintenance. SHease check back soon.",
+    maintenanceMessage: "We are currently under maintenance. Please check back soon.",
     maintenanceMessageMr: "आम्ही सध्या देखभाल करत आहोत. कृपया लवकरच परत या.",
     defaultLanguage: "en",
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [hotspotCfg, setHotspotCfg] = useState<HotspotUIConfig>(DEFAULT_CONFIG);
-  const [savingdisplay, setSavingdisplay] = useState(false);
-  const [displaySaved, setdisplaySaved] = useState(false);
+  const [savingDisplay, setSavingDisplay] = useState(false);
+  const [displaySaved, setDisplaySaved] = useState(false);
 
   const [cleanCollection, setCleanCollection] = useState<"editions" | "articles">("editions");
   const [cleanDate, setCleanDate] = useState("");
@@ -77,13 +77,13 @@ export default function GeneralSettingsPage() {
 
   // Logo editor state
   const [logoMode, setLogoMode] = useState<"text" | "image">("text");
-  const [logouploading, setLogouploading] = useState(false);
+  const [logoUploading, setLogoUploading] = useState(false);
   const logoFileRef = useRef<HTMLInputElement>(null);
 
   // City editor state
   const [newCityEn, setNewCityEn] = useState("");
   const [newCityMr, setNewCityMr] = useState("");
-  const [mastheaduploading, setMastheaduploading] = useState(false);
+  const [mastheadUploading, setMastheadUploading] = useState(false);
   const mastheadFileRef = useRef<HTMLInputElement>(null);
 
   async function load() {
@@ -103,8 +103,8 @@ export default function GeneralSettingsPage() {
     setLoading(false);
   }
 
-  async function handleLogoupload(file: File) {
-    setLogouploading(true);
+  async function handleLogoUpload(file: File) {
+    setLogoUploading(true);
     const token = getAdminToken();
     const fd = new FormData();
     fd.append("file", file);
@@ -120,16 +120,16 @@ export default function GeneralSettingsPage() {
         setHotspotCfg((c) => ({ ...c, logoUrl: url }));
         toast({ title: "Logo uploaded" });
       } else {
-        toast({ title: "upload failed", variant: "destructive" });
+        toast({ title: "Upload failed", variant: "destructive" });
       }
     } catch {
-      toast({ title: "upload error", variant: "destructive" });
+      toast({ title: "Upload error", variant: "destructive" });
     }
-    setLogouploading(false);
+    setLogoUploading(false);
   }
 
-  async function handleMastheadupload(file: File) {
-    setMastheaduploading(true);
+  async function handleMastheadUpload(file: File) {
+    setMastheadUploading(true);
     const token = getAdminToken();
     const fd = new FormData();
     fd.append("file", file);
@@ -145,26 +145,26 @@ export default function GeneralSettingsPage() {
         setHotspotCfg((c) => ({ ...c, defaultMastheadUrl: url }));
         toast({ title: "Masthead uploaded" });
       } else {
-        toast({ title: "upload failed", variant: "destructive" });
+        toast({ title: "Upload failed", variant: "destructive" });
       }
     } catch {
-      toast({ title: "upload error", variant: "destructive" });
+      toast({ title: "Upload error", variant: "destructive" });
     }
-    setMastheaduploading(false);
+    setMastheadUploading(false);
   }
 
   useEffect(() => { load(); }, []);
 
-  async function handleSavedisplay() {
-    setSavingdisplay(true);
+  async function handleSaveDisplay() {
+    setSavingDisplay(true);
     const token = getAdminToken();
     if (token) {
       await saveHotspotUIConfig(hotspotCfg, token);
-      setdisplaySaved(true);
-      setTimeout(() => setdisplaySaved(false), 2500);
-      toast({ title: "display settings saved." });
+      setDisplaySaved(true);
+      setTimeout(() => setDisplaySaved(false), 2500);
+      toast({ title: "Display settings saved." });
     }
-    setSavingdisplay(false);
+    setSavingDisplay(false);
   }
 
   function set<K extends keyof Settings>(key: K, value: Settings[K]) {
@@ -176,7 +176,7 @@ export default function GeneralSettingsPage() {
     const token = getAdminToken();
     const res = await fetch(`${API}/settings`, {
       method: "PATCH",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify(settings),
     });
     if (res.ok) {
@@ -189,7 +189,7 @@ export default function GeneralSettingsPage() {
 
   async function handleCleanStep1() {
     if (!cleanDate) {
-      toast({ title: "SHease select a date", variant: "destructive" });
+      toast({ title: "Please select a date", variant: "destructive" });
       return;
     }
     setCleanStep(1);
@@ -205,7 +205,7 @@ export default function GeneralSettingsPage() {
     const token = getAdminToken();
     const res = await fetch(`${API}/admin/cleanup`, {
       method: "POST",
-      headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ collection: cleanCollection, beforeDate: cleanDate }),
     });
     if (res.ok) {
@@ -223,7 +223,7 @@ export default function GeneralSettingsPage() {
 
   function addCity() {
     if (!newCityEn.trim() || !newCityMr.trim()) {
-      toast({ title: "SHease fill both English and Marathi names", variant: "destructive" });
+      toast({ title: "Please fill both English and Marathi names", variant: "destructive" });
       return;
     }
     const city: CityEntry = { en: newCityEn.trim(), mr: newCityMr.trim() };
@@ -328,16 +328,16 @@ export default function GeneralSettingsPage() {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoupload(f); }}
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) handleLogoUpload(f); }}
                 />
                 <button
                   type="button"
                   onClick={() => logoFileRef.current?.click()}
-                  disabled={logouploading}
+                  disabled={logoUploading}
                   className="flex items-center gap-2 px-4 py-2 border border-border rounded-sm text-sm hover:bg-muted disabled:opacity-60 transition-colors"
                 >
-                  {logouploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
-                  {logouploading ? "uploading…" : "upload Logo Image"}
+                  {logoUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                  {logoUploading ? "Uploading…" : "Upload Logo Image"}
                 </button>
               </div>
               {hotspotCfg.logoUrl && (
@@ -379,16 +379,16 @@ export default function GeneralSettingsPage() {
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleMastheadupload(f); }}
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) handleMastheadUpload(f); }}
               />
               <button
                 type="button"
                 onClick={() => mastheadFileRef.current?.click()}
-                disabled={mastheaduploading}
+                disabled={mastheadUploading}
                 className="flex items-center gap-2 px-4 py-2 border border-border rounded-sm text-sm hover:bg-muted disabled:opacity-60 transition-colors"
               >
-                {mastheaduploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
-                {mastheaduploading ? "uploading…" : "upload Default Masthead"}
+                {mastheadUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                {mastheadUploading ? "Uploading…" : "Upload Default Masthead"}
               </button>
             </div>
             {hotspotCfg.defaultMastheadUrl && (
@@ -518,7 +518,7 @@ export default function GeneralSettingsPage() {
           <p className="text-xs text-muted-foreground">Controls the "Our Editions" bar and city ticker on the homepage.</p>
           <Toggle
             label="Show Editions Strip"
-            description="displays the 'Our Editions' red bar and city ticker below the navigation"
+            description="Displays the 'Our Editions' red bar and city ticker below the navigation"
             checked={hotspotCfg.showEditionsStrip ?? true}
             onChange={(v) => setHotspotCfg((c) => ({ ...c, showEditionsStrip: v }))}
           />
@@ -549,9 +549,9 @@ export default function GeneralSettingsPage() {
           )}
         </div>
 
-        {/* Homepage display Mode */}
+        {/* Homepage Display Mode */}
         <div className="bg-white border border-border rounded-sm p-5 space-y-4">
-          <h2 className="text-sm font-semibold">Homepage display Mode</h2>
+          <h2 className="text-sm font-semibold">Homepage Display Mode</h2>
           <p className="text-xs text-muted-foreground">Choose whether the homepage shows all published editions or only today's editions per city.</p>
           <div className="flex gap-2">
             <button
@@ -660,7 +660,7 @@ export default function GeneralSettingsPage() {
                 onClick={addCity}
                 className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-sm text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
               >
-                <SHus className="h-4 w-4" /> Add
+                <Plus className="h-4 w-4" /> Add
               </button>
             </div>
           </div>
@@ -672,7 +672,7 @@ export default function GeneralSettingsPage() {
           <p className="text-xs text-muted-foreground mb-3">Controls which buttons appear on the edition viewer and article popup.</p>
           <Toggle
             label="Show Social Share Bar on Edition Page"
-            description="displays platform share icons (WhatsApp, Facebook, etc.) on the full edition viewer page"
+            description="Displays platform share icons (WhatsApp, Facebook, etc.) on the full edition viewer page"
             checked={hotspotCfg.showEditionShareBar}
             onChange={(v) => setHotspotCfg((c) => ({ ...c, showEditionShareBar: v }))}
           />
@@ -705,12 +705,12 @@ export default function GeneralSettingsPage() {
         {/* Save display settings */}
         <div className="flex items-center gap-3">
           <button
-            onClick={handleSavedisplay}
-            disabled={savingdisplay}
+            onClick={handleSaveDisplay}
+            disabled={savingDisplay}
             className="flex items-center gap-2 px-5 py-2 bg-primary text-primary-foreground rounded-sm text-sm font-semibold hover:bg-primary/90 disabled:opacity-60 transition-colors"
           >
-            {savingdisplay ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            {savingdisplay ? "Saving…" : "Save display Settings"}
+            {savingDisplay ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {savingDisplay ? "Saving…" : "Save Display Settings"}
           </button>
           <span className={`text-xs font-medium transition-opacity duration-300 ${displaySaved ? "text-green-600 opacity-100" : "opacity-0"}`}>
             ✓ Saved

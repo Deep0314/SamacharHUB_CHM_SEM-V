@@ -3,25 +3,25 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
   useListMedia,
-  useuploadMedia,
+  useUploadMedia,
   getListMediaQueryKey,
 } from "@samacharhub/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { upload, Copy, Check, Trash2 } from "lucide-react";
+import { Upload, Copy, Check, Trash2 } from "lucide-react";
 import { getAdminToken } from "@/lib/auth";
 
 export default function AdminMediaPage() {
   const queryClient = useQueryClient();
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [uploadMode, setuploadMode] = useState<"image" | "pdf">("image");
+  const [uploadMode, setUploadMode] = useState<"image" | "pdf">("image");
 
   const params = { page: 1, limit: 100 };
   const { data, isLoading, refetch } = useListMedia(params, {
     query: { queryKey: getListMediaQueryKey(params) },
   });
 
-  const uploadMutation = useuploadMedia({
+  const uploadMutation = useUploadMedia({
     mutation: {
       onSuccess: async (created) => {
         queryClient.setQueryData(getListMediaQueryKey(params), (current) => {
@@ -43,13 +43,13 @@ export default function AdminMediaPage() {
     return btoa(binary);
   }
 
-  async function handleupload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     e.currentTarget.value = "";
     const payload = {
       filename: file.name,
-      mimeType: file.type || (uploadMode === "pdf" ? "apSHication/pdf" : "image/png"),
+      mimeType: file.type || (uploadMode === "pdf" ? "application/pdf" : "image/png"),
       base64Data: await fileToBase64(file),
       altText: file.name.replace(/\.[^.]+$/, ""),
     };
@@ -83,20 +83,20 @@ export default function AdminMediaPage() {
     <AdminGuard>
       <AdminLayout title="Media Library">
         <div className="space-y-4">
-          {/* upload */}
+          {/* Upload */}
           <div className="bg-white border border-border rounded-sm p-5">
-            <h3 className="font-semibold mb-2">upload Newspaper Pages</h3>
+            <h3 className="font-semibold mb-2">Upload Newspaper Pages</h3>
             <div className="flex gap-2 mb-3">
               <button
                 type="button"
-                onClick={() => setuploadMode("image")}
+                onClick={() => setUploadMode("image")}
                 className={`px-3 py-1.5 text-xs rounded-sm border ${uploadMode === "image" ? "bg-primary text-primary-foreground border-primary" : "bg-white border-border"}`}
               >
                 Images
               </button>
               <button
                 type="button"
-                onClick={() => setuploadMode("pdf")}
+                onClick={() => setUploadMode("pdf")}
                 className={`px-3 py-1.5 text-xs rounded-sm border ${uploadMode === "pdf" ? "bg-primary text-primary-foreground border-primary" : "bg-white border-border"}`}
               >
                 PDFs to Images
@@ -104,8 +104,8 @@ export default function AdminMediaPage() {
             </div>
             <p className="text-sm text-muted-foreground mb-3">
               {uploadMode === "pdf"
-                ? "upload a PDF newspaper issue and it will be converted into page images."
-                : "upload newspaper page images directly (JPG, PNG, WebP)."}
+                ? "Upload a PDF newspaper issue and it will be converted into page images."
+                : "Upload newspaper page images directly (JPG, PNG, WebP)."}
             </p>
             <label
               className={`flex flex-col items-center justify-center h-28 border-2 border-dashed rounded-sm cursor-pointer transition-colors ${
@@ -115,18 +115,18 @@ export default function AdminMediaPage() {
               }`}
               data-testid="upload-zone"
             >
-              <upload className="h-6 w-6 text-muted-foreground mb-2" />
+              <Upload className="h-6 w-6 text-muted-foreground mb-2" />
               <span className="text-sm text-muted-foreground">
                 {uploadMutation.isPending
-                  ? "uploading..."
+                  ? "Uploading..."
                   : uploadMode === "pdf"
                     ? "Click to upload PDF"
                     : "Click to upload image"}
               </span>
               <input
                 type="file"
-                accept={uploadMode === "pdf" ? "apSHication/pdf" : "image/*"}
-                onChange={handleupload}
+                accept={uploadMode === "pdf" ? "application/pdf" : "image/*"}
+                onChange={handleUpload}
                 disabled={uploadMutation.isPending}
                 className="hidden"
                 data-testid="file-input"
@@ -143,7 +143,7 @@ export default function AdminMediaPage() {
             </div>
           ) : (data ?? []).length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              <p>No media files yet. upload your first image above.</p>
+              <p>No media files yet. Upload your first image above.</p>
             </div>
           ) : (
             <div

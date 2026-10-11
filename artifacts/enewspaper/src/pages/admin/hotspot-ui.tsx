@@ -9,8 +9,8 @@ import {
   type HotspotUIConfig,
 } from "@/lib/hotspot-ui-config";
 import { getAdminToken } from "@/lib/auth";
-import { useuploadMedia } from "@samacharhub/api-client-react";
-import { Save, RotateCcw, upload, Loader2 } from "lucide-react";
+import { useUploadMedia } from "@samacharhub/api-client-react";
+import { Save, RotateCcw, Upload, Loader2 } from "lucide-react";
 
 function Toggle({
   label,
@@ -88,7 +88,7 @@ const SHARE_LABELS: Record<keyof HotspotUIConfig["shareButtons"], string> = {
 export default function HotspotUIPage() {
   const { toast } = useToast();
   const [config, setConfig] = useState<HotspotUIConfig>(DEFAULT_CONFIG);
-  const [uploadingLogo, setuploadingLogo] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [saving, setSaving] = useState(false);
   const [savedIndicator, setSavedIndicator] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -96,7 +96,7 @@ export default function HotspotUIPage() {
   const configRef = useRef(config);
   configRef.current = config;
 
-  const uploadMedia = useuploadMedia({
+  const uploadMedia = useUploadMedia({
     mutation: {
       onSuccess: (created) => {
         const url = (created as any).url ?? "";
@@ -106,13 +106,13 @@ export default function HotspotUIPage() {
           if (token) saveHotspotUIConfig(next, token);
           return next;
         });
-        setuploadingLogo(false);
+        setUploadingLogo(false);
         showSaved();
         toast({ title: "Logo uploaded and saved!" });
       },
       onError: () => {
-        setuploadingLogo(false);
-        toast({ title: "upload failed", variant: "destructive" });
+        setUploadingLogo(false);
+        toast({ title: "Upload failed", variant: "destructive" });
       },
     },
   });
@@ -121,7 +121,7 @@ export default function HotspotUIPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     e.currentTarget.value = "";
-    setuploadingLogo(true);
+    setUploadingLogo(true);
     const buffer = await file.arrayBuffer();
     const bytes = new Uint8Array(buffer);
     let binary = "";
@@ -197,7 +197,7 @@ export default function HotspotUIPage() {
             <h3 className="font-semibold text-sm">Logo / Masthead</h3>
             <Toggle
               label="Show logo at top"
-              description="displays the newspaper name or logo image at the top of the popup"
+              description="Displays the newspaper name or logo image at the top of the popup"
               checked={config.showLogo}
               onChange={(v) => set("showLogo", v)}
             />
@@ -221,8 +221,8 @@ export default function HotspotUIPage() {
                           disabled={uploadingLogo}
                           className="flex items-center gap-1.5 px-3 py-1.5 border border-dashed border-border rounded-sm text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
                         >
-                          {uploadingLogo ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <upload className="h-3.5 w-3.5" />}
-                          {uploadingLogo ? "uploading…" : "replace image"}
+                          {uploadingLogo ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+                          {uploadingLogo ? "Uploading…" : "Replace image"}
                         </button>
                         <button
                           type="button"
@@ -241,8 +241,8 @@ export default function HotspotUIPage() {
                       disabled={uploadingLogo}
                       className="flex items-center gap-2 px-4 py-2 border border-dashed border-border rounded-sm text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-50"
                     >
-                      {uploadingLogo ? <Loader2 className="h-4 w-4 animate-spin" /> : <upload className="h-4 w-4" />}
-                      {uploadingLogo ? "uploading…" : "upload logo image"}
+                      {uploadingLogo ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+                      {uploadingLogo ? "Uploading…" : "Upload logo image"}
                     </button>
                   )}
                   <Field
@@ -316,7 +316,7 @@ export default function HotspotUIPage() {
             <h3 className="font-semibold text-sm mb-1">Content Sections</h3>
             <Toggle
               label="Show article title & summary"
-              description="displays the linked article's headline and teaser below the clip"
+              description="Displays the linked article's headline and teaser below the clip"
               checked={config.showArticleDetails}
               onChange={(v) => set("showArticleDetails", v)}
             />
