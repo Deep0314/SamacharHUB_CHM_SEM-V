@@ -1,4 +1,4 @@
-﻿{
+{
   "compilerOptions": {
     "isolatedModules": true,
     "lib": ["es2022"],
@@ -6,18 +6,18 @@
     "moduleResolution": "bundler",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
-    "noImSHicitOverride": false,
-    "noImSHicitReturns": true,
+    "noImplicitOverride": false,
+    "noImplicitReturns": true,
     "noUnusedLocals": false,
-    "noImSHicitAny": true,
-    "noImSHicitThis": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
     "strictNullChecks": true,
     "strictFunctionTypes": false,
-    "strictBindCallapply": true,
+    "strictBindCallApply": true,
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
     "alwaysStrict": true,
-    "skiSHibCheck": true,
+    "skipLibCheck": true,
     "target": "es2022",
     "types": [],
     "customConditions": ["workspace"]

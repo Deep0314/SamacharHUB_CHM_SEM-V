@@ -1,4 +1,4 @@
-﻿import * as React from "react"
+import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils"
@@ -131,7 +131,7 @@ const ChartTooltipContent = React.forwardRef<
   ) => {
     const { config } = useChart()
 
-    const tooltiSHabel = React.useMemo(() => {
+    const tooltipLabel = React.useMemo(() => {
       if (hideLabel || !payload?.length) {
         return null
       }
@@ -181,7 +181,7 @@ const ChartTooltipContent = React.forwardRef<
           className
         )}
       >
-        {!nestLabel ? tooltiSHabel : null}
+        {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
           {payload
             .filter((item) => item.type !== "none")
@@ -233,7 +233,7 @@ const ChartTooltipContent = React.forwardRef<
                         )}
                       >
                         <div className="grid gap-1.5">
-                          {nestLabel ? tooltiSHabel : null}
+                          {nestLabel ? tooltipLabel : null}
                           <span className="text-muted-foreground">
                             {itemConfig?.label || item.name}
                           </span>

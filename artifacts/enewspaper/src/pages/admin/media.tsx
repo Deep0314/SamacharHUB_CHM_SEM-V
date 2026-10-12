@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
@@ -23,7 +23,7 @@ export default function AdminMediaPage() {
 
   const uploadMutation = useUploadMedia({
     mutation: {
-      onSuccess: async (created) => {
+      onSuccess: async (created: any) => {
         queryClient.setQueryData(getListMediaQueryKey(params), (current) => {
           const items = Array.isArray(current) ? current : [];
           return [created, ...items.filter((item) => item._id !== created._id)];

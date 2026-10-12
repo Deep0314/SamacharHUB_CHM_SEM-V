@@ -1,4 +1,4 @@
-﻿import express, { type ApSHication, type Request, type Response } from "express";
+import express, { type Application, type Request, type Response } from "express";
 import cors from "cors";
 import { pinoHttp } from "pino-http";
 import router from "./routes/index.js";
@@ -15,7 +15,7 @@ app.use(
         return {
           id: req.id,
           method: req.method,
-          url: req.url?.sSHit("?")[0],
+          url: req.url?.split("?")[0],
         };
       },
       res(res: any) {

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
 import { useToast } from "@/hooks/use-toast";
@@ -98,7 +98,7 @@ export default function HotspotUIPage() {
 
   const uploadMedia = useUploadMedia({
     mutation: {
-      onSuccess: (created) => {
+      onSuccess: (created: any) => {
         const url = (created as any).url ?? "";
         setConfig((c) => {
           const next = { ...c, logoUrl: url };

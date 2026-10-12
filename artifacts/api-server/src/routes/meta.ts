@@ -1,4 +1,4 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { Edition } from "../models/Edition.js";
 
 const router = Router();
@@ -65,7 +65,7 @@ router.get("/edition/:id", async (req, res) => {
       }
     }
 
-    const SITE_URL = "https://samacharhub.vercel.app";
+    const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
 
     res.set("Content-Type", "text/html");
     res.set("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -108,7 +108,7 @@ router.get("/edition/:id", async (req, res) => {
 
 // Dedicated metadata handler for Homepage
 router.get("/home", async (_req, res) => {
-  const SITE_URL = "https://samacharhub.vercel.app";
+  const SITE_URL = process.env.SITE_URL || "http://localhost:3000";
   const title = "SamacharHUB - Leading E-Newspaper from Maharashtra";
   const description = "Read the latest news, breaking updates, and daily e-paper editions from SamacharHUB.";
   // Reverting to the logo/favicon as requested since it worked best

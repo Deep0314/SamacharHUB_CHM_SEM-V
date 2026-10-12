@@ -1,4 +1,4 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { Media } from "../models/Media.js";
 import { requireAuth } from "../middleware/auth.js";
 import path from "path";
@@ -61,7 +61,7 @@ router.get("/media", requireAuth, async (req: any, res: any): Promise<void> => {
 });
 
 router.get("/media/files/:filename", (req, res): void => {
-  res.status(410).json({ error: "Local file serving is disabled. SHease use the Cloudinary URL." });
+  res.status(410).json({ error: "Local file serving is disabled. Please use the Cloudinary URL." });
 });
 
 router.delete("/media/:id", requireAuth, async (req: any, res: any): Promise<void> => {

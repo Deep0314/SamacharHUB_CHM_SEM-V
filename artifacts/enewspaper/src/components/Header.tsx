@@ -1,4 +1,4 @@
-﻿import { Link, useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useLang } from "@/lib/lang";
 import { Menu, X, ChevronDown, CalendarDays } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
@@ -39,8 +39,8 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const siteName = lang === "mr" ? "पंचनामा लक्षवेधी" : "SamacharHUB";
-  const tagline = lang === "mr" ? "जनतेचा विश्वासू आवाज" : "The Voice of the People";
+  const siteName = lang === "mr" ? "समाचार हब" : "SamacharHUB";
+  const tagline = lang === "mr" ? "भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा" : "Read without language barriers, share without limits";
 
   return (
     <header className="bg-white border-b border-border shadow-sm">
@@ -78,7 +78,7 @@ export function Header() {
                 <img
                   src={cfg.logoUrl}
                   alt={cfg.logoText || siteName}
-                  className="h-10 md:h-14 w-auto max-w-[260px] object-contain"
+                  className="h-16 sm:h-20 md:h-24 w-auto max-w-[450px] object-contain"
                   onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                 />
               ) : (

@@ -4,6 +4,9 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "node -e \"console.log('Using pnpm...')\"",
+    "dev:api": "pnpm --filter @samacharhub/api-server run dev",
+    "dev:frontend": "pnpm --filter @samacharhub/enewspaper run dev",
+    "seed": "pnpm --filter @samacharhub/api-server run seed",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"

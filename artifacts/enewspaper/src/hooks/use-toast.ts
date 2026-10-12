@@ -1,4 +1,4 @@
-﻿import * as React from "react"
+import * as React from "react"
 
 import type {
   ToastActionElement,
@@ -91,7 +91,7 @@ export const reducer = (state: State, action: Action): State => {
       const { toastId } = action
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simSHicity
+      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId)
       } else {
@@ -176,7 +176,7 @@ function useToast() {
     return () => {
       const index = listeners.indexOf(setState)
       if (index > -1) {
-        listeners.sSHice(index, 1)
+        listeners.splice(index, 1)
       }
     }
   }, [state])

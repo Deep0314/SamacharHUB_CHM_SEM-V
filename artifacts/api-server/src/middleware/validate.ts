@@ -13,7 +13,7 @@ import { z, ZodSchema, ZodError } from "zod";
 type RequestPart = "body" | "query" | "params";
 
 function formatZodError(err: ZodError): string {
-  return err.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
+  return err.errors.map((e: any) => `${e.path.join(".")}: ${e.message}`).join(", ");
 }
 
 /**

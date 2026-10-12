@@ -1,4 +1,4 @@
-﻿export interface CityEntry {
+export interface CityEntry {
   en: string;
   mr: string;
 }
@@ -40,14 +40,14 @@ export interface HotspotUIConfig {
 }
 
 export const DEFAULT_CITIES: CityEntry[] = [
-  { en: "Amravati", mr: "अमरावती" },
-  { en: "Namaskar Amravati", mr: "नमस्कार अमरावती" },
-  { en: "Yavatmal", mr: "यवतमाळ" },
-  { en: "Buldhana", mr: "बुलढाणा" },
-  { en: "Akola", mr: "अकोला" },
-  { en: "Washim", mr: "वाशीम" },
-  { en: "Wardha", mr: "वर्धा" },
-  { en: "Weekly", mr: "साप्ताहिक" },
+  { en: "Amravati", mr: "???????" },
+  { en: "Namaskar Amravati", mr: "??????? ???????" },
+  { en: "Yavatmal", mr: "??????" },
+  { en: "Buldhana", mr: "???????" },
+  { en: "Akola", mr: "?????" },
+  { en: "Washim", mr: "?????" },
+  { en: "Wardha", mr: "?????" },
+  { en: "Weekly", mr: "?????????" },
 ];
 
 export const DEFAULT_CONFIG: HotspotUIConfig = {
@@ -74,7 +74,7 @@ export const DEFAULT_CONFIG: HotspotUIConfig = {
     linkedin: false,
   },
   popupHeaderText: "Newspaper Clip",
-  popupHeaderTextMr: "वर्तमानपत्र क्लिप",
+  popupHeaderTextMr: "??????????? ?????",
   footerSiteUrl: "www.samacharhub.com",
   footerPoweredBy: "Powered by | Deep Kamble",
   showFooterDate: true,
@@ -116,7 +116,7 @@ export async function fetchHotspotUIConfig(): Promise<HotspotUIConfig> {
 export async function saveHotspotUIConfig(config: HotspotUIConfig, token: string): Promise<void> {
   await fetch("/api/settings", {
     method: "PATCH",
-    headers: { "Content-Type": "apSHication/json", Authorization: `Bearer ${token}` },
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ hotspotUIConfig: config }),
   });
 }

@@ -1,4 +1,4 @@
-﻿import { useParams, useLocation, Link } from "wouter";
+import { useParams, useLocation, Link } from "wouter";
 import { useGetEdition, useListEditions } from "@samacharhub/api-client-react";
 import type { ArticleHotspot } from "@samacharhub/api-client-react";
 import { SEO } from "@/components/SEO";
@@ -399,7 +399,7 @@ function HotspotViewer({
                 <img
                   src={logoSrc}
                   alt="Masthead"
-                  className="max-h-6 md:max-h-11 w-auto object-contain"
+                  className="max-h-8 md:max-h-14 w-auto object-contain"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).style.display = "none";
                     const span = document.createElement("span");

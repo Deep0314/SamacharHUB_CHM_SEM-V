@@ -12,6 +12,18 @@
 
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Automatically resolve .env from api-server directory if needed
+if (!process.env.MONGODB_URI) {
+  const currentDir = path.dirname(fileURLToPath(import.meta.url));
+  const envPath = path.resolve(currentDir, "..", ".env");
+  if (fs.existsSync(envPath) && typeof process.loadEnvFile === "function") {
+    process.loadEnvFile(envPath);
+  }
+}
 
 // --- DB Connection ---
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -31,6 +43,19 @@ const AdminUserSchema = new mongoose.Schema({
   email: String, name: String, password: String, role: String,
 }, { timestamps: true });
 const AdminUser = mongoose.model("AdminUser", AdminUserSchema);
+
+// --- SiteSettings Schema ---
+const SiteSettingsSchema = new mongoose.Schema({
+  siteDescription: String,
+  siteDescriptionMr: String,
+  hotspotUIConfig: mongoose.Schema.Types.Mixed,
+  aboutContent: String,
+  aboutContentMr: String,
+  poweredByText: String,
+  poweredByUrl: String,
+  defaultLanguage: String,
+}, { strict: false });
+const SiteSettings = mongoose.model("SiteSettings", SiteSettingsSchema);
 
 // --- Article Schema ---
 const ArticleSchema = new mongoose.Schema({
@@ -78,19 +103,95 @@ console.log(`✅ Categories: ${seededCategories} seeded (${categories.length - s
 // ============================================================
 // SEED ADMIN USER
 // ============================================================
-const adminEmail = "admin@samacharhub.com";
-const existingAdmin = await AdminUser.findOne({ email: adminEmail });
-if (!existingAdmin) {
-  const hashedPassword = await bcrypt.hash("Admin@123", 12);
-  await AdminUser.create({
-    email: adminEmail,
-    name: "SamacharHUB Admin",
-    password: hashedPassword,
-    role: "admin",
-  });
-  console.log(`✅ Admin user created: ${adminEmail} / Admin@123`);
+const adminUsers = [
+  { email: "admin@example.com", name: "SamacharHUB Admin", password: "password123", role: "admin" },
+  { email: "admin@samacharhub.com", name: "SamacharHUB Admin", password: "Admin@123", role: "admin" },
+];
+
+for (const admin of adminUsers) {
+  const hashedPassword = await bcrypt.hash(admin.password, 12);
+  await AdminUser.findOneAndUpdate(
+    { email: admin.email },
+    {
+      email: admin.email,
+      name: admin.name,
+      password: hashedPassword,
+      role: admin.role,
+    },
+    { upsert: true, new: true }
+  );
+  console.log(`✅ Admin user seeded/updated: ${admin.email} / ${admin.password}`);
+}
+
+// ============================================================
+// SEED SITE SETTINGS & LOGO
+// ============================================================
+const defaultSettings = {
+  siteDescription: "SamacharHUB — Read without language barriers, share without limits.",
+  siteDescriptionMr: "SamacharHUB — भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा.",
+  aboutContent: "SamacharHUB is a leading regional e-newspaper platform committed to providing accurate and timely news without language barriers.",
+  aboutContentMr: "समाचार हब हे भाषेच्या मर्यादांशिवाय अचूक आणि वेळेवर बातम्या देण्यासाठी वचनबद्ध असलेले एक अग्रगण्य प्रादेशिक ई-वृत्तपत्र आहे.",
+  poweredByText: "Deep Kamble",
+  poweredByUrl: "https://deepkamble.online",
+  defaultLanguage: "en",
+  maintenanceMode: false,
+  maintenanceMessage: "We are currently under maintenance. Please check back soon.",
+  maintenanceMessageMr: "आम्ही सध्या देखभाल करत आहोत. कृपया लवकरच परत या.",
+  hotspotUIConfig: {
+    showLogo: true,
+    logoUrl: "/logo.jpg",
+    logoText: "SamacharHUB",
+    tagline: "Read without language barriers, share without limits.",
+    taglineMr: "भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा.",
+    popupHeaderText: "SamacharHUB Clip",
+    popupHeaderTextMr: "वृत्तपत्र क्लिप",
+    footerSiteUrl: "www.samacharhub.com",
+    footerPoweredBy: "Powered by | Deep Kamble",
+    showFooterDate: true,
+    showFooterPage: true,
+    homeScrollEnabled: true,
+    homeScrollSpeed: 30,
+    homePageMode: "today",
+    showArticleDetails: true,
+    showZoomHint: true,
+    showCopyLink: true,
+    showDownload: true,
+    showReadArticle: true,
+    showPrint: true,
+    showEditionShareBar: true,
+    tickerContinuous: true,
+    showBreakingNewsStrip: true,
+    showEditionsStrip: true,
+    shareButtons: {
+      whatsapp: true,
+      facebook: true,
+      instagram: true,
+      twitter: true,
+      telegram: true,
+      email: true,
+      linkedin: true,
+    },
+  },
+};
+
+const existingSettings = await SiteSettings.findOne();
+if (!existingSettings) {
+  await SiteSettings.create(defaultSettings);
+  console.log("✅ Site settings and logo seeded to DB (/logo.jpg)");
 } else {
-  console.log(`ℹ️  Admin user already exists: ${adminEmail}`);
+  existingSettings.hotspotUIConfig = {
+    ...(existingSettings.hotspotUIConfig || {}),
+    ...defaultSettings.hotspotUIConfig,
+    logoUrl: "/logo.jpg",
+    showLogo: true,
+    logoText: "SamacharHUB",
+    tagline: "Read without language barriers, share without limits.",
+    taglineMr: "भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा.",
+  };
+  existingSettings.siteDescription = defaultSettings.siteDescription;
+  existingSettings.siteDescriptionMr = defaultSettings.siteDescriptionMr;
+  await existingSettings.save();
+  console.log("✅ Site settings and logo updated in DB (/logo.jpg)");
 }
 
 // ============================================================
@@ -181,8 +282,9 @@ console.log(`✅ Articles: ${seededArticles} seeded`);
 // ============================================================
 console.log("\n🎉 SamacharHUB database seeding complete!");
 console.log("━".repeat(50));
-console.log(`   Admin login: admin@samacharhub.com`);
-console.log(`   Password:    Admin@123`);
+console.log(`   Admin login: admin@example.com`);
+console.log(`   Password:    password123`);
+console.log(`   (Backup):    admin@samacharhub.com / Admin@123`);
 console.log("━".repeat(50));
 
 await mongoose.disconnect();

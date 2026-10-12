@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
@@ -197,7 +197,7 @@ function Sidebar({
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>displays the mobile sidebar.</SheetDescription>
+            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>
@@ -394,7 +394,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function SidebarGrouSHabel({
+function SidebarGroupLabel({
   className,
   asChild = false,
   ...props
@@ -706,7 +706,7 @@ export {
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupContent,
-  SidebarGrouSHabel,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarInput,
   SidebarInset,

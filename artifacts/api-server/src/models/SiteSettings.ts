@@ -1,4 +1,4 @@
-﻿import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IQuickLink {
   label: string;
@@ -81,9 +81,9 @@ const SiteSettingsSchema = new Schema<ISiteSettings>({
   contactAddress: { type: String, default: "Maharashtra, India" },
   contactAddressMr: { type: String, default: "महाराष्ट्र, भारत" },
   aboutContent: { type: String, default: "SamacharHUB is a leading regional e-newspaper committed to providing accurate and timely news." },
-  aboutContentMr: { type: String, default: "पंचनामा लक्षवेधी हे एक अग्रगण्य प्रादेशिक ई-वृत्तपत्र आहे जे अचूक आणि वेळेवर बातम्या देण्यासाठी वचनबद्ध आहे." },
+  aboutContentMr: { type: String, default: "समाचार हब हे एक अग्रगण्य प्रादेशिक ई-वृत्तपत्र आहे जे अचूक आणि वेळेवर बातम्या देण्यासाठी वचनबद्ध आहे." },
   maintenanceMode: { type: Boolean, default: false },
-  maintenanceMessage: { type: String, default: "We are currently under maintenance. SHease check back soon." },
+  maintenanceMessage: { type: String, default: "We are currently under maintenance. Please check back soon." },
   maintenanceMessageMr: { type: String, default: "आम्ही सध्या देखभाल करत आहोत. कृपया लवकरच परत या." },
   defaultLanguage: { type: String, enum: ["en", "mr"], default: "en" },
   smtpConfig: {
