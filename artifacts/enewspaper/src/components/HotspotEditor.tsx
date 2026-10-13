@@ -1,4 +1,4 @@
-﻿import { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { useListArticles } from "@samacharhub/api-client-react";
 import type { ArticleHotspot } from "@samacharhub/api-client-react";
 import { X, Search } from "lucide-react";
@@ -76,9 +76,11 @@ export function HotspotEditor({ pages, hotspots, onChange }: HotspotEditorProps)
       articleId: "",
       articleTitle: "",
       articleTitleMr: "",
+      articleTitleHi: "",
       articleSlug: "",
       articleSummary: "",
       articleSummaryMr: "",
+      articleSummaryHi: "",
     };
     onChange([...hotspots, hotspot]);
     setShowPicker(false);
@@ -97,9 +99,11 @@ export function HotspotEditor({ pages, hotspots, onChange }: HotspotEditorProps)
       articleId: article._id,
       articleTitle: article.title,
       articleTitleMr: article.titleMr ?? null,
+      articleTitleHi: article.titleHi ?? null,
       articleSlug: article.slug,
       articleSummary: article.summary,
       articleSummaryMr: article.summaryMr ?? null,
+      articleSummaryHi: article.summaryHi ?? null,
     };
     onChange([...hotspots, hotspot]);
     setShowPicker(false);
@@ -271,6 +275,9 @@ export function HotspotEditor({ pages, hotspots, onChange }: HotspotEditorProps)
                   <p className="text-sm font-medium truncate">{article.title}</p>
                   {article.titleMr && (
                     <p className="text-xs text-muted-foreground truncate">{article.titleMr}</p>
+                  )}
+                  {(article as any).titleHi && (
+                    <p className="text-xs text-muted-foreground truncate">{(article as any).titleHi}</p>
                   )}
                   <p className="text-xs text-muted-foreground/70 truncate mt-0.5">{article.summary}</p>
                 </button>

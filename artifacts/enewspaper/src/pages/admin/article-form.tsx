@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useParams } from "wouter";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
@@ -15,11 +15,14 @@ import { Save, ArrowLeft } from "lucide-react";
 interface FormData {
   title: string;
   titleMr: string;
+  titleHi: string;
   slug: string;
   summary: string;
   summaryMr: string;
+  summaryHi: string;
   content: string;
   contentMr: string;
+  contentHi: string;
   author: string;
   category: string;
   tags: string;
@@ -31,11 +34,14 @@ interface FormData {
 const EMPTY: FormData = {
   title: "",
   titleMr: "",
+  titleHi: "",
   slug: "",
   summary: "",
   summaryMr: "",
+  summaryHi: "",
   content: "",
   contentMr: "",
+  contentHi: "",
   author: "",
   category: "",
   tags: "",
@@ -75,11 +81,14 @@ export default function ArticleFormPage() {
       setForm({
         title: article.title ?? "",
         titleMr: article.titleMr ?? "",
+        titleHi: (article as any).titleHi ?? "",
         slug: article.slug ?? "",
         summary: article.summary ?? "",
         summaryMr: article.summaryMr ?? "",
+        summaryHi: (article as any).summaryHi ?? "",
         content: article.content ?? "",
         contentMr: article.contentMr ?? "",
+        contentHi: (article as any).contentHi ?? "",
         author: article.author ?? "",
         category: (article.category as any)?._id ?? (article.category as any) ?? "",
         tags: (article.tags ?? []).join(", "),
@@ -243,6 +252,25 @@ export default function ArticleFormPage() {
             <div>
               <Label>Content (मराठी)</Label>
               <Textarea field="contentMr" rows={12} placeholder="पूर्ण लेख मराठीत" />
+            </div>
+          </div>
+
+          {/* Hindi Content */}
+          <div className="bg-white border border-border rounded-sm p-5 space-y-4">
+            <h3 className="font-semibold text-base border-b border-border pb-2">
+              Hindi Content (हिंदी)
+            </h3>
+            <div>
+              <Label>Title (हिंदी)</Label>
+              <Input field="titleHi" placeholder="लेख का शीर्षक हिंदी में" />
+            </div>
+            <div>
+              <Label>Summary (हिंदी)</Label>
+              <Textarea field="summaryHi" rows={2} placeholder="संक्षिप्त विवरण हिंदी में" />
+            </div>
+            <div>
+              <Label>Content (हिंदी)</Label>
+              <Textarea field="contentHi" rows={12} placeholder="पूरा लेख हिंदी में" />
             </div>
           </div>
 

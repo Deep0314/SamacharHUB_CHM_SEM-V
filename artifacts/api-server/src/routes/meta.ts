@@ -25,7 +25,7 @@ router.get("/edition/:id", async (req, res) => {
 
     if (hotspot) {
       const pageNum = hotspot.pageIndex !== undefined ? hotspot.pageIndex + 1 : 1;
-      title = hotspot.articleTitle || hotspot.articleTitleMr || `Article from ${cityName} - ${dateStr} - Page ${pageNum}`;
+      title = hotspot.articleTitleHi || hotspot.articleTitle || hotspot.articleTitleMr || `Article from ${cityName} - ${dateStr} - Page ${pageNum}`;
       description = `Read the latest edition of SamacharHUB for ${cityName}. Published on ${dateStr}.`;
       
       const allPages = [(data as any).coverUrl, ...((data as any).pages || [])];

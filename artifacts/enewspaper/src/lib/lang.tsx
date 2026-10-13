@@ -1,12 +1,12 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { LoadingScreen } from "@/components/LoadingScreen";
 
-type Lang = "en" | "mr";
+export type Lang = "en" | "mr" | "hi";
 
 interface LangContextType {
   lang: Lang;
   setLang: (l: Lang) => void;
-  t: (en: string | null | undefined, mr: string | null | undefined) => string;
+  t: (en?: string | null, mr?: string | null, hi?: string | null) => string;
 }
 
 const LangContext = createContext<LangContextType>({
@@ -18,7 +18,7 @@ const LangContext = createContext<LangContextType>({
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang | null>(() => {
     const pref = localStorage.getItem("user_lang_pref") as Lang;
-    if (pref) return pref;
+    if (pref === "en" || pref === "mr" || pref === "hi") return pref;
     const prefetched = (window as any).__PREFETCHED_SETTINGS__;
     if (prefetched?.defaultLanguage) {
       return prefetched.defaultLanguage as Lang;
@@ -49,14 +49,25 @@ export function LangProvider({ children }: { children: ReactNode }) {
       });
   }, [lang, ready]);
 
+  useEffect(() => {
+    if (lang) {
+      document.documentElement.lang = lang;
+    }
+  }, [lang]);
+
   function setLang(l: Lang) {
     setLangState(l);
     localStorage.setItem("user_lang_pref", l);
   }
 
-  function t(en: string | null | undefined, mr: string | null | undefined): string {
-    if (lang === "mr" && mr) return mr;
-    return en ?? "";
+  function t(en?: string | null, mr?: string | null, hi?: string | null): string {
+    if (lang === "hi") {
+      return hi || mr || en || "";
+    }
+    if (lang === "mr") {
+      return mr || hi || en || "";
+    }
+    return en || hi || mr || "";
   }
 
   if (!ready || !lang) return <LoadingScreen />;

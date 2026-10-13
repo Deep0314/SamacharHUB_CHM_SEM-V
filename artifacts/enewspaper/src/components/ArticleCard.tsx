@@ -1,4 +1,4 @@
-﻿import { Link } from "wouter";
+import { Link } from "wouter";
 import { useLang } from "@/lib/lang";
 import { formatDate, truncate } from "@/lib/utils";
 import { Article } from "@samacharhub/api-client-react";
@@ -11,9 +11,9 @@ interface ArticleCardProps {
 export function ArticleCard({ article, variant = "default" }: ArticleCardProps) {
   const { lang, t } = useLang();
 
-  const title = t(article.title, article.titleMr);
-  const summary = t(article.summary, article.summaryMr);
-  const catName = t(article.category?.name, article.category?.nameMr);
+  const title = t(article.title, article.titleMr, (article as any).titleHi);
+  const summary = t(article.summary, article.summaryMr, (article as any).summaryHi);
+  const catName = t(article.category?.name, article.category?.nameMr, (article.category as any)?.nameHi);
   const date = formatDate(article.publishedAt ?? article.createdAt);
 
   if (variant === "hero") {

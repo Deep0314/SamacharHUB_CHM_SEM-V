@@ -1,4 +1,4 @@
-﻿import { Link } from "wouter";
+import { Link } from "wouter";
 import { useLang } from "@/lib/lang";
 import { useState, useEffect } from "react";
 import {
@@ -16,6 +16,7 @@ const API = "/api";
 interface QuickLink {
   label: string;
   labelMr: string;
+  labelHi?: string;
   url: string;
   order: number;
 }
@@ -27,12 +28,14 @@ interface SocialLink {
 interface Settings {
   siteDescription: string;
   siteDescriptionMr: string;
+  siteDescriptionHi?: string;
   quickLinks: QuickLink[];
   socialLinks: SocialLink[];
   contactEmail: string;
   contactPhone: string;
   contactAddress: string;
   contactAddressMr: string;
+  contactAddressHi?: string;
   poweredByText: string;
   poweredByUrl: string;
   hotspotUIConfig?: { logoUrl?: string; logoText?: string; showLogo?: boolean; footerSiteUrl?: string };
@@ -43,25 +46,29 @@ const DEFAULT: Settings = {
     "Vidarbha's trusted regional e-newspaper. Covering politics, sports, business, and more from the heart of Maharashtra.",
   siteDescriptionMr:
     "विदर्भाचे विश्वासू प्रादेशिक वृत्तपत्र. महाराष्ट्राच्या हृदयातून राजकारण, क्रीडा, व्यापार आणि अधिक.",
+  siteDescriptionHi:
+    "विदर्भ का विश्वसनीय क्षेत्रीय ई-समाचार पत्र। महाराष्ट्र के दिल से राजनीति, खेल, व्यापार और बहुत कुछ।",
   quickLinks: [
-    { label: "About Us", labelMr: "आमच्या विषयी", url: "/about", order: 0 },
-    { label: "Contact Us", labelMr: "संपर्क", url: "/contact", order: 1 },
+    { label: "About Us", labelMr: "आमच्या विषयी", labelHi: "हमारे बारे में", url: "/about", order: 0 },
+    { label: "Contact Us", labelMr: "संपर्क", labelHi: "संपर्क करें", url: "/contact", order: 1 },
     {
       label: "Politics",
       labelMr: "राजकारण",
+      labelHi: "राजनीति",
       url: "/category/politics",
       order: 2,
     },
-    { label: "Sports", labelMr: "क्रीडा", url: "/category/sports", order: 3 },
+    { label: "Sports", labelMr: "क्रीडा", labelHi: "खेल", url: "/category/sports", order: 3 },
   ],
   socialLinks: [],
   contactEmail: "",
   contactPhone: "",
   contactAddress: "Maharashtra, India",
   contactAddressMr: "महाराष्ट्र, भारत",
-  poweredByText: "Deep Kamble",
-  poweredByUrl: "https://deepkamble.online",
-  hotspotUIConfig: { footerSiteUrl: "www.samacharhub.com" },
+  contactAddressHi: "महाराष्ट्र, भारत",
+  poweredByText: "Deep Kamble & Gufran Khan",
+  poweredByUrl: "http://localhost:3000",
+  hotspotUIConfig: { footerSiteUrl: "http://localhost:3000" },
 };
 
 function SocialIcon({ icon, className }: { icon: string; className?: string }) {
@@ -85,7 +92,7 @@ function SocialIcon({ icon, className }: { icon: string; className?: string }) {
 }
 
 export function Footer() {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const [settings, setSettings] = useState<Settings>({ ...DEFAULT });
 
   useEffect(() => {
@@ -94,7 +101,7 @@ export function Footer() {
       .then((data) => {
         if (data) setSettings({ ...DEFAULT, ...data });
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const sortedLinks = [...settings.quickLinks].sort(
@@ -103,7 +110,7 @@ export function Footer() {
   const logoUrl = settings.hotspotUIConfig?.logoUrl;
   const logoText =
     settings.hotspotUIConfig?.logoText ||
-    (lang === "mr" ? "पंचनामा लक्षवेधी" : "SamacharHUB");
+    t("SamacharHUB", "पंचनामा लक्षवेधी", "समाचार हब");
 
   return (
     <footer className="bg-foreground text-background mt-10">
@@ -133,9 +140,11 @@ export function Footer() {
               </h3>
             </div>
             <p className="text-sm text-background/70 leading-relaxed">
-              {lang === "mr"
-                ? settings.siteDescriptionMr
-                : settings.siteDescription}
+              {t(
+                settings.siteDescription,
+                settings.siteDescriptionMr,
+                settings.siteDescriptionHi,
+              )}
             </p>
             {settings.socialLinks.length > 0 && (
               <div className="flex items-center gap-3 mt-4">
@@ -157,14 +166,14 @@ export function Footer() {
 
           <div>
             <h4 className="font-semibold text-sm uppercase tracking-wider mb-3 text-background/60">
-              {lang === "mr" ? "जलद दुवे" : "Quick Links"}
+              {t("Quick Links", "जलद दुवे", "त्वरित लिंक")}
             </h4>
             <ul className="space-y-2 text-sm">
               {sortedLinks.map((link, i) => (
                 <li key={i}>
                   <Link href={link.url}>
                     <span className="hover:text-primary cursor-pointer transition-colors">
-                      {lang === "mr" ? link.labelMr || link.label : link.label}
+                      {t(link.label, link.labelMr, link.labelHi)}
                     </span>
                   </Link>
                 </li>
@@ -172,7 +181,7 @@ export function Footer() {
               <li className="pt-1">
                 <Link href="/admin">
                   <span className="hover:text-primary cursor-pointer transition-colors text-background/50">
-                    {lang === "mr" ? "प्रशासक" : "Admin Login"}
+                    {t("Admin Login", "प्रशासक", "प्रशासक")}
                   </span>
                 </Link>
               </li>
@@ -181,16 +190,18 @@ export function Footer() {
 
           <div>
             <h4 className="font-semibold text-sm uppercase tracking-wider mb-3 text-background/60">
-              {lang === "mr" ? "संपर्क" : "Contact"}
+              {t("Contact", "संपर्क", "संपर्क")}
             </h4>
             <ul className="space-y-2 text-sm text-background/70">
               {settings.contactEmail && <li>{settings.contactEmail}</li>}
               {settings.contactPhone && <li>{settings.contactPhone}</li>}
-              {(settings.contactAddress || settings.contactAddressMr) && (
+              {(settings.contactAddress || settings.contactAddressMr || settings.contactAddressHi) && (
                 <li>
-                  {lang === "mr"
-                    ? settings.contactAddressMr || settings.contactAddress
-                    : settings.contactAddress}
+                  {t(
+                    settings.contactAddress,
+                    settings.contactAddressMr,
+                    settings.contactAddressHi,
+                  )}
                 </li>
               )}
             </ul>
@@ -199,8 +210,7 @@ export function Footer() {
 
         <div className="border-t border-background/10 mt-6 pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-background/40">
           <span>
-            &copy; {new Date().getFullYear()} SamacharHUB. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} SamacharHUB. {t("All rights reserved.", "सर्व हक्क राखीव.", "सर्वाधिकार सुरक्षित।")}
           </span>
           <span className="flex items-center gap-1.5">
             Powered by{" "}

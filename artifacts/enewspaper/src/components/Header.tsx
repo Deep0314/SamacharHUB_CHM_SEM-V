@@ -13,12 +13,15 @@ export function Header() {
   const [cfg, setCfg] = useState<HotspotUIConfig>(DEFAULT_CONFIG);
   const dropdownRef = useRef<HTMLLIElement>(null);
 
-  const today = new Date().toLocaleDateString(lang === "mr" ? "mr-IN" : "en-IN", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const today = new Date().toLocaleDateString(
+    lang === "mr" ? "mr-IN" : lang === "hi" ? "hi-IN" : "en-IN",
+    {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  );
 
   useEffect(() => {
     fetchHotspotUIConfig().then((c) => {
@@ -39,8 +42,12 @@ export function Header() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const siteName = lang === "mr" ? "समाचार हब" : "SamacharHUB";
-  const tagline = lang === "mr" ? "भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा" : "Read without language barriers, share without limits";
+  const siteName = lang === "mr" || lang === "hi" ? "समाचार हब" : "SamacharHUB";
+  const tagline = lang === "hi"
+    ? (cfg.taglineHi || "बिना किसी भाषा बाधा के पढ़ें, असीमित साझा करें")
+    : lang === "mr"
+    ? (cfg.taglineMr || "भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा")
+    : (cfg.tagline || "Read without language barriers, share without limits");
 
   return (
     <header className="bg-white border-b border-border shadow-sm">
@@ -48,7 +55,7 @@ export function Header() {
         {/* Top bar */}
         <div className="flex items-center justify-between py-2 border-b border-border text-xs text-muted-foreground">
           <span>{today}</span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setLang("en")}
               className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
@@ -57,6 +64,15 @@ export function Header() {
               data-testid="lang-en"
             >
               English
+            </button>
+            <button
+              onClick={() => setLang("hi")}
+              className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${
+                lang === "hi" ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+              }`}
+              data-testid="lang-hi"
+            >
+              हिंदी
             </button>
             <button
               onClick={() => setLang("mr")}
@@ -122,7 +138,7 @@ export function Header() {
                   data-testid="nav-home"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {lang === "mr" ? "मुखपृष्ठ" : "Home"}
+                  {lang === "hi" ? "मुखपृष्ठ" : lang === "mr" ? "मुखपृष्ठ" : "Home"}
                 </span>
               </Link>
             </li>
@@ -133,7 +149,7 @@ export function Header() {
                 className="flex items-center gap-1 px-4 py-2.5 text-sm font-medium text-white hover:bg-white/10 transition-colors w-full md:w-auto"
                 data-testid="nav-editions"
               >
-                {lang === "mr" ? "आवृत्ती" : "Editions"}
+                {lang === "hi" ? "संस्करण" : lang === "mr" ? "आवृत्ती" : "Editions"}
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${editionsOpen ? "rotate-180" : ""}`} />
               </button>
               {editionsOpen && (
@@ -144,7 +160,7 @@ export function Header() {
                         className="block px-4 py-2 text-sm hover:bg-muted cursor-pointer font-medium text-primary"
                         onClick={() => { setEditionsOpen(false); setMobileOpen(false); }}
                       >
-                        {lang === "mr" ? "सर्व आवृत्त्या" : "All Editions"}
+                        {lang === "hi" ? "सभी संस्करण" : lang === "mr" ? "सर्व आवृत्त्या" : "All Editions"}
                       </span>
                     </Link>
                     <div className="border-t border-border my-1" />
@@ -154,7 +170,7 @@ export function Header() {
                           className="block px-4 py-2 text-sm hover:bg-muted cursor-pointer"
                           onClick={() => { setEditionsOpen(false); setMobileOpen(false); }}
                         >
-                          {lang === "mr" ? c.mr : c.en}
+                          {lang === "hi" ? (c.hi || c.mr) : lang === "mr" ? c.mr : c.en}
                         </span>
                       </Link>
                     ))}
@@ -170,7 +186,7 @@ export function Header() {
                   data-testid="nav-about"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {lang === "mr" ? "आमच्या विषयी" : "About Us"}
+                  {lang === "hi" ? "हमारे बारे में" : lang === "mr" ? "आमच्या विषयी" : "About Us"}
                 </span>
               </Link>
             </li>
@@ -182,7 +198,7 @@ export function Header() {
                   data-testid="nav-contact"
                   onClick={() => setMobileOpen(false)}
                 >
-                  {lang === "mr" ? "संपर्क" : "Contact Us"}
+                  {lang === "hi" ? "संपर्क करें" : lang === "mr" ? "संपर्क" : "Contact Us"}
                 </span>
               </Link>
             </li>
@@ -195,7 +211,7 @@ export function Header() {
                   onClick={() => setMobileOpen(false)}
                 >
                   <CalendarDays className="h-3.5 w-3.5" />
-                  {lang === "mr" ? "दिनदर्शिका" : "Browse by Date"}
+                  {lang === "hi" ? "तिथि अनुसार" : lang === "mr" ? "दिनदर्शिका" : "Browse by Date"}
                 </span>
               </Link>
             </li>

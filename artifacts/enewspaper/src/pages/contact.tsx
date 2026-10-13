@@ -9,6 +9,7 @@ interface ContactSettings {
   contactPhone: string;
   contactAddress: string;
   contactAddressMr: string;
+  contactAddressHi?: string;
   socialLinks: { platform: string; url: string; icon: string }[];
 }
 
@@ -24,7 +25,7 @@ function useContactSettings() {
 }
 
 export default function ContactPage() {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const settings = useContactSettings();
 
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
@@ -55,7 +56,13 @@ export default function ContactPage() {
       setSubmitted(true);
       setForm({ name: "", email: "", phone: "", message: "" });
     } else {
-      setError(lang === "mr" ? "संदेश पाठवण्यात अयशस्वी. पुन्हा प्रयत्न करा." : "Failed to send message. Please try again.");
+      setError(
+        t(
+          "Failed to send message. Please try again.",
+          "संदेश पाठवण्यात अयशस्वी. पुन्हा प्रयत्न करा.",
+          "संदेश भेजने में विफल। कृपया पुन: प्रयास करें।",
+        ),
+      );
     }
     setSubmitting(false);
   }
@@ -79,9 +86,11 @@ export default function ContactPage() {
     setSubscribing(false);
   }
 
-  const address = lang === "mr"
-    ? (settings?.contactAddressMr || settings?.contactAddress || "")
-    : (settings?.contactAddress || "");
+  const address = t(
+    settings?.contactAddress || "",
+    settings?.contactAddressMr || settings?.contactAddress || "",
+    settings?.contactAddressHi || settings?.contactAddressMr || settings?.contactAddress || "",
+  );
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -89,13 +98,15 @@ export default function ContactPage() {
       {/* Page header */}
       <div className="mb-8">
         <h1 className="font-serif text-3xl font-black text-foreground">
-          {lang === "mr" ? "संपर्क करा" : "Contact Us"}
+          {t("Contact Us", "संपर्क करा", "संपर्क करें")}
         </h1>
         <div className="h-1 w-16 bg-primary mt-2 rounded-full" />
         <p className="text-muted-foreground text-sm mt-3 max-w-xl">
-          {lang === "mr"
-            ? "आम्हाला संपर्क करा. आम्ही लवकरात लवकर तुमच्याशी संपर्क साधू."
-            : "Get in touch with us. We'll get back to you as soon as possible."}
+          {t(
+            "Get in touch with us. We'll get back to you as soon as possible.",
+            "आम्हाला संपर्क करा. आम्ही लवकरात लवकर तुमच्याशी संपर्क साधू.",
+            "हमसे संपर्क करें। हम जल्द ही आपसे संपर्क करेंगे।",
+          )}
         </p>
       </div>
 
@@ -105,7 +116,7 @@ export default function ContactPage() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-primary text-primary-foreground rounded-sm p-6 space-y-5">
             <h2 className="font-serif text-lg font-bold">
-              {lang === "mr" ? "संपर्क माहिती" : "Contact Information"}
+              {t("Contact Information", "संपर्क माहिती", "संपर्क जानकारी")}
             </h2>
 
             {settings?.contactEmail && (
@@ -114,7 +125,7 @@ export default function ContactPage() {
                   <Mail className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-xs text-primary-foreground/60 mb-0.5">{lang === "mr" ? "ईमेल" : "Email"}</p>
+                  <p className="text-xs text-primary-foreground/60 mb-0.5">{t("Email", "ईमेल", "ईमेल")}</p>
                   <p className="text-sm font-medium break-all">{settings.contactEmail}</p>
                 </div>
               </a>
@@ -126,7 +137,7 @@ export default function ContactPage() {
                   <Phone className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-xs text-primary-foreground/60 mb-0.5">{lang === "mr" ? "फोन" : "Phone"}</p>
+                  <p className="text-xs text-primary-foreground/60 mb-0.5">{t("Phone", "फोन", "फ़ोन")}</p>
                   <p className="text-sm font-medium">{settings.contactPhone}</p>
                 </div>
               </a>
@@ -138,7 +149,7 @@ export default function ContactPage() {
                   <MapPin className="h-4 w-4" />
                 </div>
                 <div>
-                  <p className="text-xs text-primary-foreground/60 mb-0.5">{lang === "mr" ? "पत्ता" : "Address"}</p>
+                  <p className="text-xs text-primary-foreground/60 mb-0.5">{t("Address", "पत्ता", "पता")}</p>
                   <p className="text-sm font-medium">{address}</p>
                 </div>
               </div>
@@ -146,7 +157,11 @@ export default function ContactPage() {
 
             {!settings?.contactEmail && !settings?.contactPhone && !address && (
               <p className="text-sm text-primary-foreground/60">
-                {lang === "mr" ? "संपर्क माहिती लवकरच जोडली जाईल." : "Contact details coming soon."}
+                {t(
+                  "Contact details coming soon.",
+                  "संपर्क माहिती लवकरच जोडली जाईल.",
+                  "संपर्क जानकारी जल्द ही जोड़ी जाएगी।",
+                )}
               </p>
             )}
           </div>
@@ -156,34 +171,42 @@ export default function ContactPage() {
             <div className="flex items-center gap-2 mb-1">
               <Bell className="h-4 w-4 text-primary" />
               <h3 className="text-sm font-semibold">
-                {lang === "mr" ? "वृत्तपत्र सदस्यता" : "Newsletter Subscription"}
+                {t("Newsletter Subscription", "वृत्तपत्र सदस्यता", "समाचार पत्र सदस्यता")}
               </h3>
             </div>
             <p className="text-xs text-muted-foreground mb-4">
-              {lang === "mr"
-                ? "नवीन आवृत्ती प्रकाशित होताच ईमेल प्राप्त करा."
-                : "Get notified by email whenever a new edition is published."}
+              {t(
+                "Get notified by email whenever a new edition is published.",
+                "नवीन आवृत्ती प्रकाशित होताच ईमेल प्राप्त करा.",
+                "नया संस्करण प्रकाशित होते ही ईमेल प्राप्त करें।",
+              )}
             </p>
 
             {subscribed ? (
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
                   <CheckCircle className="h-4 w-4 shrink-0" />
-                  {lang === "mr" ? "यशस्वीरित्या सदस्यता घेतली!" : "Subscribed successfully!"}
+                  {t("Subscribed successfully!", "यशस्वीरित्या सदस्यता घेतली!", "सफलतापूर्वक सदस्यता ली गई!")}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {lang === "mr"
-                    ? "नवीन आवृत्ती प्रकाशित होताच तुम्हाला ईमेल मिळेल."
-                    : "You'll receive an email whenever a new edition is published."}
+                  {t(
+                    "You'll receive an email whenever a new edition is published.",
+                    "नवीन आवृत्ती प्रकाशित होताच तुम्हाला ईमेल मिळेल.",
+                    "नया संस्करण प्रकाशित होने पर आपको ईमेल प्राप्त होगा।",
+                  )}
                 </p>
                 {unsubscribeToken && (
                   <p className="text-xs text-muted-foreground">
-                    {lang === "mr" ? "सदस्यता रद्द करायची असल्यास" : "Want to unsubscribe later?"}{" "}
+                    {t(
+                      "Want to unsubscribe later?",
+                      "सदस्यता रद्द करायची असल्यास",
+                      "बाद में सदस्यता समाप्त करना चाहते हैं?",
+                    )}{" "}
                     <a
                       href={`/api/unsubscribe?token=${unsubscribeToken}`}
                       className="underline hover:text-foreground transition-colors"
                     >
-                      {lang === "mr" ? "येथे क्लिक करा" : "Click here to unsubscribe"}
+                      {t("Click here to unsubscribe", "येथे क्लिक करा", "सदस्यता समाप्त करने के लिए यहां क्लिक करें")}
                     </a>
                   </p>
                 )}
@@ -194,7 +217,7 @@ export default function ContactPage() {
                   type="text"
                   value={subName}
                   onChange={(e) => setSubName(e.target.value)}
-                  placeholder={lang === "mr" ? "नाव (ऐच्छिक)" : "Your name (optional)"}
+                  placeholder={t("Your name (optional)", "नाव (ऐच्छिक)", "आपका नाम (वैकल्पिक)")}
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
                 <input
@@ -202,7 +225,7 @@ export default function ContactPage() {
                   required
                   value={subEmail}
                   onChange={(e) => setSubEmail(e.target.value)}
-                  placeholder={lang === "mr" ? "तुमचा ईमेल" : "Your email address"}
+                  placeholder={t("Your email address", "तुमचा ईमेल", "आपका ईमेल पता")}
                   className="w-full border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
                 />
                 <button
@@ -212,8 +235,8 @@ export default function ContactPage() {
                 >
                   {subscribing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bell className="h-4 w-4" />}
                   {subscribing
-                    ? (lang === "mr" ? "सदस्यता घेत आहे…" : "Subscribing…")
-                    : (lang === "mr" ? "सदस्यता घ्या" : "Subscribe")}
+                    ? t("Subscribing…", "सदस्यता घेत आहे…", "सदस्यता ली जा रही है…")
+                    : t("Subscribe", "सदस्यता घ्या", "सदस्यता लें")}
                 </button>
               </form>
             )}
@@ -224,7 +247,7 @@ export default function ContactPage() {
         <div className="lg:col-span-3">
           <div className="bg-white border border-border rounded-sm p-6">
             <h2 className="font-serif text-lg font-bold mb-5">
-              {lang === "mr" ? "संदेश पाठवा" : "Send Us a Message"}
+              {t("Send Us a Message", "संदेश पाठवा", "हमें संदेश भेजें")}
             </h2>
 
             {submitted ? (
@@ -233,18 +256,20 @@ export default function ContactPage() {
                   <CheckCircle className="h-8 w-8 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold mb-1">
-                  {lang === "mr" ? "संदेश पाठवला!" : "Message Sent!"}
+                  {t("Message Sent!", "संदेश पाठवला!", "संदेश भेज दिया गया!")}
                 </h3>
                 <p className="text-sm text-muted-foreground max-w-xs">
-                  {lang === "mr"
-                    ? "आपला संदेश आम्हाला मिळाला आहे. आम्ही लवकरच तुमच्याशी संपर्क साधू."
-                    : "Your message has been received. We'll get back to you shortly."}
+                  {t(
+                    "Your message has been received. We'll get back to you shortly.",
+                    "आपला संदेश आम्हाला मिळाला आहे. आम्ही लवकरच तुमच्याशी संपर्क साधू.",
+                    "आपका संदेश प्राप्त हो गया है। हम जल्द ही आपसे संपर्क करेंगे।",
+                  )}
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
                   className="mt-5 text-sm text-primary hover:underline"
                 >
-                  {lang === "mr" ? "आणखी एक संदेश पाठवा" : "Send another message"}
+                  {t("Send another message", "आणखी एक संदेश पाठवा", "दूसरा संदेश भेजें")}
                 </button>
               </div>
             ) : (
@@ -252,19 +277,19 @@ export default function ContactPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      {lang === "mr" ? "नाव *" : "Full Name *"}
+                      {t("Full Name *", "नाव *", "पूरा नाम *")}
                     </label>
                     <input
                       required
                       value={form.name}
                       onChange={(e) => setField("name", e.target.value)}
-                      placeholder={lang === "mr" ? "तुमचे नाव" : "Your full name"}
+                      placeholder={t("Your full name", "तुमचे नाव", "आपका पूरा नाम")}
                       className="w-full border border-border rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                     />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-muted-foreground mb-1">
-                      {lang === "mr" ? "ईमेल *" : "Email Address *"}
+                      {t("Email Address *", "ईमेल *", "ईमेल पता *")}
                     </label>
                     <input
                       type="email"
@@ -279,7 +304,7 @@ export default function ContactPage() {
 
                 <div>
                   <label className="block text-xs font-medium text-muted-foreground mb-1">
-                    {lang === "mr" ? "फोन (ऐच्छिक)" : "Phone Number (optional)"}
+                    {t("Phone Number (optional)", "फोन (ऐच्छिक)", "फ़ोन नंबर (वैकल्पिक)")}
                   </label>
                   <input
                     type="tel"
@@ -292,14 +317,14 @@ export default function ContactPage() {
 
                 <div>
                   <label className="block text-xs font-medium text-muted-foreground mb-1">
-                    {lang === "mr" ? "संदेश *" : "Message *"}
+                    {t("Message *", "संदेश *", "संदेश *")}
                   </label>
                   <textarea
                     required
                     rows={5}
                     value={form.message}
                     onChange={(e) => setField("message", e.target.value)}
-                    placeholder={lang === "mr" ? "तुमचा संदेश येथे लिहा…" : "Write your message here…"}
+                    placeholder={t("Write your message here…", "तुमचा संदेश येथे लिहा…", "अपना संदेश यहाँ लिखें…")}
                     className="w-full border border-border rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow resize-y"
                   />
                 </div>
@@ -315,8 +340,8 @@ export default function ContactPage() {
                 >
                   {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                   {submitting
-                    ? (lang === "mr" ? "पाठवत आहे…" : "Sending…")
-                    : (lang === "mr" ? "संदेश पाठवा" : "Send Message")}
+                    ? t("Sending…", "पाठवत आहे…", "भेजा जा रहा है…")
+                    : t("Send Message", "संदेश पाठवा", "संदेश भेजें")}
                 </button>
               </form>
             )}

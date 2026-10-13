@@ -1,4 +1,4 @@
-﻿import { useParams, useLocation } from "wouter";
+import { useParams, useLocation } from "wouter";
 import { useGetArticleBySlug, getGetArticleBySlugQueryKey, useGetLatestArticles } from "@samacharhub/api-client-react";
 import { useLang } from "@/lib/lang";
 import { formatDate } from "@/lib/utils";
@@ -39,22 +39,22 @@ export default function ArticlePage() {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
         <h2 className="font-serif text-2xl font-bold mb-4">
-          {lang === "mr" ? "लेख सापडला नाही" : "Article not found"}
+          {t("Article not found", "लेख सापडला नाही", "लेख नहीं मिला")}
         </h2>
         <button
           onClick={() => setLocation("/")}
           className="text-primary hover:underline"
         >
-          {lang === "mr" ? "मुख्यपृष्ठावर परत जा" : "Return to homepage"}
+          {t("Return to homepage", "मुख्यपृष्ठावर परत जा", "मुखपृष्ठ पर वापस जाएं")}
         </button>
       </div>
     );
   }
 
-  const title = t(article.title, article.titleMr);
-  const summary = t(article.summary, article.summaryMr);
-  const content = t(article.content, article.contentMr);
-  const catName = t(article.category?.name, article.category?.nameMr);
+  const title = t(article.title, article.titleMr, (article as any).titleHi);
+  const summary = t(article.summary, article.summaryMr, (article as any).summaryHi);
+  const content = t(article.content, article.contentMr, (article as any).contentHi);
+  const catName = t(article.category?.name, article.category?.nameMr, (article.category as any)?.nameHi);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -95,7 +95,7 @@ export default function ArticlePage() {
             </span>
             <span className="flex items-center gap-1.5">
               <Eye className="h-4 w-4" />
-              {article.viewCount.toLocaleString()} {lang === "mr" ? "वाचन" : "views"}
+              {article.viewCount.toLocaleString()} {t("views", "वाचन", "बार देखा गया")}
             </span>
           </div>
 
@@ -140,7 +140,7 @@ export default function ArticlePage() {
             </div>
             <h3 className="font-serif font-bold text-base mb-3 flex items-center gap-2">
               <span className="w-1 h-5 bg-primary inline-block" />
-              {lang === "mr" ? "अधिक बातम्या" : "More News"}
+              {t("More News", "अधिक बातम्या", "और ख़बरें")}
             </h3>
             <div className="divide-y divide-border">
               {related

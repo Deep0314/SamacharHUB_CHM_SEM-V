@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLang } from "@/lib/lang";
 import { FileText, Loader2 } from "lucide-react";
 
@@ -7,10 +7,11 @@ const API = "/api";
 interface AboutSettings {
   aboutContent: string;
   aboutContentMr: string;
+  aboutContentHi?: string;
 }
 
 export default function AboutPage() {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const [settings, setSettings] = useState<AboutSettings | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,9 +22,11 @@ export default function AboutPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const content = lang === "mr" 
-    ? (settings?.aboutContentMr || "माहिती लवकरच जोडली जाईल.") 
-    : (settings?.aboutContent || "Content coming soon.");
+  const content = t(
+    settings?.aboutContent || "Content coming soon.",
+    settings?.aboutContentMr || "माहिती लवकरच जोडली जाईल.",
+    settings?.aboutContentHi || "जानकारी जल्द ही जोड़ी जाएगी।"
+  );
 
   if (loading) {
     return (
@@ -40,7 +43,7 @@ export default function AboutPage() {
           <FileText className="h-8 w-8 text-primary" />
         </div>
         <h1 className="font-serif text-4xl font-black text-foreground">
-          {lang === "mr" ? "आमच्या विषयी" : "About Us"}
+          {t("About Us", "आमच्या विषयी", "हमारे बारे में")}
         </h1>
         <div className="h-1.5 w-20 bg-primary mx-auto mt-4 rounded-full" />
       </div>
@@ -52,7 +55,7 @@ export default function AboutPage() {
       </div>
       
       <div className="mt-12 text-center text-muted-foreground text-sm">
-        <p>© {new Date().getFullYear()} SamacharHUB. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} SamacharHUB. {t("All rights reserved.", "सर्व हक्क राखीव.", "सर्वाधिकार सुरक्षित।")}</p>
       </div>
     </div>
   );

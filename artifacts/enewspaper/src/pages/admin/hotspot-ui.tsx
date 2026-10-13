@@ -32,14 +32,12 @@ function Toggle({
       <button
         type="button"
         onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none ${
-          checked ? "bg-primary" : "bg-muted"
-        }`}
+        className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none ${checked ? "bg-primary" : "bg-muted"
+          }`}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
-            checked ? "translate-x-6" : "translate-x-1"
-          }`}
+          className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${checked ? "translate-x-6" : "translate-x-1"
+            }`}
         />
       </button>
     </div>
@@ -264,10 +262,35 @@ export default function HotspotUIPage() {
             )}
           </div>
 
+          {/* Header Tagline */}
+          <div className="bg-white border border-border rounded-sm p-5 space-y-3">
+            <h3 className="font-semibold text-sm">Header Tagline</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <Field
+                label="English"
+                value={config.tagline || ""}
+                onChange={(v) => set("tagline", v)}
+                placeholder="Read without language barriers, share without limits."
+              />
+              <Field
+                label="मराठी"
+                value={config.taglineMr || ""}
+                onChange={(v) => set("taglineMr", v)}
+                placeholder="भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा."
+              />
+              <Field
+                label="हिंदी"
+                value={config.taglineHi || ""}
+                onChange={(v) => set("taglineHi", v)}
+                placeholder="बिना किसी भाषा बाधा के पढ़ें, असीमित साझा करें."
+              />
+            </div>
+          </div>
+
           {/* Popup Header */}
           <div className="bg-white border border-border rounded-sm p-5 space-y-3">
             <h3 className="font-semibold text-sm">Popup Header Label</h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <Field
                 label="English"
                 value={config.popupHeaderText}
@@ -278,7 +301,13 @@ export default function HotspotUIPage() {
                 label="मराठी"
                 value={config.popupHeaderTextMr}
                 onChange={(v) => set("popupHeaderTextMr", v)}
-                placeholder="वर्तमानपत्र क्लिप"
+                placeholder="वृत्तपत्र क्लिप"
+              />
+              <Field
+                label="हिंदी"
+                value={config.popupHeaderTextHi || ""}
+                onChange={(v) => set("popupHeaderTextHi", v)}
+                placeholder="समाचार क्लिप"
               />
             </div>
           </div>
@@ -307,7 +336,7 @@ export default function HotspotUIPage() {
               label="Powered by / Credit line"
               value={config.footerPoweredBy}
               onChange={(v) => set("footerPoweredBy", v)}
-              placeholder="Powered by | Deep Kamble"
+              placeholder="Powered by | Deep Kamble & Gufran Khan"
             />
           </div>
 

@@ -1,4 +1,4 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { BreakingNews } from "../models/BreakingNews.js";
 import { requireAuth } from "../middleware/auth.js";
 import { Subscriber } from "../models/Subscriber.js";
@@ -26,6 +26,7 @@ function serializeBreaking(item: any) {
     _id: item._id.toString(),
     text: item.text,
     textMr: item.textMr ?? null,
+    textHi: item.textHi ?? null,
     link: item.link ?? null,
     active: item.active,
     lang: item.lang,
@@ -36,13 +37,13 @@ function serializeBreaking(item: any) {
 router.get("/breaking-news", async (req: any, res: any): Promise<void> => {
   const { lang } = req.query as Record<string, string>;
   const query: Record<string, unknown> = { active: true };
-  if (lang) query.lang = { $in: [lang, "both"] };
+  if (lang) query.lang = { $in: [lang, "both", "all"] };
   const items = await BreakingNews.find(query).sort({ createdAt: -1 }).limit(10);
   res.json(items.map(serializeBreaking));
 });
 
 router.post("/breaking-news", requireAuth, async (req: any, res: any): Promise<void> => {
-  const { text, textMr, link, lang } = req.body;
+  const { text, textMr, textHi, link, lang } = req.body;
   if (!text || !lang) {
     res.status(400).json({ error: "Missing required fields" });
     return;
@@ -50,6 +51,7 @@ router.post("/breaking-news", requireAuth, async (req: any, res: any): Promise<v
   const item = await BreakingNews.create({
     text,
     textMr: textMr || null,
+    textHi: textHi || null,
     link: link || null,
     lang,
   });

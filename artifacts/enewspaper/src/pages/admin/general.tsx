@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { getAdminToken } from "@/lib/auth";
@@ -18,7 +18,8 @@ interface Settings {
   maintenanceMode: boolean;
   maintenanceMessage: string;
   maintenanceMessageMr: string;
-  defaultLanguage: "en" | "mr";
+  maintenanceMessageHi?: string;
+  defaultLanguage: "en" | "mr" | "hi";
 }
 
 function Toggle({
@@ -61,6 +62,7 @@ export default function GeneralSettingsPage() {
     maintenanceMode: false,
     maintenanceMessage: "We are currently under maintenance. Please check back soon.",
     maintenanceMessageMr: "आम्ही सध्या देखभाल करत आहोत. कृपया लवकरच परत या.",
+    maintenanceMessageHi: "हम वर्तमान में रखरखाव के अधीन हैं। कृपया जल्द ही वापस देखें।",
     defaultLanguage: "en",
   });
   const [loading, setLoading] = useState(true);
@@ -83,6 +85,7 @@ export default function GeneralSettingsPage() {
   // City editor state
   const [newCityEn, setNewCityEn] = useState("");
   const [newCityMr, setNewCityMr] = useState("");
+  const [newCityHi, setNewCityHi] = useState("");
   const [mastheadUploading, setMastheadUploading] = useState(false);
   const mastheadFileRef = useRef<HTMLInputElement>(null);
 
@@ -94,7 +97,8 @@ export default function GeneralSettingsPage() {
         maintenanceMode: data.maintenanceMode ?? false,
         maintenanceMessage: data.maintenanceMessage ?? "",
         maintenanceMessageMr: data.maintenanceMessageMr ?? "",
-        defaultLanguage: (data.defaultLanguage as "en" | "mr") ?? "en",
+        maintenanceMessageHi: data.maintenanceMessageHi ?? "",
+        defaultLanguage: (data.defaultLanguage as "en" | "mr" | "hi") ?? "en",
       });
     }
     const cfg = await fetchHotspotUIConfig();
@@ -226,10 +230,15 @@ export default function GeneralSettingsPage() {
       toast({ title: "Please fill both English and Marathi names", variant: "destructive" });
       return;
     }
-    const city: CityEntry = { en: newCityEn.trim(), mr: newCityMr.trim() };
+    const city: CityEntry = {
+      en: newCityEn.trim(),
+      mr: newCityMr.trim(),
+      hi: newCityHi.trim() || newCityMr.trim(),
+    };
     setHotspotCfg((c) => ({ ...c, editionCities: [...(c.editionCities ?? DEFAULT_CITIES), city] }));
     setNewCityEn("");
     setNewCityMr("");
+    setNewCityHi("");
   }
 
   function removeCity(idx: number) {
@@ -436,9 +445,20 @@ export default function GeneralSettingsPage() {
             >
               मराठी (Marathi)
             </button>
+            <button
+              type="button"
+              onClick={() => set("defaultLanguage", "hi")}
+              className={`flex-1 py-2.5 rounded-sm text-sm font-semibold border transition-colors ${
+                settings.defaultLanguage === "hi"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "border-border hover:bg-muted text-foreground"
+              }`}
+            >
+              हिंदी (Hindi)
+            </button>
           </div>
           <p className="text-xs text-muted-foreground">
-            Currently set to: <strong>{settings.defaultLanguage === "mr" ? "मराठी" : "English"}</strong>
+            Currently set to: <strong>{settings.defaultLanguage === "mr" ? "मराठी" : settings.defaultLanguage === "hi" ? "हिंदी" : "English"}</strong>
           </p>
         </div>
 
@@ -483,6 +503,14 @@ export default function GeneralSettingsPage() {
               className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[60px] resize-y"
               value={settings.maintenanceMessageMr}
               onChange={(e) => set("maintenanceMessageMr", e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Message (Hindi)</label>
+            <textarea
+              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[60px] resize-y"
+              value={settings.maintenanceMessageHi ?? ""}
+              onChange={(e) => set("maintenanceMessageHi", e.target.value)}
             />
           </div>
 
@@ -605,6 +633,7 @@ export default function GeneralSettingsPage() {
                 <div className="flex-1 min-w-0">
                   <span className="text-sm font-medium">{city.en}</span>
                   <span className="text-xs text-muted-foreground ml-2">/ {city.mr}</span>
+                  {city.hi && <span className="text-xs text-muted-foreground ml-2">/ {city.hi}</span>}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <button
@@ -640,12 +669,12 @@ export default function GeneralSettingsPage() {
 
           <div className="border-t border-border pt-3 space-y-2">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Add New City</p>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
                 type="text"
                 value={newCityEn}
                 onChange={(e) => setNewCityEn(e.target.value)}
-                placeholder="English name (e.g. Nagpur)"
+                placeholder="English (e.g. Nagpur)"
                 className="flex-1 px-3 py-1.5 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <input
@@ -655,10 +684,17 @@ export default function GeneralSettingsPage() {
                 placeholder="Marathi (e.g. नागपूर)"
                 className="flex-1 px-3 py-1.5 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
               />
+              <input
+                type="text"
+                value={newCityHi}
+                onChange={(e) => setNewCityHi(e.target.value)}
+                placeholder="Hindi (e.g. नागपुर)"
+                className="flex-1 px-3 py-1.5 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+              />
               <button
                 type="button"
                 onClick={addCity}
-                className="flex items-center gap-1 px-3 py-1.5 bg-primary text-primary-foreground rounded-sm text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
+                className="flex items-center justify-center gap-1 px-4 py-1.5 bg-primary text-primary-foreground rounded-sm text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
               >
                 <Plus className="h-4 w-4" /> Add
               </button>

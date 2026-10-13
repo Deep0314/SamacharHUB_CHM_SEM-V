@@ -1,6 +1,7 @@
 export interface CityEntry {
   en: string;
   mr: string;
+  hi?: string;
 }
 
 export interface HotspotUIConfig {
@@ -28,6 +29,10 @@ export interface HotspotUIConfig {
   };
   popupHeaderText: string;
   popupHeaderTextMr: string;
+  popupHeaderTextHi?: string;
+  tagline?: string;
+  taglineMr?: string;
+  taglineHi?: string;
   footerSiteUrl: string;
   footerPoweredBy: string;
   showFooterDate: boolean;
@@ -40,14 +45,14 @@ export interface HotspotUIConfig {
 }
 
 export const DEFAULT_CITIES: CityEntry[] = [
-  { en: "Amravati", mr: "???????" },
-  { en: "Namaskar Amravati", mr: "??????? ???????" },
-  { en: "Yavatmal", mr: "??????" },
-  { en: "Buldhana", mr: "???????" },
-  { en: "Akola", mr: "?????" },
-  { en: "Washim", mr: "?????" },
-  { en: "Wardha", mr: "?????" },
-  { en: "Weekly", mr: "?????????" },
+  { en: "Amravati", mr: "अमरावती", hi: "अमरावती" },
+  { en: "Namaskar Amravati", mr: "नमस्कार अमरावती", hi: "नमस्कार अमरावती" },
+  { en: "Yavatmal", mr: "यवतमाळ", hi: "यवतमाल" },
+  { en: "Buldhana", mr: "बुलढाणा", hi: "बुलढाणा" },
+  { en: "Akola", mr: "अकोला", hi: "अकोला" },
+  { en: "Washim", mr: "वाशिम", hi: "वाशिम" },
+  { en: "Wardha", mr: "वर्धा", hi: "वर्धा" },
+  { en: "Weekly", mr: "साप्ताहिक", hi: "साप्ताहिक" },
 ];
 
 export const DEFAULT_CONFIG: HotspotUIConfig = {
@@ -74,8 +79,12 @@ export const DEFAULT_CONFIG: HotspotUIConfig = {
     linkedin: false,
   },
   popupHeaderText: "Newspaper Clip",
-  popupHeaderTextMr: "??????????? ?????",
-  footerSiteUrl: "www.samacharhub.com",
+  popupHeaderTextMr: "वृत्तपत्र क्लिप",
+  popupHeaderTextHi: "समाचार क्लिप",
+  tagline: "Read without language barriers, share without limits.",
+  taglineMr: "भाषेच्या मर्यादांशिवाय वाचा, अमर्याद शेअर करा.",
+  taglineHi: "बिना किसी भाषा बाधा के पढ़ें, असीमित साझा करें.",
+  footerSiteUrl: "ttp://localhost:3000",
   footerPoweredBy: "Powered by | Deep Kamble",
   showFooterDate: true,
   showFooterPage: true,

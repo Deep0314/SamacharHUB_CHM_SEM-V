@@ -9,14 +9,17 @@ export interface IArticleHotspot {
   articleId?: string;
   articleTitle?: string;
   articleTitleMr?: string;
+  articleTitleHi?: string;
   articleSlug?: string;
   articleSummary?: string;
   articleSummaryMr?: string;
+  articleSummaryHi?: string;
 }
 
 export interface IEdition extends Document {
   cities: string[];
   citiesMr: string[];
+  citiesHi: string[];
   date: Date;
   coverUrl: string;
   pages: string[];
@@ -38,9 +41,11 @@ const ArticleHotspotSchema = new Schema<IArticleHotspot>(
     articleId: { type: String },
     articleTitle: { type: String },
     articleTitleMr: { type: String },
+    articleTitleHi: { type: String },
     articleSlug: { type: String },
     articleSummary: { type: String },
     articleSummaryMr: { type: String },
+    articleSummaryHi: { type: String },
   },
   { _id: false }
 );
@@ -49,6 +54,7 @@ const EditionSchema = new Schema<IEdition>(
   {
     cities: { type: [String], required: true },
     citiesMr: { type: [String], required: true },
+    citiesHi: { type: [String], default: [] },
     date: { type: Date, required: true },
     coverUrl: { type: String, required: true },
     pages: [{ type: String }],

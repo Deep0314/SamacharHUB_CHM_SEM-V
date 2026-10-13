@@ -1,4 +1,4 @@
-﻿import { useListEditions, useGetLatestArticles } from "@samacharhub/api-client-react";
+import { useListEditions, useGetLatestArticles } from "@samacharhub/api-client-react";
 import { useLang } from "@/lib/lang";
 import { Link, useLocation } from "wouter";
 import { Calendar, ArrowRight, CalendarDays, X } from "lucide-react";
@@ -8,7 +8,8 @@ import { fetchHotspotUIConfig, DEFAULT_CITIES, type CityEntry, type HotspotUICon
 import { useSearch } from "wouter";
 
 function formatDisplayDate(dateStr: string, lang: string) {
-  return new Date(dateStr).toLocaleDateString(lang === "mr" ? "mr-IN" : "en-IN", {
+  const locale = lang === "mr" ? "mr-IN" : lang === "hi" ? "hi-IN" : "en-IN";
+  return new Date(dateStr).toLocaleDateString(locale, {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -35,8 +36,14 @@ function toDateKey(date: Date) {
 const NO_IMG =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='400' viewBox='0 0 300 400'%3E%3Crect fill='%23f3f4f6' width='300' height='400'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23d1d5db' font-size='14'%3ENo Image%3C/text%3E%3C/svg%3E";
 
-function EditionCard({ edition, lang, overrideCityEn, overrideCityMr }: { edition: any; lang: string; overrideCityEn?: string; overrideCityMr?: string }) {
-  const cityName = lang === "mr" ? (overrideCityMr || edition.citiesMr?.[0] || edition.cityMr) : (overrideCityEn || edition.cities?.[0] || edition.city);
+function EditionCard({ edition, lang, overrideCityEn, overrideCityMr, overrideCityHi }: { edition: any; lang: string; overrideCityEn?: string; overrideCityMr?: string; overrideCityHi?: string }) {
+  const cityName =
+    lang === "mr"
+      ? (overrideCityMr || edition.citiesMr?.[0] || edition.cityMr || edition.cities?.[0] || edition.city)
+      : lang === "hi"
+      ? (overrideCityHi || edition.citiesHi?.[0] || edition.cityHi || overrideCityMr || edition.citiesMr?.[0] || edition.cityMr || edition.cities?.[0] || edition.city)
+      : (overrideCityEn || edition.cities?.[0] || edition.city);
+
   return (
     <Link href={`/edition/${edition._id}`}>
       <div className="group cursor-pointer bg-white border border-border rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -55,7 +62,7 @@ function EditionCard({ edition, lang, overrideCityEn, overrideCityMr }: { editio
           />
           {edition.pages.length > 0 && (
             <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-0.5 rounded-full">
-              {edition.pages.length} {lang === "mr" ? "पाने" : "pages"}
+              {edition.pages.length} {lang === "mr" ? "पाने" : lang === "hi" ? "पृष्ठ" : "pages"}
             </div>
           )}
         </div>
@@ -72,8 +79,18 @@ function EditionCard({ edition, lang, overrideCityEn, overrideCityMr }: { editio
 }
 
 function ArticleCard({ article, lang }: { article: any; lang: string }) {
-  const title = lang === "mr" && article.titleMr ? article.titleMr : article.title;
-  const summary = lang === "mr" && article.summaryMr ? article.summaryMr : article.summary;
+  const title =
+    lang === "hi"
+      ? (article.titleHi || article.titleMr || article.title)
+      : lang === "mr" && article.titleMr
+      ? article.titleMr
+      : article.title;
+  const summary =
+    lang === "hi"
+      ? (article.summaryHi || article.summaryMr || article.summary)
+      : lang === "mr" && article.summaryMr
+      ? article.summaryMr
+      : article.summary;
   return (
     <Link href={`/article/${article.slug}`}>
       <div className="group cursor-pointer bg-white border border-border rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -95,7 +112,7 @@ function ArticleCard({ article, lang }: { article: any; lang: string }) {
 }
 
 export default function HomePage() {
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const [, navigate] = useLocation();
   const { data: allEditions, isLoading } = useListEditions({ limit: 200 });
   const { data: latestArticles } = useGetLatestArticles({ lang, limit: 8 });
@@ -134,13 +151,13 @@ export default function HomePage() {
     for (const e of allEditions ?? []) {
       const eCities = e.cities?.length ? e.cities : ((e as any).city ? [(e as any).city] : []);
       const eCitiesMr = e.citiesMr?.length ? e.citiesMr : ((e as any).cityMr ? [(e as any).cityMr] : []);
+      const eCitiesHi = (e as any).citiesHi?.length ? (e as any).citiesHi : ((e as any).cityHi ? [(e as any).cityHi] : []);
       
-      // For "all" mode, we'll just show the edition once (first city as primary label)
-      // or we can explode them. Let's just show them once to avoid clutter.
       allCards.push({
         edition: e,
         cityEn: eCities[0] || "",
-        cityMr: eCitiesMr[0] || eCities[0] || ""
+        cityMr: eCitiesMr[0] || eCities[0] || "",
+        cityHi: eCitiesHi[0] || eCitiesMr[0] || eCities[0] || "",
       });
     }
     cityCards = allCards;
@@ -152,10 +169,16 @@ export default function HomePage() {
       if (toDateKey(new Date(e.date)) === todayKey) {
         const eCities = e.cities?.length ? e.cities : ((e as any).city ? [(e as any).city] : []);
         const eCitiesMr = e.citiesMr?.length ? e.citiesMr : ((e as any).cityMr ? [(e as any).cityMr] : []);
+        const eCitiesHi = (e as any).citiesHi?.length ? (e as any).citiesHi : ((e as any).cityHi ? [(e as any).cityHi] : []);
         for (let i = 0; i < eCities.length; i++) {
           const city = eCities[i];
           if (!todayByCity[city]) {
-            todayByCity[city] = { edition: e, cityEn: city, cityMr: eCitiesMr[i] || city };
+            todayByCity[city] = {
+              edition: e,
+              cityEn: city,
+              cityMr: eCitiesMr[i] || city,
+              cityHi: eCitiesHi[i] || eCitiesMr[i] || city,
+            };
           }
         }
       }
@@ -182,22 +205,25 @@ export default function HomePage() {
   }
 
   const calendarEditionsRaw = calendarDate ? (editionDateMap[toDateKey(calendarDate)] ?? []) : [];
-  const calendarEditions: Array<{ edition: any; cityEn: string; cityMr: string }> = [];
+  const calendarEditions: Array<{ edition: any; cityEn: string; cityMr: string; cityHi: string }> = [];
   for (const e of calendarEditionsRaw) {
     const eCities = e.cities?.length ? e.cities : (e.city ? [e.city] : []);
     const eCitiesMr = e.citiesMr?.length ? e.citiesMr : (e.cityMr ? [e.cityMr] : []);
+    const eCitiesHi = (e as any).citiesHi?.length ? (e as any).citiesHi : ((e as any).cityHi ? [(e as any).cityHi] : []);
     eCities.forEach((city: string, idx: number) => {
       calendarEditions.push({
         edition: e,
         cityEn: city,
         cityMr: eCitiesMr[idx] || city,
+        cityHi: eCitiesHi[idx] || eCitiesMr[idx] || city,
       });
     });
   }
 
   const cityNamesEn = cities.map((c) => c.en).join("  •  ");
   const cityNamesMr = cities.map((c) => c.mr).join("  •  ");
-  const tickerText = lang === "mr" ? cityNamesMr : cityNamesEn;
+  const cityNamesHi = cities.map((c) => c.hi || c.mr).join("  •  ");
+  const tickerText = lang === "hi" ? cityNamesHi : lang === "mr" ? cityNamesMr : cityNamesEn;
 
   return (
     <div>
@@ -206,7 +232,7 @@ export default function HomePage() {
         <div className="bg-white border-b border-border flex items-center overflow-hidden h-8">
           <div className="shrink-0 px-3 h-full flex items-center bg-primary/10 border-r border-border">
             <span className="font-bold text-xs tracking-wider uppercase text-primary whitespace-nowrap">
-              {lang === "mr" ? "आमच्या आवृत्ती" : "Our Editions"}
+              {t("Our Editions", "आमच्या आवृत्ती", "हमारे संस्करण")}
             </span>
           </div>
           <div className="flex-1 overflow-hidden">
@@ -227,7 +253,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-3">
               <p className="text-sm font-semibold">
-                {lang === "mr" ? "तारखेनुसार आवृत्ती पहा" : "Browse Editions by Date"}
+                {t("Browse Editions by Date", "तारखेनुसार आवृत्ती पहा", "तिथि अनुसार संस्करण देखें")}
               </p>
               <button
                 onClick={() => { navigate("/"); setCalendarDate(undefined); }}
@@ -246,7 +272,11 @@ export default function HomePage() {
                   className="rounded-sm border border-border"
                 />
                 <p className="text-xs text-muted-foreground mt-2 text-center">
-                  {lang === "mr" ? "ज्या तारखेला आवृत्ती आहे त्यावर क्लिक करा" : "Click a date with an available edition"}
+                  {t(
+                    "Click a date with an available edition",
+                    "ज्या तारखेला आवृत्ती आहे त्यावर क्लिक करा",
+                    "उपलब्ध संस्करण वाली तिथि पर क्लिक करें",
+                  )}
                 </p>
               </div>
 
@@ -254,20 +284,20 @@ export default function HomePage() {
                 <div className="flex-1">
                   {calendarEditions.length === 0 ? (
                     <p className="text-sm text-muted-foreground mt-2">
-                      {lang === "mr" ? "या तारखेला कोणतीही आवृत्ती नाही." : "No editions found for this date."}
+                      {t("No editions found for this date.", "या तारखेला कोणतीही आवृत्ती नाही.", "इस तिथि के लिए कोई संस्करण उपलब्ध नहीं है।")}
                     </p>
                   ) : (
                     <div>
                       <p className="text-sm font-medium mb-3">
                         {formatDisplayDate(calendarDate.toISOString(), lang)} — {calendarEditions.length}{" "}
-                        {calendarEditions.length === 1 ? "edition" : "editions"}
+                        {calendarEditions.length === 1 ? t("edition", "आवृत्ती", "संस्करण") : t("editions", "आवृत्त्या", "संस्करण")}
                       </p>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         {calendarEditions.map((item: any, idx: number) => (
                           <Link key={`${item.edition._id}-${idx}`} href={`/edition/${item.edition._id}`}>
                             <div className="group cursor-pointer border border-border rounded-sm overflow-hidden hover:shadow-md transition-shadow">
                               <div className="text-center py-1.5 text-xs font-bold text-white bg-primary">
-                                {lang === "mr" ? item.cityMr : item.cityEn}
+                                {lang === "hi" ? item.cityHi : lang === "mr" ? item.cityMr : item.cityEn}
                               </div>
                               <img
                                 src={item.edition.coverUrl}
@@ -286,7 +316,7 @@ export default function HomePage() {
 
               {!calendarDate && (
                 <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm py-8">
-                  {lang === "mr" ? "एक तारीख निवडा" : "Select a date to see editions"}
+                  {t("Select a date to see editions", "एक तारीख निवडा", "संस्करण देखने के लिए एक तिथि चुनें")}
                 </div>
               )}
             </div>
@@ -312,7 +342,14 @@ export default function HomePage() {
         ) : cityCards.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {cityCards.map((item: any, idx: number) => (
-              <EditionCard key={`${item.edition._id}-${idx}`} edition={item.edition} lang={lang} overrideCityEn={item.cityEn} overrideCityMr={item.cityMr} />
+              <EditionCard
+                key={`${item.edition._id}-${idx}`}
+                edition={item.edition}
+                lang={lang}
+                overrideCityEn={item.cityEn}
+                overrideCityMr={item.cityMr}
+                overrideCityHi={item.cityHi}
+              />
             ))}
           </div>
         ) : !isLoading ? (
@@ -321,14 +358,18 @@ export default function HomePage() {
               <CalendarDays className="h-6 w-6 text-muted-foreground/40" />
             </div>
             <p className="text-muted-foreground font-medium text-sm">
-              {lang === "mr"
-                ? "आजची कोणतीही आवृत्ती उपलब्ध नाही."
-                : "No editions available for today."}
+              {t(
+                "No editions available for today.",
+                "आजची कोणतीही आवृत्ती उपलब्ध नाही.",
+                "आज का कोई संस्करण उपलब्ध नहीं है।",
+              )}
             </p>
             <p className="text-xs text-muted-foreground mt-2 max-w-xs mx-auto">
-              {lang === "mr"
-                ? "मागील आवृत्त्या पाहण्यासाठी वर दिलेल्या 'दिनदर्शिका' बटणाचा वापर करा."
-                : "Please use the 'Browse by Date' button above to view our archived editions."}
+              {t(
+                "Please use the 'Browse by Date' button above to view our archived editions.",
+                "मागील आवृत्त्या पाहण्यासाठी वर दिलेल्या 'दिनदर्शिका' बटणाचा वापर करा.",
+                "पुराने संस्करण देखने के लिए ऊपर दिए गए 'तिथि अनुसार' बटन का उपयोग करें।",
+              )}
             </p>
           </div>
         ) : null}
@@ -339,7 +380,7 @@ export default function HomePage() {
             <div className="flex items-center gap-2 mb-4">
               <span className="w-1 h-6 bg-primary inline-block" />
               <h2 className="font-serif text-xl font-bold">
-                {lang === "mr" ? "अलीकडील लेख" : "Latest Articles"}
+                {t("Latest Articles", "अलीकडील लेख", "नवीनतम लेख")}
               </h2>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">

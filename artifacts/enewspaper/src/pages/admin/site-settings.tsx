@@ -8,19 +8,22 @@ const API = "/api";
 
 const SOCIAL_ICONS = ["facebook", "whatsapp", "instagram", "telegram", "twitter", "youtube", "linkedin", "website"];
 
-interface QuickLink { label: string; labelMr: string; url: string; order: number; }
+interface QuickLink { label: string; labelMr: string; labelHi?: string; url: string; order: number; }
 interface SocialLink { platform: string; url: string; icon: string; }
 interface Settings {
   siteDescription: string;
   siteDescriptionMr: string;
+  siteDescriptionHi?: string;
   quickLinks: QuickLink[];
   socialLinks: SocialLink[];
   contactEmail: string;
   contactPhone: string;
   contactAddress: string;
   contactAddressMr: string;
+  contactAddressHi?: string;
   aboutContent: string;
   aboutContentMr: string;
+  aboutContentHi?: string;
   poweredByText: string;
   poweredByUrl: string;
 }
@@ -28,16 +31,19 @@ interface Settings {
 const DEFAULT: Settings = {
   siteDescription: "Maharashtra's trusted regional e-newspaper.",
   siteDescriptionMr: "महाराष्ट्राचे विश्वासू प्रादेशिक वृत्तपत्र.",
+  siteDescriptionHi: "महाराष्ट्र का विश्वसनीय क्षेत्रीय ई-समाचार पत्र।",
   quickLinks: [],
   socialLinks: [],
   contactEmail: "",
   contactPhone: "",
   contactAddress: "",
   contactAddressMr: "",
+  contactAddressHi: "",
   aboutContent: "",
   aboutContentMr: "",
-  poweredByText: "Deep Kamble",
-  poweredByUrl: "https://deepkamble.online",
+  aboutContentHi: "",
+  poweredByText: "Deep Kamble & Gufran Khan",
+  poweredByUrl: "http://localhost:3000",
 };
 
 export default function SiteSettingsPage() {
@@ -68,7 +74,7 @@ export default function SiteSettingsPage() {
   }
 
   function addQuickLink() {
-    set("quickLinks", [...settings.quickLinks, { label: "", labelMr: "", url: "", order: settings.quickLinks.length }]);
+    set("quickLinks", [...settings.quickLinks, { label: "", labelMr: "", labelHi: "", url: "", order: settings.quickLinks.length }]);
   }
 
   function removeQuickLink(idx: number) {
@@ -109,7 +115,7 @@ export default function SiteSettingsPage() {
     return (
       <AdminLayout title="Footer & Site Settings">
         <div className="space-y-3">
-          {[1,2,3].map(i => <div key={i} className="h-20 bg-muted animate-pulse rounded-sm" />)}
+          {[1, 2, 3].map(i => <div key={i} className="h-20 bg-muted animate-pulse rounded-sm" />)}
         </div>
       </AdminLayout>
     );
@@ -139,6 +145,14 @@ export default function SiteSettingsPage() {
               onChange={(e) => set("siteDescriptionMr", e.target.value)}
             />
           </div>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">Description (Hindi)</label>
+            <textarea
+              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[70px] resize-y"
+              value={settings.siteDescriptionHi ?? ""}
+              onChange={(e) => set("siteDescriptionHi", e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="bg-white border border-border rounded-sm p-5 space-y-4">
@@ -149,7 +163,7 @@ export default function SiteSettingsPage() {
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">About Us (English)</label>
             <textarea
-              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[150px] resize-y"
+              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[120px] resize-y"
               value={settings.aboutContent}
               onChange={(e) => set("aboutContent", e.target.value)}
               placeholder="Tell your story..."
@@ -158,10 +172,19 @@ export default function SiteSettingsPage() {
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1">About Us (Marathi)</label>
             <textarea
-              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[150px] resize-y"
+              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[120px] resize-y"
               value={settings.aboutContentMr}
               onChange={(e) => set("aboutContentMr", e.target.value)}
               placeholder="तुमची कथा लिहा..."
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-muted-foreground mb-1">About Us (Hindi)</label>
+            <textarea
+              className="w-full border border-border rounded-sm px-3 py-2 text-sm min-h-[120px] resize-y"
+              value={settings.aboutContentHi ?? ""}
+              onChange={(e) => set("aboutContentHi", e.target.value)}
+              placeholder="अपनी कहानी लिखें..."
             />
           </div>
         </div>
@@ -182,7 +205,7 @@ export default function SiteSettingsPage() {
             <p className="text-xs text-muted-foreground">No quick links yet. Add links for About, Contact, Categories, etc.</p>
           )}
           {settings.quickLinks.map((link, idx) => (
-            <div key={idx} className="grid grid-cols-[1fr_1fr_1.5fr_auto] gap-2 items-end">
+            <div key={idx} className="grid grid-cols-[1fr_1fr_1fr_1.5fr_auto] gap-2 items-end">
               <div>
                 <label className="block text-[10px] text-muted-foreground mb-1">Label (EN)</label>
                 <input
@@ -199,6 +222,15 @@ export default function SiteSettingsPage() {
                   value={link.labelMr}
                   onChange={(e) => updateQuickLink(idx, "labelMr", e.target.value)}
                   placeholder="आमच्या विषयी"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] text-muted-foreground mb-1">Label (HI)</label>
+                <input
+                  className="w-full border border-border rounded-sm px-2 py-1.5 text-sm"
+                  value={link.labelHi ?? ""}
+                  onChange={(e) => updateQuickLink(idx, "labelHi", e.target.value)}
+                  placeholder="हमारे बारे में"
                 />
               </div>
               <div>
@@ -293,7 +325,7 @@ export default function SiteSettingsPage() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-medium text-muted-foreground mb-1">Address (English)</label>
               <input
@@ -312,6 +344,15 @@ export default function SiteSettingsPage() {
                 placeholder="नागपूर, महाराष्ट्र"
               />
             </div>
+            <div>
+              <label className="block text-xs font-medium text-muted-foreground mb-1">Address (Hindi)</label>
+              <input
+                className="w-full border border-border rounded-sm px-3 py-2 text-sm"
+                value={settings.contactAddressHi ?? ""}
+                onChange={(e) => set("contactAddressHi", e.target.value)}
+                placeholder="नागपुर, महाराष्ट्र"
+              />
+            </div>
           </div>
         </div>
 
@@ -324,7 +365,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.poweredByText}
                 onChange={(e) => set("poweredByText", e.target.value)}
-                placeholder="Deep Kamble"
+                placeholder="Deep Kamble & Gufran Khan"
               />
             </div>
             <div>
@@ -333,7 +374,7 @@ export default function SiteSettingsPage() {
                 className="w-full border border-border rounded-sm px-3 py-2 text-sm"
                 value={settings.poweredByUrl}
                 onChange={(e) => set("poweredByUrl", e.target.value)}
-                placeholder="https://deepkamble.online"
+                placeholder="http://localhost:3000"
               />
             </div>
           </div>

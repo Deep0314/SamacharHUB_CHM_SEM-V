@@ -55,22 +55,26 @@ export const LoginSchema = z.object({
 export const ArticleCreateSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
   titleMr: z.string().optional().nullable(),
+  titleHi: z.string().optional().nullable(),
   summary: z.string().min(10, "Summary must be at least 10 characters"),
   summaryMr: z.string().optional().nullable(),
+  summaryHi: z.string().optional().nullable(),
   content: z.string().min(20, "Content must be at least 20 characters"),
   contentMr: z.string().optional().nullable(),
+  contentHi: z.string().optional().nullable(),
   categoryId: z.string().min(1, "Category is required"),
   author: z.string().min(1, "Author is required"),
   imageUrl: z.string().url("Invalid image URL").optional().nullable(),
   tags: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
-  lang: z.enum(["en", "mr", "both"]).default("both"),
+  lang: z.enum(["en", "mr", "hi", "both", "all"]).default("all"),
   status: z.enum(["draft", "published", "archived"]).default("draft"),
 });
 
 export const CategoryCreateSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   nameMr: z.string().optional().nullable(),
+  nameHi: z.string().optional().nullable(),
   slug: z
     .string()
     .min(2)
@@ -94,6 +98,7 @@ export const ContactSchema = z.object({
 export const EditionCreateSchema = z.object({
   cities: z.array(z.string()).min(1, "At least one city is required"),
   citiesMr: z.array(z.string()).default([]),
+  citiesHi: z.array(z.string()).default([]),
   date: z.string().min(1, "Date is required"),
   coverUrl: z.string().url("Invalid cover image URL"),
   pages: z.array(z.string()).default([]),

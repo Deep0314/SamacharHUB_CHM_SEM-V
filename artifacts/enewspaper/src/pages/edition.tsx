@@ -143,7 +143,12 @@ function HotspotViewer({
   useEffect(() => { fetchHotspotUIConfig().then(setCfg); }, []);
 
   const hasArticle = Boolean(hotspot.articleSlug);
-  const title = lang === "mr" && hotspot.articleTitleMr ? hotspot.articleTitleMr : hotspot.articleTitle;
+  const title =
+    lang === "hi" && (hotspot as any).articleTitleHi
+      ? (hotspot as any).articleTitleHi
+      : lang === "mr" && hotspot.articleTitleMr
+        ? hotspot.articleTitleMr
+        : hotspot.articleTitle;
 
   let deepLinkUrl = window.location.href;
   try {
@@ -151,7 +156,7 @@ function HotspotViewer({
     const hid = (hotspot as any)._id || (hotspot as any).id || `${hotspot.pageIndex || 0}_${Math.round(hotspot.x)}_${Math.round(hotspot.y)}`;
     u.searchParams.set("hotspot", hid);
     deepLinkUrl = u.toString();
-  } catch (e) {}
+  } catch (e) { }
 
   const articleUrl = hasArticle
     ? `${window.location.origin}/article/${hotspot.articleSlug}`
@@ -305,7 +310,7 @@ function HotspotViewer({
     ctx.fillText(footerLine, W / 2, footerY + 20);
     ctx.fillStyle = "#9ca3af";
     ctx.font = "11px sans-serif";
-    ctx.fillText("Powered by | Deep Kamble", W / 2, footerY + 36);
+    ctx.fillText("Powered by | Deep Kamble & Gufran Khan", W / 2, footerY + 36);
     return canvas;
   }
 
@@ -427,7 +432,11 @@ function HotspotViewer({
           {/* Zoom hint */}
           {cfg.showZoomHint && (
             <p className="text-[8px] md:text-[10px] text-gray-400 text-center py-0.5 md:py-1 bg-gray-50/50">
-              {lang === "mr" ? "Ctrl+स्क्रोल = झूम • क्लिक = झूम टॉगल" : "Ctrl+scroll to zoom • click image to zoom"}
+              {lang === "hi"
+                ? "ज़ूम के लिए Ctrl+स्क्रॉल • ज़ूम टॉगल के लिए क्लिक करें"
+                : lang === "mr"
+                ? "Ctrl+स्क्रोल = झूम • क्लिक = झूम टॉगल"
+                : "Ctrl+scroll to zoom • click image to zoom"}
             </p>
           )}
 
@@ -436,7 +445,9 @@ function HotspotViewer({
             {!croppedUrl ? (
               <div className="flex flex-col items-center gap-2 py-16 text-white/60 w-full">
                 <Loader2 className="h-6 w-6 animate-spin" />
-                <p className="text-xs">{lang === "mr" ? "लोड होत आहे..." : "Cropping…"}</p>
+                <p className="text-xs">
+                  {lang === "hi" ? "क्रॉप हो रहा है..." : lang === "mr" ? "लोड होत आहे..." : "Cropping…"}
+                </p>
               </div>
             ) : (
               <div
@@ -493,7 +504,7 @@ function HotspotViewer({
                 {cfg.showCopyLink && (
                   <button
                     onClick={handleCopyLink}
-                    title={lang === "mr" ? "लिंक कॉपी करा" : "Copy Link"}
+                    title={lang === "hi" ? "लिंक कॉपी करें" : lang === "mr" ? "लिंक कॉपी करा" : "Copy Link"}
                     className="flex-1 min-w-0 aspect-square flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:scale-110 transition-all max-w-10"
                   >
                     <Link2 className="h-3.5 w-3.5" />
@@ -503,7 +514,7 @@ function HotspotViewer({
                   <button
                     onClick={handlePrint}
                     disabled={!croppedUrl}
-                    title={lang === "mr" ? "प्रिंट करा" : "Print"}
+                    title={lang === "hi" ? "प्रिंट करें" : lang === "mr" ? "प्रिंट करा" : "Print"}
                     className="flex-1 min-w-0 aspect-square flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:scale-110 transition-all disabled:opacity-40 max-w-10"
                   >
                     <Printer className="h-3.5 w-3.5" />
@@ -513,7 +524,7 @@ function HotspotViewer({
                   <button
                     onClick={handleDownload}
                     disabled={!croppedUrl}
-                    title={lang === "mr" ? "डाउनलोड" : "Download"}
+                    title={lang === "hi" ? "डाउनलोड" : lang === "mr" ? "डाउनलोड" : "Download"}
                     className="flex-1 min-w-0 aspect-square flex items-center justify-center rounded-full text-white shadow-sm hover:scale-110 transition-all disabled:opacity-40 max-w-10 bg-[#D21F26]"
                   >
                     <Download className="h-3.5 w-3.5" />
@@ -522,7 +533,7 @@ function HotspotViewer({
                 <button
                   onClick={handleNativeShare}
                   disabled={!croppedUrl}
-                  title={lang === "mr" ? "शेअर करा" : "Share"}
+                  title={lang === "hi" ? "साझा करें" : lang === "mr" ? "शेअर करा" : "Share"}
                   className="flex-1 min-w-0 aspect-square flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:scale-110 transition-all disabled:opacity-40 max-w-10"
                 >
                   <Share2 className="h-3.5 w-3.5" />
@@ -539,7 +550,7 @@ function HotspotViewer({
                 className="w-full flex items-center justify-center gap-2 rounded-md bg-primary/5 border border-primary/20 py-3 text-sm font-bold text-primary hover:bg-primary hover:text-white transition-all cursor-pointer shadow-sm active:scale-[0.98]"
               >
                 <ExternalLink className="h-4 w-4" />
-                {lang === "mr" ? "पूर्ण लेख वाचा" : "Read Full Article"}
+                {lang === "hi" ? "पूरा लेख पढ़ें" : lang === "mr" ? "पूर्ण लेख वाचा" : "Read Full Article"}
               </Link>
             </div>
           )}
@@ -588,15 +599,17 @@ function ArchivePanel({ cities, currentId, lang, onClose }: { cities: string[]; 
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
           <h2 className="font-semibold text-sm flex items-center gap-2">
             <Archive className="h-4 w-4 text-primary" />
-            {lang === "mr" ? "दिनांकानुसार आवृत्ती" : "Browse by Date"} — {cities.join(", ")}
+            {lang === "hi" ? "तिथि अनुसार संस्करण" : lang === "mr" ? "दिनांकानुसार आवृत्ती" : "Browse by Date"} — {cities.join(", ")}
           </h2>
           <button onClick={onClose} className="p-1 hover:bg-muted rounded-full"><X className="h-4 w-4" /></button>
         </div>
         <div className="overflow-y-auto p-4 flex flex-col items-center gap-3">
           <p className="text-xs text-muted-foreground text-center">
-            {lang === "mr"
-              ? "उपलब्ध तारीख (हायलाइट) निवडून त्या दिवसाचा अंक पाहा"
-              : "Select a highlighted date to open that edition"}
+            {lang === "hi"
+              ? "उपलब्ध तिथि (हाइलाइट) चुनकर उस दिन का अंक देखें"
+              : lang === "mr"
+                ? "उपलब्ध तारीख (हायलाइट) निवडून त्या दिवसाचा अंक पाहा"
+                : "Select a highlighted date to open that edition"}
           </p>
           <CalendarPicker
             mode="single"
@@ -610,12 +623,20 @@ function ArchivePanel({ cities, currentId, lang, onClose }: { cities: string[]; 
           />
           {notFound && (
             <p className="text-xs text-destructive text-center">
-              {lang === "mr" ? "या तारखेला आवृत्ती उपलब्ध नाही." : "No edition found for this date."}
+              {lang === "hi"
+                ? "इस तिथि के लिए संस्करण उपलब्ध नहीं है।"
+                : lang === "mr"
+                  ? "या तारखेला आवृत्ती उपलब्ध नाही."
+                  : "No edition found for this date."}
             </p>
           )}
           {cityEditions.length === 0 && allEditions !== undefined && (
             <p className="text-sm text-muted-foreground text-center py-2">
-              {lang === "mr" ? "कोणतेही जुने अंक नाहीत" : "No archived editions found"}
+              {lang === "hi"
+                ? "कोई पुराना अंक उपलब्ध नहीं है"
+                : lang === "mr"
+                  ? "कोणतेही जुने अंक नाहीत"
+                  : "No archived editions found"}
             </p>
           )}
         </div>
@@ -759,9 +780,9 @@ export default function EditionPage() {
   if (!edition) {
     return (
       <div className="max-w-5xl mx-auto px-4 py-16 text-center">
-        <p className="text-muted-foreground">{lang === "mr" ? "आवृत्ती आढळली नाही." : "Edition not found."}</p>
+        <p className="text-muted-foreground">{lang === "hi" ? "संस्करण नहीं मिला।" : lang === "mr" ? "आवृत्ती आढळली नाही." : "Edition not found."}</p>
         <button onClick={() => navigate("/")} className="mt-4 text-sm text-primary hover:underline">
-          {lang === "mr" ? "मुख्यपृष्ठावर परत जा" : "Back to Home"}
+          {lang === "hi" ? "मुखपृष्ठ पर वापस जाएं" : lang === "mr" ? "मुख्यपृष्ठावर परत जा" : "Back to Home"}
         </button>
       </div>
     );
@@ -770,9 +791,14 @@ export default function EditionPage() {
   const allPages = [edition.coverUrl, ...(edition.pages ?? [])];
   const uniquePages = [...new Set(allPages)];
   const activePageHotspots = (edition.articleHotspots ?? []).filter((h: any) => h.pageIndex === activePage);
-  const cityName = lang === "mr" ? (edition.citiesMr?.join(", ") || (edition as any).cityMr) : (edition.cities?.join(", ") || (edition as any).city);
+  const cityName =
+    lang === "hi"
+      ? ((edition as any).citiesHi?.join(", ") || (edition as any).cityHi || edition.citiesMr?.join(", ") || (edition as any).cityMr || edition.cities?.join(", ") || (edition as any).city)
+      : lang === "mr"
+      ? (edition.citiesMr?.join(", ") || (edition as any).cityMr || edition.cities?.join(", ") || (edition as any).city)
+      : (edition.cities?.join(", ") || (edition as any).city);
   const displayDate = new Date(edition.date).toLocaleDateString(
-    lang === "mr" ? "mr-IN" : "en-IN",
+    lang === "mr" ? "mr-IN" : lang === "hi" ? "hi-IN" : "en-IN",
     { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }
   );
 
@@ -783,7 +809,7 @@ export default function EditionPage() {
         className="flex items-center gap-1 text-sm text-muted-foreground hover:text-primary mb-4 transition-colors"
       >
         <ChevronLeft className="h-4 w-4" />
-        {lang === "mr" ? "सर्व आवृत्त्या" : "All Editions"}
+        {lang === "hi" ? "सभी संस्करण" : lang === "mr" ? "सर्व आवृत्त्या" : "All Editions"}
       </button>
 
       <div className="mb-4 flex items-end justify-between flex-wrap gap-2">
@@ -793,12 +819,12 @@ export default function EditionPage() {
             <CalendarIcon className="h-4 w-4" />
             {displayDate}
             <span className="text-border">•</span>
-            <span>{uniquePages.length} {lang === "mr" ? "पाने" : uniquePages.length === 1 ? "page" : "pages"}</span>
+            <span>{uniquePages.length} {lang === "hi" ? "पृष्ठ" : lang === "mr" ? "पाने" : uniquePages.length === 1 ? "page" : "pages"}</span>
             {activePageHotspots.length > 0 && (
               <>
                 <span className="text-border">•</span>
                 <span className="text-yellow-600 font-medium text-xs">
-                  {activePageHotspots.length} {lang === "mr" ? "लेख" : "article"}{activePageHotspots.length > 1 ? "s" : ""}
+                  {activePageHotspots.length} {lang === "hi" ? "लेख" : lang === "mr" ? "लेख" : "article"}{activePageHotspots.length > 1 && lang === "en" ? "s" : ""}
                 </span>
               </>
             )}
@@ -814,10 +840,10 @@ export default function EditionPage() {
               ? "bg-yellow-500 text-white border-yellow-600 ring-2 ring-yellow-400"
               : "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
               }`}
-            title={lang === "mr" ? "कात्री करा" : "Clip & Share"}
+            title={lang === "hi" ? "कतरन और शेयर करें" : lang === "mr" ? "कात्री करा" : "Clip & Share"}
           >
             <Scissors className="h-3.5 w-3.5" />
-            {lang === "mr" ? "कात्री" : "Clip"}
+            {lang === "hi" ? "कतरन" : lang === "mr" ? "कात्री" : "Clip"}
           </button>
 
           {/* Archive */}
@@ -827,7 +853,7 @@ export default function EditionPage() {
             title="Archive"
           >
             <Archive className="h-3.5 w-3.5" />
-            {lang === "mr" ? "संग्रह" : "Archive"}
+            {lang === "hi" ? "संग्रह" : lang === "mr" ? "संग्रह" : "Archive"}
           </button>
 
           {showArchive && (
@@ -843,7 +869,7 @@ export default function EditionPage() {
           <button
             onClick={() => setShowShareBar((v) => !v)}
             className={`p-2 border rounded-sm transition-colors ${showShareBar ? "bg-primary/10 border-primary/30 text-primary" : "border-border hover:bg-muted"}`}
-            title={lang === "mr" ? "शेअर करा" : "Share this edition"}
+            title={lang === "hi" ? "यह संस्करण शेयर करें" : lang === "mr" ? "शेअर करा" : "Share this edition"}
           >
             <Share2 className="h-4 w-4" />
           </button>
@@ -911,11 +937,11 @@ export default function EditionPage() {
                   </a>
                 );
               })}
-              <button onClick={() => handlePrintEditionPage(uniquePages[activePage])} title={lang === "mr" ? "प्रिंट" : "Print"}
+              <button onClick={() => handlePrintEditionPage(uniquePages[activePage])} title={lang === "hi" ? "प्रिंट करें" : lang === "mr" ? "प्रिंट" : "Print"}
                 className="flex-1 min-w-0 aspect-square flex items-center justify-center rounded-full bg-gray-700 text-white shadow hover:scale-110 transition-transform max-w-10">
                 <Printer className="h-3.5 w-3.5" />
               </button>
-              <a href={uniquePages[activePage]} download target="_blank" rel="noreferrer" title={lang === "mr" ? "डाउनलोड" : "Download"}
+              <a href={uniquePages[activePage]} download target="_blank" rel="noreferrer" title={lang === "hi" ? "डाउनलोड" : lang === "mr" ? "डाउनलोड" : "Download"}
                 className="flex-1 min-w-0 aspect-square flex items-center justify-center rounded-full bg-[#CC0000] text-white shadow hover:scale-110 transition-transform max-w-10">
                 <Download className="h-3.5 w-3.5" />
               </a>
@@ -953,7 +979,11 @@ export default function EditionPage() {
           {activePageHotspots.length > 0 && (
             <p className="text-xs text-yellow-700 bg-yellow-50 border border-yellow-200 rounded px-2 py-1.5 mb-2 flex items-center gap-1.5">
               <span className="text-yellow-500">●</span>
-              {lang === "mr" ? "पिवळ्या क्षेत्रांवर क्लिक करा" : "Click on highlighted regions to view the article"}
+              {lang === "hi"
+                ? "लेख देखने के लिए हाइलाइट किए गए क्षेत्र पर क्लिक करें"
+                : lang === "mr"
+                ? "पिवळ्या क्षेत्रांवर क्लिक करा"
+                : "Click on highlighted regions to view the article"}
             </p>
           )}
 
@@ -1007,7 +1037,11 @@ export default function EditionPage() {
                     aria-label={h.articleTitle || "View article"}
                   >
                     <span className="absolute -top-5 left-0 bg-red-600 text-white text-[10px] px-1.5 py-0.5 leading-tight opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap max-w-[180px] truncate rounded-t pointer-events-none shadow font-medium">
-                      {lang === "mr" && h.articleTitleMr ? h.articleTitleMr : h.articleTitle || (lang === "mr" ? "लेख पाहा" : "View article")}
+                      {lang === "hi" && (h as any).articleTitleHi
+                        ? (h as any).articleTitleHi
+                        : lang === "mr" && h.articleTitleMr
+                        ? h.articleTitleMr
+                        : h.articleTitle || (lang === "hi" ? "लेख देखें" : lang === "mr" ? "लेख पाहा" : "View article")}
                     </span>
                     <span className="absolute bottom-0.5 right-0.5 bg-red-600 text-white text-[8px] px-1 py-0.5 rounded leading-none opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none font-semibold">
                       {idx + 1}
@@ -1026,7 +1060,7 @@ export default function EditionPage() {
                   >
                     {/* Instruction banner */}
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg pointer-events-none select-none z-30 whitespace-nowrap">
-                      {lang === "mr" ? "क्षेत्र निवडण्यासाठी ड्रॅग करा" : "Drag to select an area to clip"}
+                      {lang === "hi" ? "कतरन के लिए क्षेत्र खींचें" : lang === "mr" ? "क्षेत्र निवडण्यासाठी ड्रॅग करा" : "Drag to select an area to clip"}
                     </div>
                     {/* Selection rectangle */}
                     {clipRect && clipRect.width > 0.5 && clipRect.height > 0.5 && (
@@ -1053,17 +1087,21 @@ export default function EditionPage() {
               disabled={activePage === 0}
               className="px-4 py-1.5 text-sm border border-border rounded-sm disabled:opacity-40 hover:bg-muted transition-colors"
             >
-              {lang === "mr" ? "मागे" : "Previous"}
+              {lang === "hi" ? "पिछला" : lang === "mr" ? "मागे" : "Previous"}
             </button>
             <span className="text-sm text-muted-foreground">
-              {lang === "mr" ? `${activePage + 1} / ${uniquePages.length}` : `Page ${activePage + 1} of ${uniquePages.length}`}
+              {lang === "hi"
+                ? `पृष्ठ ${activePage + 1} / ${uniquePages.length}`
+                : lang === "mr"
+                ? `${activePage + 1} / ${uniquePages.length}`
+                : `Page ${activePage + 1} of ${uniquePages.length}`}
             </span>
             <button
               onClick={() => setActivePage((p) => Math.min(uniquePages.length - 1, p + 1))}
               disabled={activePage === uniquePages.length - 1}
               className="px-4 py-1.5 text-sm border border-border rounded-sm disabled:opacity-40 hover:bg-muted transition-colors"
             >
-              {lang === "mr" ? "पुढे" : "Next"}
+              {lang === "hi" ? "अगला" : lang === "mr" ? "पुढे" : "Next"}
             </button>
           </div>
 

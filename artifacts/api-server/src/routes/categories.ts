@@ -9,6 +9,7 @@ function serializeCategory(cat: any) {
     _id: cat._id.toString(),
     name: cat.name,
     nameMr: cat.nameMr ?? null,
+    nameHi: cat.nameHi ?? null,
     slug: cat.slug,
     color: cat.color,
     order: cat.order,
@@ -21,7 +22,7 @@ router.get("/categories", async (_req: any, res: any): Promise<void> => {
 });
 
 router.post("/categories", requireAuth, async (req: any, res: any): Promise<void> => {
-  const { name, nameMr, slug, color, order } = req.body;
+  const { name, nameMr, nameHi, slug, color, order } = req.body;
   if (!name || !slug || !color) {
     res.status(400).json({ error: "Missing required fields" });
     return;
@@ -29,6 +30,7 @@ router.post("/categories", requireAuth, async (req: any, res: any): Promise<void
   const cat = await Category.create({
     name,
     nameMr: nameMr || null,
+    nameHi: nameHi || null,
     slug,
     color,
     order: order ?? 0,

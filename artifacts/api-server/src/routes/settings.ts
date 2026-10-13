@@ -1,4 +1,4 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { SiteSettings } from "../models/SiteSettings.js";
 import { requireAuth } from "../middleware/auth.js";
 import { Edition } from "../models/Edition.js";
@@ -45,11 +45,12 @@ router.get("/settings", async (_req: any, res: any): Promise<void> => {
 router.patch("/settings", requireAuth, async (req: any, res: any): Promise<void> => {
   const settings = await getOrCreateSettings();
   const allowed = [
-    "siteDescription", "siteDescriptionMr",
+    "siteDescription", "siteDescriptionMr", "siteDescriptionHi",
+    "aboutContent", "aboutContentMr", "aboutContentHi",
     "quickLinks", "socialLinks",
     "contactEmail", "contactPhone",
-    "contactAddress", "contactAddressMr",
-    "maintenanceMode", "maintenanceMessage", "maintenanceMessageMr",
+    "contactAddress", "contactAddressMr", "contactAddressHi",
+    "maintenanceMode", "maintenanceMessage", "maintenanceMessageMr", "maintenanceMessageHi",
     "defaultLanguage",
     "smtpConfig",
     "poweredByText", "poweredByUrl",

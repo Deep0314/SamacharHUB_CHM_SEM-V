@@ -1,24 +1,24 @@
-﻿import { useParams } from "wouter";
+import { useParams } from "wouter";
 import { useState } from "react";
 import { useListArticles, getListArticlesQueryKey } from "@samacharhub/api-client-react";
 import { useLang } from "@/lib/lang";
 import { ArticleCard } from "@/components/ArticleCard";
 
-const CATEGORY_NAMES: Record<string, { en: string; mr: string }> = {
-  politics: { en: "Politics", mr: "राजकारण" },
-  sports: { en: "Sports", mr: "क्रीडा" },
-  business: { en: "Business", mr: "व्यापार" },
-  entertainment: { en: "Entertainment", mr: "मनोरंजन" },
-  technology: { en: "Technology", mr: "तंत्रज्ञान" },
-  health: { en: "Health", mr: "आरोग्य" },
-  education: { en: "Education", mr: "शिक्षण" },
-  vidarbha: { en: "Vidarbha", mr: "विदर्भ" },
+const CATEGORY_NAMES: Record<string, { en: string; mr: string; hi: string }> = {
+  politics: { en: "Politics", mr: "राजकारण", hi: "राजनीति" },
+  sports: { en: "Sports", mr: "क्रीडा", hi: "खेल" },
+  business: { en: "Business", mr: "व्यापार", hi: "व्यापार" },
+  entertainment: { en: "Entertainment", mr: "मनोरंजन", hi: "मनोरंजन" },
+  technology: { en: "Technology", mr: "तंत्रज्ञान", hi: "तकनीक" },
+  health: { en: "Health", mr: "आरोग्य", hi: "स्वास्थ्य" },
+  education: { en: "Education", mr: "शिक्षण", hi: "शिक्षा" },
+  vidarbha: { en: "Vidarbha", mr: "विदर्भ", hi: "विदर्भ" },
 };
 
 export default function CategoryPage() {
   const params = useParams<{ slug: string }>();
   const slug = params.slug;
-  const { lang } = useLang();
+  const { lang, t } = useLang();
   const [page, setPage] = useState(1);
 
   const { data, isLoading } = useListArticles(
@@ -26,8 +26,8 @@ export default function CategoryPage() {
     { query: { queryKey: getListArticlesQueryKey({ category: slug, lang, page, limit: 12 }) } }
   );
 
-  const catInfo = CATEGORY_NAMES[slug] ?? { en: slug, mr: slug };
-  const title = lang === "mr" ? catInfo.mr : catInfo.en;
+  const catInfo = CATEGORY_NAMES[slug] ?? { en: slug, mr: slug, hi: slug };
+  const title = t(catInfo.en, catInfo.mr, catInfo.hi);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6" data-testid="category-page">
@@ -35,9 +35,7 @@ export default function CategoryPage() {
         <h1 className="font-serif text-3xl font-bold">{title}</h1>
         {data && (
           <p className="text-sm text-muted-foreground mt-1">
-            {lang === "mr"
-              ? `${data.total} बातम्या`
-              : `${data.total} articles`}
+            {data.total} {t("articles", "बातम्या", "लेख")}
           </p>
         )}
       </div>
@@ -51,7 +49,7 @@ export default function CategoryPage() {
       ) : data?.articles.length === 0 ? (
         <div className="text-center py-16 text-muted-foreground">
           <p className="text-lg">
-            {lang === "mr" ? "कोणत्याही बातम्या सापडल्या नाहीत" : "No articles found"}
+            {t("No articles found", "कोणत्याही बातम्या सापडल्या नाहीत", "कोई लेख नहीं मिला")}
           </p>
         </div>
       ) : (
@@ -70,11 +68,13 @@ export default function CategoryPage() {
                 disabled={page === 1}
                 className="px-4 py-2 text-sm border border-border rounded-sm disabled:opacity-50 hover:bg-muted transition-colors"
               >
-                {lang === "mr" ? "मागे" : "Previous"}
+                {t("Previous", "मागे", "पिछला")}
               </button>
               <span className="px-4 py-2 text-sm">
                 {lang === "mr"
                   ? `${page} / ${data.totalPages}`
+                  : lang === "hi"
+                  ? `पृष्ठ ${page} / ${data.totalPages}`
                   : `Page ${page} of ${data.totalPages}`}
               </span>
               <button
@@ -82,7 +82,7 @@ export default function CategoryPage() {
                 disabled={page === data.totalPages}
                 className="px-4 py-2 text-sm border border-border rounded-sm disabled:opacity-50 hover:bg-muted transition-colors"
               >
-                {lang === "mr" ? "पुढे" : "Next"}
+                {t("Next", "पुढे", "अगला")}
               </button>
             </div>
           )}

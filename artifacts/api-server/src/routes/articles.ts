@@ -1,4 +1,4 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { Article } from "../models/Article.js";
 import { Category } from "../models/Category.js";
 import { requireAuth } from "../middleware/auth.js";
@@ -20,16 +20,20 @@ function serializeArticle(article: any) {
     _id: article._id.toString(),
     title: article.title,
     titleMr: article.titleMr ?? null,
+    titleHi: article.titleHi ?? null,
     slug: article.slug,
     summary: article.summary,
     summaryMr: article.summaryMr ?? null,
+    summaryHi: article.summaryHi ?? null,
     content: article.content,
     contentMr: article.contentMr ?? null,
+    contentHi: article.contentHi ?? null,
     category: cat
       ? {
           _id: cat._id.toString(),
           name: cat.name,
           nameMr: cat.nameMr ?? null,
+          nameHi: cat.nameHi ?? null,
           slug: cat.slug,
           color: cat.color,
           order: cat.order,
@@ -53,7 +57,7 @@ function serializeArticle(article: any) {
 router.get("/articles/featured", async (req: any, res: any): Promise<void> => {
   const { lang, limit = "5" } = req.query as Record<string, string>;
   const query: Record<string, unknown> = { status: "published", featured: true };
-  if (lang) query.lang = { $in: [lang, "both"] };
+  if (lang) query.lang = { $in: [lang, "both", "all"] };
   const articles = await Article.find(query)
     .populate("category")
     .sort({ publishedAt: -1 })
@@ -64,7 +68,7 @@ router.get("/articles/featured", async (req: any, res: any): Promise<void> => {
 router.get("/articles/latest", async (req: any, res: any): Promise<void> => {
   const { lang, limit = "12" } = req.query as Record<string, string>;
   const query: Record<string, unknown> = { status: "published" };
-  if (lang) query.lang = { $in: [lang, "both"] };
+  if (lang) query.lang = { $in: [lang, "both", "all"] };
   const articles = await Article.find(query)
     .populate("category")
     .sort({ publishedAt: -1 })
@@ -86,7 +90,7 @@ router.get("/articles", async (req: any, res: any): Promise<void> => {
   const query: Record<string, unknown> = {};
   if (status) query.status = status;
   else query.status = "published";
-  if (lang) query.lang = { $in: [lang, "both"] };
+  if (lang) query.lang = { $in: [lang, "both", "all"] };
   if (featured !== undefined) query.featured = featured === "true";
   if (search) query.$text = { $search: search };
 
@@ -120,10 +124,13 @@ router.post("/articles", requireAuth, async (req: any, res: any): Promise<void> 
   const {
     title,
     titleMr,
+    titleHi,
     summary,
     summaryMr,
+    summaryHi,
     content,
     contentMr,
+    contentHi,
     categoryId,
     author,
     imageUrl,
@@ -143,11 +150,14 @@ router.post("/articles", requireAuth, async (req: any, res: any): Promise<void> 
   const article = await Article.create({
     title,
     titleMr: titleMr || null,
+    titleHi: titleHi || null,
     slug,
     summary,
     summaryMr: summaryMr || null,
+    summaryHi: summaryHi || null,
     content,
     contentMr: contentMr || null,
+    contentHi: contentHi || null,
     category: categoryId,
     author,
     imageUrl: imageUrl || null,

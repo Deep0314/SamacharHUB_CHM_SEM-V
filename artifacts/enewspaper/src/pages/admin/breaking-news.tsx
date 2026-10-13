@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
@@ -16,13 +16,15 @@ import { useToast } from "@/hooks/use-toast";
 interface FormData {
   text: string;
   textMr: string;
-  lang: "en" | "mr" | "both";
+  textHi: string;
+  lang: "en" | "mr" | "hi" | "both" | "all";
 }
 
 const EMPTY: FormData = {
   text: "",
   textMr: "",
-  lang: "both",
+  textHi: "",
+  lang: "all",
 };
 
 export default function AdminBreakingNewsPage() {
@@ -153,6 +155,19 @@ export default function AdminBreakingNewsPage() {
                     data-testid="breaking-text-mr"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                    Text (हिंदी)
+                  </label>
+                  <input
+                    type="text"
+                    value={form.textHi}
+                    onChange={(e) => setForm((f) => ({ ...f, textHi: e.target.value }))}
+                    placeholder="हिंदी में ताज़ा ख़बर"
+                    className="w-full px-3 py-2 text-sm border border-border rounded-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                    data-testid="breaking-text-hi"
+                  />
+                </div>
                 <div className="flex gap-4">
                   <div className="flex-1">
                     <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
@@ -163,9 +178,11 @@ export default function AdminBreakingNewsPage() {
                       onChange={(e) => setForm((f) => ({ ...f, lang: e.target.value as any }))}
                       className="w-full px-3 py-2 text-sm border border-border rounded-sm"
                     >
-                      <option value="both">Both</option>
+                      <option value="all">All Languages</option>
+                      <option value="both">Both (En & Mr)</option>
                       <option value="en">English only</option>
                       <option value="mr">Marathi only</option>
+                      <option value="hi">Hindi only</option>
                     </select>
                   </div>
                 </div>
@@ -216,6 +233,9 @@ export default function AdminBreakingNewsPage() {
                       <p className="text-sm font-medium">{item.text}</p>
                       {item.textMr && (
                         <p className="text-xs text-muted-foreground mt-0.5">{item.textMr}</p>
+                      )}
+                      {(item as any).textHi && (
+                        <p className="text-xs text-muted-foreground mt-0.5">{(item as any).textHi}</p>
                       )}
                       <p className="text-xs text-muted-foreground mt-1">
                         Lang: {item.lang}

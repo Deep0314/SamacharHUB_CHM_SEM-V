@@ -1,4 +1,4 @@
-﻿import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -66,20 +66,23 @@ interface SiteSettings {
   maintenanceMode: boolean;
   maintenanceMessage: string;
   maintenanceMessageMr: string;
+  maintenanceMessageHi?: string;
 }
 
-function MaintenancePage({ message, messageMr }: { message: string; messageMr: string }) {
-  const { lang } = useLang();
+function MaintenancePage({ message, messageMr, messageHi }: { message: string; messageMr: string; messageHi?: string }) {
+  const { lang, t } = useLang();
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 text-center">
       <div className="w-16 h-16 bg-primary rounded flex items-center justify-center mb-6">
-        <span className="text-white text-2xl font-serif font-black">PL</span>
+        <span className="text-white text-2xl font-serif font-black">SH</span>
       </div>
       <h1 className="text-2xl font-serif font-black text-primary mb-2">SamacharHUB</h1>
       <p className="text-muted-foreground max-w-md text-sm leading-relaxed">
-        {lang === "mr" ? messageMr : message}
+        {t(message, messageMr, messageHi)}
       </p>
-      <p className="mt-6 text-xs text-muted-foreground">We'll be back soon.</p>
+      <p className="mt-6 text-xs text-muted-foreground">
+        {t("We'll be back soon.", "आम्ही लवकरच परत येऊ.", "हम जल्द ही वापस आएंगे।")}
+      </p>
     </div>
   );
 }
@@ -242,6 +245,7 @@ function BootstrapWrapper({ children }: { children: React.ReactNode }) {
         <MaintenancePage
           message={maintenance.maintenanceMessage}
           messageMr={maintenance.maintenanceMessageMr}
+          messageHi={maintenance.maintenanceMessageHi}
         />
       </LangProvider>
     );

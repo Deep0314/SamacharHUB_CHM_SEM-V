@@ -1,4 +1,4 @@
-﻿import { Router } from "express";
+import { Router } from "express";
 import { Edition } from "../models/Edition.js";
 import { requireAuth } from "../middleware/auth.js";
 import { Subscriber } from "../models/Subscriber.js";
@@ -33,9 +33,11 @@ function serializeHotspot(h: any) {
     articleId: h.articleId,
     articleTitle: h.articleTitle,
     articleTitleMr: h.articleTitleMr ?? null,
+    articleTitleHi: h.articleTitleHi ?? null,
     articleSlug: h.articleSlug,
     articleSummary: h.articleSummary,
     articleSummaryMr: h.articleSummaryMr ?? null,
+    articleSummaryHi: h.articleSummaryHi ?? null,
   };
 }
 
@@ -49,9 +51,11 @@ function normalizeHotspots(articleHotspots: any[] | undefined) {
     articleId: h.articleId || undefined,
     articleTitle: h.articleTitle || undefined,
     articleTitleMr: h.articleTitleMr || undefined,
+    articleTitleHi: h.articleTitleHi || undefined,
     articleSlug: h.articleSlug || undefined,
     articleSummary: h.articleSummary || undefined,
     articleSummaryMr: h.articleSummaryMr || undefined,
+    articleSummaryHi: h.articleSummaryHi || undefined,
   }));
 }
 
@@ -60,6 +64,7 @@ function serializeEdition(e: any) {
     _id: e._id.toString(),
     cities: e.cities ?? [],
     citiesMr: e.citiesMr ?? [],
+    citiesHi: e.citiesHi ?? [],
     date: e.date instanceof Date ? e.date.toISOString() : e.date,
     coverUrl: e.coverUrl,
     pages: e.pages ?? [],
@@ -96,7 +101,7 @@ router.get("/editions/:id", async (req: any, res: any): Promise<void> => {
 });
 
 router.post("/editions", requireAuth, async (req: any, res: any): Promise<void> => {
-  let { cities, citiesMr, date, coverUrl, pages, published, articleHotspots, hotspotPopupHeader } = req.body;
+  let { cities, citiesMr, citiesHi, date, coverUrl, pages, published, articleHotspots, hotspotPopupHeader } = req.body;
 
   // Backward compatibility: handle old singular fields
   if (!cities && (req.body as any).city) {
@@ -105,8 +110,11 @@ router.post("/editions", requireAuth, async (req: any, res: any): Promise<void> 
   if (!citiesMr && (req.body as any).cityMr) {
     citiesMr = [(req.body as any).cityMr];
   }
+  if (!citiesHi) {
+    citiesHi = citiesMr || cities;
+  }
 
-  console.log("POST /editions processed body:", JSON.stringify({ cities, citiesMr, date, coverUrl }, null, 2));
+  console.log("POST /editions processed body:", JSON.stringify({ cities, citiesMr, citiesHi, date, coverUrl }, null, 2));
 
   if (!cities || !cities.length || !citiesMr || !citiesMr.length || !date || !coverUrl) {
     const missing = [];
@@ -126,6 +134,7 @@ router.post("/editions", requireAuth, async (req: any, res: any): Promise<void> 
     const edition = await Edition.create({
       cities,
       citiesMr,
+      citiesHi: citiesHi ?? [],
       date: new Date(date + "T00:00:00Z"),
       coverUrl,
       pages: pages ?? [],
@@ -142,7 +151,7 @@ router.post("/editions", requireAuth, async (req: any, res: any): Promise<void> 
 });
 
 router.patch("/editions/:id", requireAuth, async (req: any, res: any): Promise<void> => {
-  let { cities, citiesMr, date, coverUrl, pages, published, articleHotspots, hotspotPopupHeader } = req.body;
+  let { cities, citiesMr, citiesHi, date, coverUrl, pages, published, articleHotspots, hotspotPopupHeader } = req.body;
   
   // Backward compatibility
   if (!cities && (req.body as any).city) cities = [(req.body as any).city];
@@ -151,6 +160,7 @@ router.patch("/editions/:id", requireAuth, async (req: any, res: any): Promise<v
   const update: Record<string, any> = {};
   if (cities !== undefined) update.cities = cities;
   if (citiesMr !== undefined) update.citiesMr = citiesMr;
+  if (citiesHi !== undefined) update.citiesHi = citiesHi;
   if (date !== undefined) update.date = new Date(date + "T00:00:00Z");
   if (coverUrl !== undefined) update.coverUrl = coverUrl;
   if (pages !== undefined) update.pages = pages;

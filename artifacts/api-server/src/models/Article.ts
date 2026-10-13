@@ -3,18 +3,21 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 export interface IArticle extends Document {
   title: string;
   titleMr: string | null;
+  titleHi: string | null;
   slug: string;
   summary: string;
   summaryMr: string | null;
+  summaryHi: string | null;
   content: string;
   contentMr: string | null;
+  contentHi: string | null;
   category: Types.ObjectId;
   author: string;
   imageUrl: string | null;
   tags: string[];
   status: "draft" | "published" | "archived";
   featured: boolean;
-  lang: "en" | "mr" | "both";
+  lang: "en" | "mr" | "hi" | "both" | "all";
   viewCount: number;
   publishedAt: Date | null;
   createdAt: Date;
@@ -25,11 +28,14 @@ const ArticleSchema = new Schema<IArticle>(
   {
     title: { type: String, required: true },
     titleMr: { type: String, default: null },
+    titleHi: { type: String, default: null },
     slug: { type: String, required: true, unique: true },
     summary: { type: String, required: true },
     summaryMr: { type: String, default: null },
+    summaryHi: { type: String, default: null },
     content: { type: String, required: true },
     contentMr: { type: String, default: null },
+    contentHi: { type: String, default: null },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     author: { type: String, required: true },
     imageUrl: { type: String, default: null },
@@ -40,7 +46,7 @@ const ArticleSchema = new Schema<IArticle>(
       default: "draft",
     },
     featured: { type: Boolean, default: false },
-    lang: { type: String, enum: ["en", "mr", "both"], default: "both" },
+    lang: { type: String, enum: ["en", "mr", "hi", "both", "all"], default: "all" },
     viewCount: { type: Number, default: 0 },
     publishedAt: { type: Date, default: null },
   },

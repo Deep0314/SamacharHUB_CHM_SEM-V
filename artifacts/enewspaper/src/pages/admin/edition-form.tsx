@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
@@ -209,17 +209,20 @@ export default function EditionFormPage() {
 
     const payloadCities: string[] = [];
     const payloadCitiesMr: string[] = [];
+    const payloadCitiesHi: string[] = [];
     for (const cityEn of selectedCities) {
       const c = cities.find((x) => x.en === cityEn);
       if (c) {
         payloadCities.push(c.en);
         payloadCitiesMr.push(c.mr);
+        payloadCitiesHi.push(c.hi || c.mr);
       }
     }
 
     const payload = {
       cities: payloadCities,
       citiesMr: payloadCitiesMr,
+      citiesHi: payloadCitiesHi,
       date,
       coverUrl,
       pages,

@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
 import { AdminGuard } from "@/components/AdminGuard";
 import {
@@ -14,6 +14,7 @@ import { Plus, Pencil, Trash2, X, Check } from "lucide-react";
 interface FormData {
   name: string;
   nameMr: string;
+  nameHi: string;
   slug: string;
   color: string;
   order: number;
@@ -22,6 +23,7 @@ interface FormData {
 const EMPTY: FormData = {
   name: "",
   nameMr: "",
+  nameHi: "",
   slug: "",
   color: "#CC0000",
   order: 0,
@@ -71,6 +73,14 @@ function CategoryForm({
             onChange={(e) => set("nameMr", e.target.value)}
             className="w-full px-2 py-1 text-sm border border-border rounded-sm"
             data-testid="cat-name-mr"
+          />
+          <input
+            type="text"
+            placeholder="हिंदी नाम"
+            value={form.nameHi}
+            onChange={(e) => set("nameHi", e.target.value)}
+            className="w-full px-2 py-1 text-sm border border-border rounded-sm"
+            data-testid="cat-name-hi"
           />
         </div>
       </td>
@@ -210,6 +220,7 @@ export default function AdminCategoriesPage() {
                           initial={{
                             name: cat.name,
                             nameMr: cat.nameMr ?? "",
+                            nameHi: (cat as any).nameHi ?? "",
                             slug: cat.slug,
                             color: cat.color,
                             order: cat.order,
@@ -224,6 +235,9 @@ export default function AdminCategoriesPage() {
                             <p className="font-medium">{cat.name}</p>
                             {cat.nameMr && (
                               <p className="text-xs text-muted-foreground">{cat.nameMr}</p>
+                            )}
+                            {(cat as any).nameHi && (
+                              <p className="text-xs text-muted-foreground">{(cat as any).nameHi}</p>
                             )}
                           </td>
                           <td className="px-4 py-3 text-muted-foreground font-mono text-xs">
