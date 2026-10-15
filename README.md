@@ -1,7 +1,7 @@
 # SamacharHUB — E-Newspaper platform
 
 **SamacharHUB** is a full-stack regional e-newspaper platform built as a college project (TY Computer Science).  
-It supports bilingual content (English + Marathi), PDF edition uploads, interactive article hotspots, breaking news, ads, and an admin dashboard.
+It supports Trilingual content (English + Hindi + Marathi), PDF edition uploads, interactive article hotspots, breaking news, ads, and an admin dashboard.
 
 ---
 
