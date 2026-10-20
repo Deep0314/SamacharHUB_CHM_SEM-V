@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
-    "start": "node --env-file=.env --enable-source-maps ./dist/index.mjs",
-    "seed": "node --env-file=.env --import tsx src/seed.ts",
+    "start": "node --env-file-if-exists=.env --enable-source-maps ./dist/index.mjs",
+    "seed": "node --env-file-if-exists=.env --import tsx src/seed.ts",
     "reset-admin": "tsx src/scripts/reset-admin.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

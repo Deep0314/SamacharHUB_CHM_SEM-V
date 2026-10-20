@@ -1,0 +1,51 @@
+# ==============================================================================
+# SamacharHUB — Official Render Blueprint Configuration (render.yaml)
+# Full-Stack Deployment: Express REST API (Backend) + Vite React (Frontend)
+# ==============================================================================
+
+services:
+  - type: web
+    name: samacharhub-enewspaper
+    runtime: node
+    plan: free
+    region: oregon # (or singapore / frankfurt)
+
+    # --------------------------------------------------------------------------
+    # FULL-STACK BUILD PIPELINE (Both Backend and Frontend):
+    # 1. Installs workspace dependencies via pnpm
+    # 2. Compiles TypeScript shared libraries (api-zod, api-client-react, db)
+    # 3. Bundles Backend API server with esbuild -> artifacts/api-server/dist
+    # 4. Compiles Frontend Vite React SPA       -> artifacts/enewspaper/dist/public
+    # --------------------------------------------------------------------------
+    buildCommand: pnpm install && pnpm run build
+
+    # --------------------------------------------------------------------------
+    # FULL-STACK RUNTIME PIPELINE:
+    # Launches Express production server on 0.0.0.0:$PORT which concurrently:
+    # 1. Serves Backend RESTful API endpoints under /api/*
+    # 2. Serves Frontend static assets (JS, CSS, images) from dist/public
+    # 3. Handles client-side SPA routing for all non-API paths (/* -> index.html)
+    # --------------------------------------------------------------------------
+    startCommand: pnpm run start
+
+    # Health check ping ensuring zero-downtime deployment
+    healthCheckPath: /
+
+    # Environment Variables
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: PNPM_VERSION
+        value: 9.15.4
+      - key: NODE_ENV
+        value: production
+
+      # Prompts for MongoDB Atlas connection URI during Blueprint setup
+      - key: MONGODB_URI
+        sync: false
+
+      # Automatically generated high-entropy cryptographic secrets for JWT
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: REFRESH_SECRET
+        generateValue: true
