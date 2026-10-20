@@ -319,7 +319,7 @@ function HotspotViewer({
     const canvas = await buildCompositeCanvas();
     const a = document.createElement("a");
     a.href = canvas.toDataURL("image/jpeg", 0.95);
-    a.download = `panchnama-lakshvedhi-article.jpg`;
+    a.download = `samacharhub-clipping.jpg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -332,7 +332,7 @@ function HotspotViewer({
       try {
         const canvas = await buildCompositeCanvas();
         const blob = await new Promise<Blob>((res) => canvas.toBlob((b) => res(b!), "image/jpeg", 0.9));
-        const file = new File([blob], "panchnama-lakshvedhi.jpg", { type: "image/jpeg" });
+        const file = new File([blob], "samacharhub-clipping.jpg", { type: "image/jpeg" });
         if (navigator.canShare({ files: [file] })) {
           await navigator.share({ title: title || "SamacharHUB", files: [file] });
           return;
