@@ -44,6 +44,14 @@ services:
       - key: MONGODB_URI
         sync: false
 
+      # Cloudinary Media Storage (required for uploading newspaper pages, articles, ads)
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
       # Automatically generated high-entropy cryptographic secrets for JWT
       - key: SESSION_SECRET
         generateValue: true
