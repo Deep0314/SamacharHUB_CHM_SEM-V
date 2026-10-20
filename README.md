@@ -1,6 +1,6 @@
 # SamacharHUB — E-Newspaper platform
 
-**SamacharHUB - Read without language barriers, share without limits** is a full-stack regional e-newspaper platform built as a college project (TY Computer Science).  
+**SamacharHUB** is a full-stack regional e-newspaper platform built as a college project (TY Computer Science).  
 It supports bilingual content (English + Marathi), PDF edition uploads, interactive article hotspots, breaking news, ads, and an admin dashboard.
 
 ---
